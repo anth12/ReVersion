@@ -1,0 +1,9 @@
+﻿<Application x:Class="ReVersion.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ReVersion"
+             StartupUri="Views/HomeWindow.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
