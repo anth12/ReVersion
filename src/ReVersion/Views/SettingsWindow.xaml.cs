@@ -12,7 +12,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
+using Newtonsoft.Json;
 using ReVersion.Models;
+using ReVersion.Services.Settings;
 using SubversionServerType = ReVersion.Services.Subversion.SubversionServerType;
 
 namespace ReVersion.Views
@@ -20,7 +23,7 @@ namespace ReVersion.Views
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : MetroWindow
     {
         public SettingsWindow()
         {
@@ -29,14 +32,12 @@ namespace ReVersion.Views
         
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = new SettingsModel
-            {
-                Servers = new ObservableCollection<SvnServer>
-                {
-                    new SvnServer { BaseUrl = "http://svn.example.com", Type = SubversionServerType.Submin},
-                    new SvnServer { BaseUrl = "http://sven/", Type = SubversionServerType.Sven}
-                }
-            };
+            this.DataContext = SettingsService.Current;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsService.Current.Servers.Add(new SvnServer());
         }
     }
 }

@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="Home" Height="300" Width="300">
     <Grid>
-        
+        <Menu IsMainMenu="True">
+            <MenuItem Header="File">
+                <MenuItem Header="Import Settings" Click="ImportSettings_OnClick" />
+                <MenuItem Header="Export Settings" Click="ExportSettings_OnClick" />
+                <Separator />
+                <MenuItem Header="Settings" Click="OpenSettings_OnClick" />
+                <Separator />
+                <MenuItem Header="Exit"  Click="Exit_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="Actions">
+                <MenuItem Header="SVN Update all" Click="SvnUpdate_OnClick" />
+                <MenuItem Header="Refresh SVN repo list" Click="RefreshRepoList_OnClick" />
+            </MenuItem>
+            
+            <MenuItem Header="_Help" />
+        </Menu>
+
     </Grid>
 </Window>
