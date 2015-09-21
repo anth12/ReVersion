@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using ReVersion.Helpers;
+using ReVersion.Services;
 using ReVersion.Services.Settings;
 
 namespace ReVersion.Views
@@ -33,7 +35,9 @@ namespace ReVersion.Views
 
             if (clicked != null && clicked.Value)
             {
-                SettingsService.Import(fileDialog.FileName);
+                var result = SettingsService.Import(fileDialog.FileName);
+                if (result != null)
+                    NotificationHelper.ShowResult(result);
             }
         }
 
@@ -89,7 +93,9 @@ namespace ReVersion.Views
 
         private void Help_OnClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://github.com/anth12/ReVersion");
+
+            NotificationHelper.ShowResult(Result.Success("test message goes herre"));
+            //Process.Start("http://github.com/anth12/ReVersion");
         }
 
         #endregion

@@ -29,12 +29,28 @@ namespace ReVersion.Services.Settings
 
         public static SettingsModel Current { get; set; }
 
-        public static void Import(string importPath)
+        public static Result Import(string importPath)
         {
-            //TODO validate the import
+            //validate the import
+            if (!File.Exists(importPath))
+                return Result.Error("File does not exist");
+
+            var content = File.ReadAllText(importPath);
+
+            try
+            {
+                JsonConvert.DeserializeObject<SettingsModel>(content);
+            }
+            catch (Exception)
+            {
+                return Result.Error("The file is not in the correct format");
+            }
+
             File.Delete(SettingsPath);
             File.Copy(importPath, SettingsPath);
             Load();
+
+            return Result.Success("Import successfull");
         }
 
         public static void Export(string exportPath)
