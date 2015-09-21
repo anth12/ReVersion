@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
 using ReVersion.Helpers;
 using ReVersion.Services.Subversion;
 
@@ -23,6 +20,13 @@ namespace ReVersion.Models
 
     public class SvnServer : BaseModel
     {
+        public SvnServer()
+        {
+            _Id = Guid.NewGuid();
+        }
+
+        private Guid _Id;
+        public Guid Id { get { return _Id; } set { _Id = value; OnPropertyChanged(); } }
 
         private string _BaseUrl;
         public string BaseUrl { get { return _BaseUrl; } set { _BaseUrl = value; OnPropertyChanged(); } }

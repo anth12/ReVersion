@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using ReVersion.Services.Settings;
 using ReVersion.Services.Subversion;
 
 namespace ReVersion.Views.Settings
@@ -27,5 +28,12 @@ namespace ReVersion.Views.Settings
             svnServerSettings.SetPassword(PasswordBox.Password);
         }
 
+        private void Remove_OnClick(object sender, RoutedEventArgs e)
+        {
+            var svnServerSettings = (Models.SvnServer)DataContext;
+
+            var server = SettingsService.Current.Servers.First(s => s.Id == svnServerSettings.Id);
+            SettingsService.Current.Servers.Remove(server);
+        }
     }
 }

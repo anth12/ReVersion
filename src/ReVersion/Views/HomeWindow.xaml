@@ -21,8 +21,11 @@
                 <MenuItem Header="SVN Update all" Click="SvnUpdate_OnClick" />
                 <MenuItem Header="Refresh SVN repo list" Click="RefreshRepoList_OnClick" />
             </MenuItem>
-            
-            <MenuItem Header="_Help" />
+
+            <MenuItem Header="_Help">
+                <MenuItem Header="Help" Click="Help_OnClick"></MenuItem>
+                <MenuItem Header="About" Click="About_OnClick"></MenuItem>
+            </MenuItem>
         </Menu>
 
     </Grid>

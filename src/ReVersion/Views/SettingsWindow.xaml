@@ -8,7 +8,7 @@
         xmlns:vw="clr-namespace:ReVersion.Views.Settings"
         mc:Ignorable="d"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Settings" Height="300" Width="300" Loaded="SettingsWindow_OnLoaded">
+        Title="Settings" Height="500" Width="500" Loaded="SettingsWindow_OnLoaded">
     <Window.Resources>
         <DataTemplate DataType="{x:Type m:SvnServer}">
             <vw:SvnServer></vw:SvnServer>
@@ -29,12 +29,12 @@
 
         <StackPanel Orientation="Vertical" Grid.Column="1">
 
-            <StackPanel Orientation="Vertical" Grid.Column="1">
+            <WrapPanel Orientation="Horizontal">
 
-                <ItemsControl ItemsSource="{Binding Servers}">
+                <ItemsControl ItemsSource="{Binding Servers}" >
                 </ItemsControl>
 
-            </StackPanel>
+            </WrapPanel>
             <Button Content="Add Server" Click="ButtonBase_OnClick" Grid.Column="1"></Button>
         </StackPanel>
 

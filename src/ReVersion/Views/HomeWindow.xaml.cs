@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -74,7 +75,23 @@ namespace ReVersion.Views
         {
             this.Close();
         }
+
+        #endregion
+
+        #region Help
         
+        private void About_OnClick(object sender, RoutedEventArgs e)
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            MessageBox.Show($"Version: {fvi.FileVersion}");
+        }
+
+        private void Help_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://github.com/anth12/ReVersion");
+        }
+
         #endregion
 
         #endregion
@@ -83,5 +100,6 @@ namespace ReVersion.Views
         {
             Application.Current.Shutdown();
         }
+
     }
 }
