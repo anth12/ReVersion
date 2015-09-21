@@ -32,6 +32,7 @@ namespace ReVersion.Services.Settings
         public static void Import(string importPath)
         {
             //TODO validate the import
+            File.Delete(SettingsPath);
             File.Copy(importPath, SettingsPath);
             Load();
         }

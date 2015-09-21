@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
+using ReVersion.Services.Settings;
 
 namespace ReVersion.Views
 {
@@ -20,12 +22,33 @@ namespace ReVersion.Views
 
         private void ImportSettings_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var fileDialog = new OpenFileDialog
+            {
+                Filter = "Settings Files (.json)|*.json",
+                FilterIndex = 1
+            };
+
+            var clicked = fileDialog.ShowDialog();
+
+            if (clicked != null && clicked.Value)
+            {
+                SettingsService.Import(fileDialog.FileName);
+            }
         }
 
         private void ExportSettings_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var fileDialog = new SaveFileDialog
+            {
+                Filter = "Settings Files (.json)|*.json"
+            };
+
+            var clicked = fileDialog.ShowDialog();
+
+            if (clicked != null && clicked.Value)
+            {
+                SettingsService.Export(fileDialog.FileName);
+            }
         }
 
         private void OpenSettings_OnClick(object sender, RoutedEventArgs e)
