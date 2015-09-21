@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReVersion.Views.Settings"
              mc:Ignorable="d" 
-             d:DesignHeight="60.902" d:DesignWidth="267.293">
-    <Grid>
+             d:DesignHeight="160" d:DesignWidth="260" Loaded="SvnServer_OnLoaded">
+    <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
@@ -17,10 +19,16 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="Svn Type"/>
-        <ComboBox Grid.Column="1" DataContext="{Binding Type}">
+        <ComboBox x:Name="SvnTypeDropdown" Grid.Column="1" DataContext="{Binding Type}">
         </ComboBox>
 
         <Label Grid.Row="1" Content="Base Url"/>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseUrl}"></TextBox>
+
+        <Label Grid.Row="2" Content="Username"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Username}"></TextBox>
+
+        <Label Grid.Row="3" Content="Password"/>
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Grid.Column="1" PasswordChanged="PasswordBox_OnPasswordChanged"></PasswordBox>
     </Grid>
 </UserControl>

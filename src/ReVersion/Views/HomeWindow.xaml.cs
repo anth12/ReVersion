@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows;
+using MahApps.Metro.Controls;
 
 namespace ReVersion.Views
 {
     /// <summary>
     /// Interaction logic for HomeWindow.xaml
     /// </summary>
-    public partial class HomeWindow : Window
+    public partial class HomeWindow : MetroWindow
     {
         public HomeWindow()
         {
@@ -35,7 +36,7 @@ namespace ReVersion.Views
 
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         #endregion
@@ -55,5 +56,9 @@ namespace ReVersion.Views
 
         #endregion
 
+        private void HomeWindow_OnClosed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

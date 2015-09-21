@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ReVersion.Services.Subversion;
 
 namespace ReVersion.Views.Settings
 {
@@ -24,5 +14,23 @@ namespace ReVersion.Views.Settings
         {
             InitializeComponent();
         }
+
+        private void SvnServer_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var values = Enum.GetValues(typeof (SubversionServerType));
+            foreach (var value in values)
+            {
+                SvnTypeDropdown.Items.Add(value);
+            }
+        }
+
+        private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var svnServerSettings = (Models.SvnServer)DataContext;
+            svnServerSettings.SetPassword(PasswordBox.Password);
+
+            var a = svnServerSettings.GetPassword();
+        }
+
     }
 }
