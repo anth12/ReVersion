@@ -15,6 +15,10 @@
         </DataTemplate>
     </Window.Resources>
     
+
+        
+
+    
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -28,13 +32,13 @@
         <Label Content="Svn Servers"></Label>
 
         <StackPanel Orientation="Vertical" Grid.Column="1">
-
-            <WrapPanel Orientation="Horizontal">
-
-                <ItemsControl ItemsSource="{Binding Servers}" >
-                </ItemsControl>
-
-            </WrapPanel>
+            <ItemsControl ItemsSource="{Binding Servers}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <Button Content="Add Server" Click="ButtonBase_OnClick" Grid.Column="1"></Button>
         </StackPanel>
 
