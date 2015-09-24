@@ -10,13 +10,11 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Settings" Height="500" Width="500" Loaded="SettingsWindow_OnLoaded">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type m:SvnServer}">
+        <DataTemplate DataType="{x:Type m:SvnServerModel}">
             <vw:SvnServer></vw:SvnServer>
         </DataTemplate>
     </Window.Resources>
     
-
-        
 
     
     <Grid Margin="10">

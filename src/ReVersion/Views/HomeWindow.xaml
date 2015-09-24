@@ -4,9 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReVersion.Views"
+        xmlns:m="clr-namespace:ReVersion.Services.Subversion.Response"
+        xmlns:vw="clr-namespace:ReVersion.Views.Repository"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:settings="clr-namespace:ReVersion.Views.Settings"
         mc:Ignorable="d"
-        Title="Home" Height="300" Width="300" Closed="HomeWindow_OnClosed">
+        Title="Home" Height="500" Width="800" Loaded="HomeWindow_OnLoaded" Closed="HomeWindow_OnClosed" ShowIconOnTitleBar="True" GlowBrush="#666">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type m:RepositoryResult}">
+            <vw:Repository></vw:Repository>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid>
         <Menu IsMainMenu="True">
             <MenuItem Header="File">
@@ -17,6 +26,7 @@
                 <Separator />
                 <MenuItem Header="Exit"  Click="Exit_OnClick"/>
             </MenuItem>
+            
             <MenuItem Header="Actions">
                 <MenuItem Header="SVN Update all" Click="SvnUpdate_OnClick" />
                 <MenuItem Header="Refresh SVN repo list" Click="RefreshRepoList_OnClick" />
@@ -26,7 +36,28 @@
                 <MenuItem Header="Help" Click="Help_OnClick"></MenuItem>
                 <MenuItem Header="About" Click="About_OnClick"></MenuItem>
             </MenuItem>
+            
         </Menu>
+
+        <Grid Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 10 0">
+            <TextBox Width="180" Height="29" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="🔎" HorizontalAlignment="Right" VerticalAlignment="Center"></Label>
+        </Grid>
+
+        <controls:ProgressRing IsActive="{Binding Loaded}" />
+        
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 30 5 5">
+        <StackPanel Orientation="Vertical">
+            <ItemsControl ItemsSource="{Binding FilteredRepositories}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
 
     </Grid>
 </controls:MetroWindow>

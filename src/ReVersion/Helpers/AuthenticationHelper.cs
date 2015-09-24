@@ -1,17 +1,17 @@
-﻿using System;
-
+﻿
 namespace ReVersion.Helpers
 {
     public class AuthenticationHelper
     {
-        public static string Encrypt(string password)
+        public static string Encrypt(string value)
         {
-            throw new NotImplementedException();
+            //TODO
+            return value + "5";
         }
 
-        public static string Decrypt(string password)
+        public static string Decrypt(string value)
         {
-            throw new NotImplementedException();
+            return value.Substring(0, value.Length - 1);
         }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using ReVersion.Helpers;
+using ReVersion.Models;
 using ReVersion.Services;
 using ReVersion.Services.Settings;
+using ReVersion.Services.Subversion;
 
 namespace ReVersion.Views
 {
@@ -14,10 +17,29 @@ namespace ReVersion.Views
     /// </summary>
     public partial class HomeWindow : MetroWindow
     {
+        protected HomeModel Model { get; set; } = new HomeModel();
+
         public HomeWindow()
         {
             InitializeComponent();
+            ConfigureSearch();
+
+            DataContext = Model;
         }
+
+        #region Window Open/Close events
+
+        private void HomeWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            LoadRepositories();
+        }
+
+        private void HomeWindow_OnClosed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        #endregion
 
         #region Menu events
 
@@ -73,11 +95,12 @@ namespace ReVersion.Views
 
         private void SvnUpdate_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //TODO
         }
+
         private void RefreshRepoList_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            LoadRepositories();
         }
 
         #endregion
@@ -102,10 +125,60 @@ namespace ReVersion.Views
 
         #endregion
 
-        private void HomeWindow_OnClosed(object sender, EventArgs e)
+
+        #region Private helper methods
+
+        private void ConfigureSearch()
         {
-            Application.Current.Shutdown();
+            Model.Repositories.CollectionChanged += (sender, args) =>
+            {
+                ApplyFilder();
+            };
+
+            Model.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == nameof(Model.Search) || args.PropertyName == nameof(Model.Repositories))
+                {
+                    ApplyFilder();
+                }
+
+            };
         }
+
+        private void ApplyFilder()
+        {
+            var searchTerm = Model.Search.ToLower();
+
+            //Apply the filtering
+            Model.FilteredRepositories.Clear();
+
+            Model.Repositories
+                .Where(repo => repo.Name.ToLower().Contains(searchTerm))
+                .ToList()
+                .ForEach(Model.FilteredRepositories.Add);
+        }
+
+        private async void LoadRepositories()
+        {
+            Model.Loaded = true;
+
+            var subversionServerCollator = new SubversionServerCollator();
+
+            var result = await subversionServerCollator.ListRepositories();
+
+            Model.Repositories.Clear();
+            result.Repositories.ForEach(repo=> Model.Repositories.Add(repo));
+
+            Model.Loaded = false;
+
+            if (result.Messages.Any())
+            {
+                //TODO
+
+            }
+        }
+
+        #endregion
 
     }
 }

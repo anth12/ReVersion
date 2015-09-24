@@ -9,18 +9,18 @@ namespace ReVersion.Models
     {
         public SettingsModel()
         {
-            Servers = new ObservableCollection<SvnServer>();
+            Servers = new ObservableCollection<SvnServerModel>();
         }
 
-        public ObservableCollection<SvnServer> Servers { get; set; }
+        public ObservableCollection<SvnServerModel> Servers { get; set; }
 
         private string _RootPath;
         public string RootPath { get { return _RootPath; } set { _RootPath = value; OnPropertyChanged(); } }
     }
 
-    public class SvnServer : BaseModel
+    public class SvnServerModel : BaseModel
     {
-        public SvnServer()
+        public SvnServerModel()
         {
             _Id = Guid.NewGuid();
         }

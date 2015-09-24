@@ -22,7 +22,7 @@ namespace ReVersion.Views
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            SettingsService.Current.Servers.Add(new SvnServer());
+            SettingsService.Current.Servers.Add(new SvnServerModel());
         }
     }
 }

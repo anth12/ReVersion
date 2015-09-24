@@ -75,16 +75,26 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\AuthenticationHelper.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Helpers\WebClientSession.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Services\Result.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
     <Compile Include="Services\Subversion\ISubversionServer.cs" />
+    <Compile Include="Services\Subversion\Requests\ListRepositoriesRequest.cs" />
+    <Compile Include="Services\Subversion\Response\ListRepositoriesResponse.cs" />
     <Compile Include="Services\Subversion\SubminServer.cs" />
+    <Compile Include="Services\Subversion\SubversionServerCollator.cs" />
     <Compile Include="Services\Subversion\SubversionServerType.cs" />
     <Compile Include="Services\Subversion\SvenServer.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Repository\Repository.xaml.cs">
+      <DependentUpon>Repository.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -100,6 +110,10 @@
       <DependentUpon>Notification.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\HomeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Repository\Repository.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

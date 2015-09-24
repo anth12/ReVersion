@@ -24,13 +24,13 @@ namespace ReVersion.Views.Settings
 
         private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            var svnServerSettings = (Models.SvnServer)DataContext;
+            var svnServerSettings = (Models.SvnServerModel)DataContext;
             svnServerSettings.SetPassword(PasswordBox.Password);
         }
 
         private void Remove_OnClick(object sender, RoutedEventArgs e)
         {
-            var svnServerSettings = (Models.SvnServer)DataContext;
+            var svnServerSettings = (Models.SvnServerModel)DataContext;
 
             var server = SettingsService.Current.Servers.First(s => s.Id == svnServerSettings.Id);
             SettingsService.Current.Servers.Remove(server);
