@@ -6,19 +6,19 @@
              xmlns:local="clr-namespace:ReVersion.Views.Repository"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="350">
-    <Grid>
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition SharedSizeGroup="WrapPannelGroup"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
         <CheckBox></CheckBox>
 
         <StackPanel Grid.Column="1">
-            <TextBlock FontSize="18" Text="{Binding Name}"></TextBlock>
-            <TextBlock FontSize="8" Foreground="DarkGray" Text="{Binding Url}"></TextBlock>
+            <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Name, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" FontSize="18" MaxWidth="300" />
+            <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Url, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
         </StackPanel>
-        <Button Grid.Column="2" Content="Download"></Button>
+        <Button Grid.Column="2" Content="Checkout"></Button>
     </Grid>
 </UserControl>

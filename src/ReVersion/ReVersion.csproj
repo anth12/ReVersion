@@ -10,6 +10,7 @@
     <RootNamespace>ReVersion</RootNamespace>
     <AssemblyName>ReVersion</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -55,6 +56,8 @@
       <HintPath>packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -64,6 +67,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Windows" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -106,9 +110,6 @@
     <Compile Include="Views\Settings\SvnServer.xaml.cs">
       <DependentUpon>SvnServer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Shared\Notification.xaml.cs">
-      <DependentUpon>Notification.xaml</DependentUpon>
-    </Compile>
     <Page Include="Views\HomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,10 +123,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\SvnServer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Shared\Notification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,6 +160,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

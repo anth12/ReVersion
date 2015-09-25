@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -118,6 +121,9 @@ namespace ReVersion.Views
         {
 
             NotificationHelper.ShowResult(Result.Success("test message goes herre"));
+
+            NotificationHelper.ShowResult(Result.Error("test message goes herre"));
+
             //Process.Start("http://github.com/anth12/ReVersion");
         }
 
@@ -137,30 +143,36 @@ namespace ReVersion.Views
 
             Model.PropertyChanged += (sender, args) =>
             {
-                if(args.PropertyName == nameof(Model.Search) || args.PropertyName == nameof(Model.Repositories))
+                if(!Model.Loading && args.PropertyName == nameof(Model.Search) || args.PropertyName == nameof(Model.Repositories))
                 {
                     ApplyFilder();
+                    
+                    Model.OnPropertyChanged(nameof(Model.CountSummary));
                 }
 
             };
         }
 
-        private void ApplyFilder()
+        private async void ApplyFilder()
         {
+            //TODO make async
             var searchTerm = Model.Search.ToLower();
 
             //Apply the filtering
-            Model.FilteredRepositories.Clear();
 
-            Model.Repositories
+            var filteredRepositories = Model.Repositories
                 .Where(repo => repo.Name.ToLower().Contains(searchTerm))
-                .ToList()
-                .ForEach(Model.FilteredRepositories.Add);
+                .ToList();
+
+                
+            Model.FilteredRepositories.Clear();
+            filteredRepositories.ForEach(Model.FilteredRepositories.Add);
+
         }
 
         private async void LoadRepositories()
         {
-            Model.Loaded = true;
+            Model.Loading = true;
 
             var subversionServerCollator = new SubversionServerCollator();
 
@@ -169,7 +181,7 @@ namespace ReVersion.Views
             Model.Repositories.Clear();
             result.Repositories.ForEach(repo=> Model.Repositories.Add(repo));
 
-            Model.Loaded = false;
+            Model.Loading = false;
 
             if (result.Messages.Any())
             {
