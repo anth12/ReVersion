@@ -5,15 +5,12 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Xml.Serialization;
-using Windows.Web.Http;
 using HtmlAgilityPack;
 using ReVersion.Helpers;
 using ReVersion.Models;
-using ReVersion.Services.SvnServer;
 using ReVersion.Services.SvnServer.Response;
 
-namespace ReVersion.Services.SvnServer
+namespace ReVersion.Services.SvnServer.Impl
 {
     public class SvenServer : ISvnServer
     {

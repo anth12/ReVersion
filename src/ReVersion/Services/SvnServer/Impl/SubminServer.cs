@@ -6,7 +6,7 @@ using ReVersion.Helpers;
 using ReVersion.Models;
 using ReVersion.Services.SvnServer.Response;
 
-namespace ReVersion.Services.SvnServer
+namespace ReVersion.Services.SvnServer.Impl
 {
     public class SubminServer : ISvnServer
     {

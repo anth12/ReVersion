@@ -98,10 +98,10 @@
     <Compile Include="Services\SvnServer\ISvnServer.cs" />
     <Compile Include="Services\SvnServer\Requests\ListRepositoriesRequest.cs" />
     <Compile Include="Services\SvnServer\Response\ListRepositoriesResponse.cs" />
-    <Compile Include="Services\SvnServer\SubminServer.cs" />
+    <Compile Include="Services\SvnServer\Impl\SubminServer.cs" />
     <Compile Include="Services\SvnServer\SvnServerCollator.cs" />
     <Compile Include="Services\SvnServer\SvnServerType.cs" />
-    <Compile Include="Services\SvnServer\SvenServer.cs" />
+    <Compile Include="Services\SvnServer\Impl\SvenServer.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
