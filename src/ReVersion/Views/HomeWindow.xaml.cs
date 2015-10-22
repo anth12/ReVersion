@@ -11,7 +11,9 @@ using ReVersion.Helpers;
 using ReVersion.Models;
 using ReVersion.Services;
 using ReVersion.Services.Settings;
-using ReVersion.Services.Subversion;
+using ReVersion.Services.SvnClient;
+using ReVersion.Services.SvnClient.Requests;
+using ReVersion.Services.SvnServer;
 
 namespace ReVersion.Views
 {
@@ -35,6 +37,13 @@ namespace ReVersion.Views
         private void HomeWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadRepositories();
+
+            var svnClientService = new SvnClientService();
+            //svnClientService.CheckoutRepository(new CheckoutRepositoryRequest
+            //{
+            //    ProjectName = "yotel_cms",
+            //    SvnServerUrl = "http://10.0.0.18/svn"
+            //});
         }
 
         private void HomeWindow_OnClosed(object sender, EventArgs e)
@@ -159,7 +168,6 @@ namespace ReVersion.Views
             var searchTerm = Model.Search.ToLower();
 
             //Apply the filtering
-
             var filteredRepositories = Model.Repositories
                 .Where(repo => repo.Name.ToLower().Contains(searchTerm))
                 .ToList();
@@ -174,7 +182,7 @@ namespace ReVersion.Views
         {
             Model.Loading = true;
 
-            var subversionServerCollator = new SubversionServerCollator();
+            var subversionServerCollator = new SvnServerCollator();
 
             var result = await subversionServerCollator.ListRepositories();
 
@@ -185,8 +193,7 @@ namespace ReVersion.Views
 
             if (result.Messages.Any())
             {
-                //TODO
-
+                NotificationHelper.ShowResult(result);
             }
         }
 

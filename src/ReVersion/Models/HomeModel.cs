@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using ReVersion.Services.Subversion.Response;
+using ReVersion.Services.SvnServer.Response;
 
 namespace ReVersion.Models
 {

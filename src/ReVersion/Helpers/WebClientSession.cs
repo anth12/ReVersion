@@ -47,6 +47,7 @@ namespace ReVersion.Helpers
 
             request.Method = "POST";
 
+            request.ContentType = "application/x-www-form-urlencoded";
             ASCIIEncoding ascii = new ASCIIEncoding();
             byte[] postBytes = ascii.GetBytes(DataToString(data));
             // add post data to request
@@ -60,9 +61,15 @@ namespace ReVersion.Helpers
         {
             var sb = new StringBuilder();
 
+            var index = 0;
             foreach (var key in data.AllKeys)
             {
-                sb.Append(string.Format("{0}={1}&", key, data[key]));
+                if (index > 0)
+                    sb.Append("&");
+
+                sb.Append(string.Format("{0}={1}", key, data[key]));
+
+                index++;
             }
 
             return sb.ToString();

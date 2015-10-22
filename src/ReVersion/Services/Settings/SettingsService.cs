@@ -13,6 +13,7 @@ namespace ReVersion.Services.Settings
         {
             Load();
 
+            //TODO attach to Servers[].PropertyChanaged
             Current.PropertyChanged += Current_PropertyChanged;
             Current.Servers.CollectionChanged += ServersOnCollectionChanged;
         }

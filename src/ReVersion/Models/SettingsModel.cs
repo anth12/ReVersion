@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using ReVersion.Helpers;
-using ReVersion.Services.Subversion;
+using ReVersion.Services.SvnServer;
 
 namespace ReVersion.Models
 {
@@ -14,8 +14,12 @@ namespace ReVersion.Models
 
         public ObservableCollection<SvnServerModel> Servers { get; set; }
 
-        private string _RootPath;
-        public string RootPath { get { return _RootPath; } set { _RootPath = value; OnPropertyChanged(); } }
+        private string _CheckoutFolder;
+        public string CheckoutFolder { get { return _CheckoutFolder; } set { _CheckoutFolder = value; OnPropertyChanged(); } }
+
+
+        private SvnNamingConvension _NamingConvension;
+        public SvnNamingConvension NamingConvension { get { return _NamingConvension; } set { _NamingConvension = value; OnPropertyChanged(); } }
     }
 
     public class SvnServerModel : BaseModel
@@ -31,8 +35,8 @@ namespace ReVersion.Models
         private string _BaseUrl;
         public string BaseUrl { get { return _BaseUrl; } set { _BaseUrl = value; OnPropertyChanged(); } }
 
-        private SubversionServerType _Type;
-        public SubversionServerType Type { get { return _Type; } set { _Type = value; OnPropertyChanged(); } }
+        private SvnServerType _Type;
+        public SvnServerType Type { get { return _Type; } set { _Type = value; OnPropertyChanged(); } }
 
         private string _Username;
         public string Username { get { return _Username; } set { _Username = value; OnPropertyChanged(); } }
@@ -59,4 +63,43 @@ namespace ReVersion.Models
             return AuthenticationHelper.Decrypt(Password);
         }
     }
+
+    public enum SvnNamingConvension
+    {
+        /// <summary>
+        /// The name of all repositories are kept 'As is'
+        /// </summary>
+        Asis,
+
+        /// <summary>
+        /// The name of all Repositories are converted to upperCamelCase
+        /// </summary>
+        UpperCamelCase,
+
+        /// <summary>
+        /// The name of all Repositories are converted to lowerCamelCase
+        /// </summary>
+        LowerCamelCase,
+
+        /// <summary>
+        /// The name of all Repositories are converted to lower-hyphen-case
+        /// </summary>
+        LowerHyphenCase,
+
+        /// <summary>
+        /// The name of all Repositories are converted to Upper-Hyphen-Case
+        /// </summary>
+        UpperHyphenCase,
+
+        /// <summary>
+        /// The name of all Repositories are converted to lower_underscore_case
+        /// </summary>
+        LowerUnderscoreCase,
+
+        /// <summary>
+        /// The name of all Repositories are converted to Upper_Underscore_Case
+        /// </summary>
+        UpperUnderscoreCase
+    }
+
 }

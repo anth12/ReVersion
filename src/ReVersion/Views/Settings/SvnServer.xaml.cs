@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ReVersion.Services.Settings;
-using ReVersion.Services.Subversion;
+using ReVersion.Services.SvnServer;
 
 namespace ReVersion.Views.Settings
 {
@@ -19,7 +19,7 @@ namespace ReVersion.Views.Settings
 
         private void SvnServer_OnLoaded(object sender, RoutedEventArgs e)
         {
-            SvnTypeDropdown.ItemsSource = Enum.GetValues(typeof(SubversionServerType)).Cast<SubversionServerType>();
+            SvnTypeDropdown.ItemsSource = Enum.GetValues(typeof(SvnServerType)).Cast<SvnServerType>();
         }
 
         private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)

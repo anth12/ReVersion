@@ -40,6 +40,10 @@
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +56,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\AuthenticationHelper.cs" />
+    <Compile Include="Helpers\CommandLineHelper.cs" />
     <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Helpers\WebClientSession.cs">
       <SubType>Component</SubType>
@@ -86,13 +93,15 @@
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Services\Result.cs" />
     <Compile Include="Services\Settings\SettingsService.cs" />
-    <Compile Include="Services\Subversion\ISubversionServer.cs" />
-    <Compile Include="Services\Subversion\Requests\ListRepositoriesRequest.cs" />
-    <Compile Include="Services\Subversion\Response\ListRepositoriesResponse.cs" />
-    <Compile Include="Services\Subversion\SubminServer.cs" />
-    <Compile Include="Services\Subversion\SubversionServerCollator.cs" />
-    <Compile Include="Services\Subversion\SubversionServerType.cs" />
-    <Compile Include="Services\Subversion\SvenServer.cs" />
+    <Compile Include="Services\SvnClient\Requests\CheckoutRepositoryRequest.cs" />
+    <Compile Include="Services\SvnClient\SvnClientService.cs" />
+    <Compile Include="Services\SvnServer\ISvnServer.cs" />
+    <Compile Include="Services\SvnServer\Requests\ListRepositoriesRequest.cs" />
+    <Compile Include="Services\SvnServer\Response\ListRepositoriesResponse.cs" />
+    <Compile Include="Services\SvnServer\SubminServer.cs" />
+    <Compile Include="Services\SvnServer\SvnServerCollator.cs" />
+    <Compile Include="Services\SvnServer\SvnServerType.cs" />
+    <Compile Include="Services\SvnServer\SvenServer.cs" />
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>

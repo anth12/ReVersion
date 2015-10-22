@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReVersion.Views"
-        xmlns:m="clr-namespace:ReVersion.Services.Subversion.Response"
+        xmlns:m="clr-namespace:ReVersion.Services.SvnServer.Response"
         xmlns:vw="clr-namespace:ReVersion.Views.Repository"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:settings="clr-namespace:ReVersion.Views.Settings"
@@ -50,7 +50,7 @@
         <controls:ProgressRing IsActive="{Binding Loading}" />
         
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
-        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
             <ItemsControl ItemsSource="{Binding FilteredRepositories}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
