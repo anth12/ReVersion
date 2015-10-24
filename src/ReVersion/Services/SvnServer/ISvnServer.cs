@@ -5,7 +5,7 @@ namespace ReVersion.Services.SvnServer
 {
     public interface ISvnServer
     {
-        bool CanHandle(SvnServerModel serverSettings);
+        SvnServerType ServerType { get; }
 
         ListRepositoriesResponse ListRepositories(SvnServerModel request);
     }

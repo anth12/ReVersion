@@ -10,10 +10,7 @@ namespace ReVersion.Services.SvnServer.Impl
 {
     public class SubminServer : ISvnServer
     {
-        public bool CanHandle(SvnServerModel serverSettings)
-        {
-            return serverSettings.Type == SvnServerType.Submin;
-        }
+        public SvnServerType ServerType { get; } = SvnServerType.Submin;
 
         public ListRepositoriesResponse ListRepositories(SvnServerModel request)
         {

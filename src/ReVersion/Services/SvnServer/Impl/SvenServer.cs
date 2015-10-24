@@ -14,10 +14,8 @@ namespace ReVersion.Services.SvnServer.Impl
 {
     public class SvenServer : ISvnServer
     {
-        public bool CanHandle(SvnServerModel serverSettings)
-        {
-            return serverSettings.Type == SvnServerType.Sven;
-        }
+        public SvnServerType ServerType { get; } = SvnServerType.Sven;
+
 
         public ListRepositoriesResponse ListRepositories(SvnServerModel request)
         {

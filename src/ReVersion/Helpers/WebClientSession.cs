@@ -16,35 +16,55 @@ namespace ReVersion.Helpers
             CookieContainer = new CookieContainer();
         }
 
-        public WebResponse Get(string address, CookieContainer cookies = null)
+        public WebResponse Get(string address)
         {
             var request = base.GetWebRequest(new Uri(address));
 
             var webRequest = request as HttpWebRequest;
             webRequest.CookieContainer = CookieContainer;
-
-            if (cookies != null)
-            {
-                CookieContainer = cookies;
-            }
-
+            
             request.Method = "GET";
 
             return request.GetResponse();
         }
 
-        public WebResponse Post(string address, NameValueCollection data = null, CookieContainer cookies = null)
+        public WebResponse Authenticate(string address, string username, string password)
         {
+            try
+            {
+                //Force the server to return a 401
+                Get(address);
+            }
+            catch (Exception)
+            {
+                //Swallow the 401
+            }
+
             var request = base.GetWebRequest(new Uri(address));
 
             var webRequest = request as HttpWebRequest;
             webRequest.CookieContainer = CookieContainer;
 
-            if (cookies != null)
-            {
-                CookieContainer = cookies;
-            }
+            request.Method = "GET";
 
+            //this.UseDefaultCredentials = true;
+            //this.Credentials = new NetworkCredential(username, password);
+            //this.Encoding = System.Text.Encoding.UTF8;
+
+            var authInfo = username + ":" + password;
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            request.Headers["Authorization"] = "Basic " + authInfo;
+        
+            return request.GetResponse();
+        }
+
+        public WebResponse Post(string address, NameValueCollection data = null)
+        {
+            var request = base.GetWebRequest(new Uri(address));
+
+            var webRequest = request as HttpWebRequest;
+            webRequest.CookieContainer = CookieContainer;
+            
             request.Method = "POST";
 
             request.ContentType = "application/x-www-form-urlencoded";

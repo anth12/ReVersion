@@ -18,12 +18,8 @@ namespace ReVersion.Models
         public string CheckoutFolder { get { return _CheckoutFolder; } set { _CheckoutFolder = value; OnPropertyChanged(); } }
 
 
-        private SvnNamingConvension _NamingConvention;
-        public SvnNamingConvension NamingConvention { get { return _NamingConvention; } set { _NamingConvention = value; OnPropertyChanged(); } }
-
-
-        private DateTime _SvnUpdateDate;
-        public DateTime SvnUpdateDate { get { return _SvnUpdateDate; } set { _SvnUpdateDate = value; OnPropertyChanged(); } }
+        private SvnNamingConvension _NamingConvension;
+        public SvnNamingConvension NamingConvension { get { return _NamingConvension; } set { _NamingConvension = value; OnPropertyChanged(); } }
     }
 
     public class SvnServerModel : BaseModel
