@@ -8,7 +8,9 @@
         xmlns:vw="clr-namespace:ReVersion.Views.Settings"
         mc:Ignorable="d"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Settings" Height="500" Width="500" Loaded="SettingsWindow_OnLoaded" GlowBrush="#666">
+        Title="Settings" Height="500" Width="500" GlowBrush="#666"
+                      Loaded="SettingsWindow_OnLoaded" 
+                      Closing="SettingsWindow_OnClosing">
     <Window.Resources>
         <DataTemplate DataType="{x:Type m:SvnServerModel}">
             <vw:SvnServer></vw:SvnServer>
@@ -19,6 +21,7 @@
     
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -39,12 +42,13 @@
             <Button x:Name="CheckoutFolder_FolderPicker" Content="..." Grid.Column="1" Click="CheckoutFolder_FolderPicker_OnClick"/>
         </Grid>
 
-        <Label Content="Naming Convension" Grid.Row="1"></Label>
-        <ComboBox x:Name="NamingConvension_ComboBox" SelectedValue="{Binding NamingConvension}" Grid.Row="1" Grid.Column="1"/>
+        <Label Content="Naming Convention" Grid.Row="1"></Label>
+        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding NamingConvention}" Grid.Row="1" Grid.Column="1"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NamingConventionDescription}" TextWrapping="Wrap" MinWidth="200"/>
         
-        
-        <Label Content="Svn Servers" Grid.Row="2"></Label>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="2" Grid.Column="1">
+        <Label Content="Svn Servers" Grid.Row="3"></Label>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="3" Grid.Column="1">
             <StackPanel Orientation="Vertical">
             <ItemsControl ItemsSource="{Binding Servers}">
                 <ItemsControl.ItemsPanel>

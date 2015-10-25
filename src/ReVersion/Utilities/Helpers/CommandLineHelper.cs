@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Diagnostics;
-using System.Threading;
 using System.Security.Permissions;
+using System.Threading;
 
-namespace ReVersion.Helpers
+namespace ReVersion.Utilities.Helpers
 {
     [SecurityPermission(SecurityAction.LinkDemand,
                                 Unrestricted = true)]

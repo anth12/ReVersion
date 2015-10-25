@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using ReVersion.Helpers;
+using System.ComponentModel;
+using Newtonsoft.Json;
 using ReVersion.Services.SvnServer;
+using ReVersion.Utilities.Extensions;
+using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Models
 {
@@ -18,8 +21,12 @@ namespace ReVersion.Models
         public string CheckoutFolder { get { return _CheckoutFolder; } set { _CheckoutFolder = value; OnPropertyChanged(); } }
 
 
-        private SvnNamingConvension _NamingConvension;
-        public SvnNamingConvension NamingConvension { get { return _NamingConvension; } set { _NamingConvension = value; OnPropertyChanged(); } }
+        private SvnNamingConvention _NamingConvention;
+        public SvnNamingConvention NamingConvention { get { return _NamingConvention; } set { _NamingConvention = value; OnPropertyChanged(); OnPropertyChanged(nameof(NamingConventionDescription)); } }
+
+        [JsonIgnore]
+        public string NamingConventionDescription => NamingConvention.GetAttributeOfType<DescriptionAttribute>().Description;
+        
     }
 
     public class SvnServerModel : BaseModel
@@ -46,6 +53,9 @@ namespace ReVersion.Models
         protected byte[] Key { get; set; }
 
 
+        private DateTime _RepoUpdateDate;
+        public DateTime RepoUpdateDate { get { return _RepoUpdateDate; } set { _RepoUpdateDate = value; OnPropertyChanged(); } }
+
         static string GetString(byte[] bytes)
         {
             char[] chars = new char[bytes.Length / sizeof(char)];
@@ -64,41 +74,27 @@ namespace ReVersion.Models
         }
     }
 
-    public enum SvnNamingConvension
+    public enum SvnNamingConvention
     {
-        /// <summary>
-        /// The name of all repositories are kept 'As is'
-        /// </summary>
-        Asis,
+        [Description("The name of all repositories is persevered in the Original format")]
+        PreserveOriginal,
 
-        /// <summary>
-        /// The name of all Repositories are converted to upperCamelCase
-        /// </summary>
+        [Description("The name of all Repositories are converted to upperCamelCase")]
         UpperCamelCase,
-
-        /// <summary>
-        /// The name of all Repositories are converted to lowerCamelCase
-        /// </summary>
+        
+        [Description("The name of all Repositories are converted to lowerCamelCase")]
         LowerCamelCase,
-
-        /// <summary>
-        /// The name of all Repositories are converted to lower-hyphen-case
-        /// </summary>
+        
+        [Description("The name of all Repositories are converted to lower-hyphen-case")]
         LowerHyphenCase,
-
-        /// <summary>
-        /// The name of all Repositories are converted to Upper-Hyphen-Case
-        /// </summary>
+        
+        [Description("The name of all Repositories are converted to Upper-Hyphen-Case")]
         UpperHyphenCase,
-
-        /// <summary>
-        /// The name of all Repositories are converted to lower_underscore_case
-        /// </summary>
+        
+        [Description("The name of all Repositories are converted to lower_underscore_case")]
         LowerUnderscoreCase,
-
-        /// <summary>
-        /// The name of all Repositories are converted to Upper_Underscore_Case
-        /// </summary>
+        
+        [Description("The name of all Repositories are converted to Upper_Underscore_Case")]
         UpperUnderscoreCase
     }
 

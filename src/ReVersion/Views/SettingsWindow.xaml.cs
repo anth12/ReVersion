@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -20,7 +21,7 @@ namespace ReVersion.Views
         
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            NamingConvension_ComboBox.ItemsSource = Enum.GetValues(typeof(SvnNamingConvension)).Cast<SvnNamingConvension>();
+            NamingConvention_ComboBox.ItemsSource = Enum.GetValues(typeof(SvnNamingConvention)).Cast<SvnNamingConvention>();
             this.DataContext = SettingsService.Current;
         }
 
@@ -43,6 +44,11 @@ namespace ReVersion.Views
                 ((SettingsModel)DataContext).CheckoutFolder = folderPicker.SelectedPath;
             }
 
+        }
+
+        private void SettingsWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            SettingsService.Save();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using ReVersion.Helpers;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
 

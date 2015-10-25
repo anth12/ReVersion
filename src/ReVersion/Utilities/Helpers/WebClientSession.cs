@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace ReVersion.Helpers
+namespace ReVersion.Utilities.Helpers
 {
     public class WebClientSession : WebClient
     {

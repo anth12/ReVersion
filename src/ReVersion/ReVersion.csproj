@@ -83,10 +83,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helpers\AuthenticationHelper.cs" />
-    <Compile Include="Helpers\CommandLineHelper.cs" />
-    <Compile Include="Helpers\NotificationHelper.cs" />
-    <Compile Include="Helpers\WebClientSession.cs">
+    <Compile Include="Utilities\Helpers\AppDataHelper.cs" />
+    <Compile Include="Utilities\Helpers\AuthenticationHelper.cs" />
+    <Compile Include="Utilities\Helpers\CommandLineHelper.cs" />
+    <Compile Include="Utilities\Helpers\NotificationHelper.cs" />
+    <Compile Include="Utilities\Helpers\WebClientSession.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Models\BaseModel.cs" />
@@ -100,10 +101,11 @@
     <Compile Include="Services\SvnServer\Response\ListRepositoriesResponse.cs" />
     <Compile Include="Services\SvnServer\Impl\SubminServer.cs" />
     <Compile Include="Services\SvnServer\Impl\VisualSvnServer.cs" />
-    <Compile Include="Services\SvnServer\SvnServerCollator.cs" />
+    <Compile Include="Services\SvnServer\SvnServerService.cs" />
     <Compile Include="Services\SvnServer\SvnServerType.cs" />
     <Compile Include="Services\SvnServer\Impl\SvenServer.cs" />
     <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
     </Compile>

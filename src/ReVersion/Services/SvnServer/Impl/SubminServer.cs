@@ -2,9 +2,9 @@
 using System.Collections.Specialized;
 using System.Linq;
 using System.Xml.Serialization;
-using ReVersion.Helpers;
 using ReVersion.Models;
 using ReVersion.Services.SvnServer.Response;
+using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer.Impl
 {

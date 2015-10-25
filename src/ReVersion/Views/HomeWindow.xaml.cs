@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using ReVersion.Helpers;
 using ReVersion.Models;
 using ReVersion.Services;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
-using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Services.SvnServer;
+using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Views
 {
@@ -112,7 +108,7 @@ namespace ReVersion.Views
 
         private void RefreshRepoList_OnClick(object sender, RoutedEventArgs e)
         {
-            LoadRepositories();
+            LoadRepositories(true);
         }
 
         #endregion
@@ -178,13 +174,13 @@ namespace ReVersion.Views
 
         }
 
-        private async void LoadRepositories()
+        private async void LoadRepositories(bool forceReload = false)
         {
             Model.Loading = true;
 
-            var subversionServerCollator = new SvnServerCollator();
+            var subversionServerCollator = new SvnServerService();
 
-            var result = await subversionServerCollator.ListRepositories();
+            var result = await subversionServerCollator.ListRepositories(forceReload);
 
             Model.Repositories.Clear();
             result.Repositories.ForEach(repo=> Model.Repositories.Add(repo));
