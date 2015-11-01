@@ -1,5 +1,4 @@
-﻿
-namespace ReVersion.Services.SvnClient
+﻿namespace ReVersion.Services.SvnClient
 {
     internal class SvnErrorHandling
     {

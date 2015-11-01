@@ -1,5 +1,4 @@
-﻿
-namespace ReVersion.Services.SvnServer
+﻿namespace ReVersion.Services.SvnServer
 {
     public enum SvnServerType
     {

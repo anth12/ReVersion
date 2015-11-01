@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
@@ -14,12 +15,10 @@ using ReVersion.Utilities.Helpers;
 namespace ReVersion.Views
 {
     /// <summary>
-    /// Interaction logic for HomeWindow.xaml
+    ///     Interaction logic for HomeWindow.xaml
     /// </summary>
     public partial class HomeWindow : MetroWindow
     {
-        protected HomeModel Model { get; set; } = new HomeModel();
-
         public HomeWindow()
         {
             InitializeComponent();
@@ -27,6 +26,8 @@ namespace ReVersion.Views
 
             DataContext = Model;
         }
+
+        protected HomeModel Model { get; set; } = new HomeModel();
 
         #region Window Open/Close events
 
@@ -114,17 +115,16 @@ namespace ReVersion.Views
         #endregion
 
         #region Help
-        
+
         private void About_OnClick(object sender, RoutedEventArgs e)
         {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             MessageBox.Show($"Version: {fvi.FileVersion}");
         }
 
         private void Help_OnClick(object sender, RoutedEventArgs e)
         {
-
             NotificationHelper.ShowResult(Result.Success("test message goes herre"));
 
             NotificationHelper.ShowResult(Result.Error("test message goes herre"));
@@ -136,25 +136,21 @@ namespace ReVersion.Views
 
         #endregion
 
-
         #region Private helper methods
 
         private void ConfigureSearch()
         {
-            Model.Repositories.CollectionChanged += (sender, args) =>
-            {
-                ApplyFilter();
-            };
+            Model.Repositories.CollectionChanged += (sender, args) => { ApplyFilter(); };
 
             Model.PropertyChanged += (sender, args) =>
             {
-                if(!Model.Loading && args.PropertyName == nameof(Model.Search) || args.PropertyName == nameof(Model.Repositories))
+                if (!Model.Loading && args.PropertyName == nameof(Model.Search) ||
+                    args.PropertyName == nameof(Model.Repositories))
                 {
                     ApplyFilter();
-                    
+
                     Model.OnPropertyChanged(nameof(Model.CountSummary));
                 }
-
             };
         }
 
@@ -168,10 +164,9 @@ namespace ReVersion.Views
                 .Where(repo => repo.Name.ToLower().Contains(searchTerm))
                 .ToList();
 
-                
+
             Model.FilteredRepositories.Clear();
             filteredRepositories.ForEach(Model.FilteredRepositories.Add);
-
         }
 
         private async void LoadRepositories(bool forceReload = false)
@@ -183,7 +178,7 @@ namespace ReVersion.Views
             var result = await subversionServerCollator.ListRepositories(forceReload);
 
             Model.Repositories.Clear();
-            result.Repositories.ForEach(repo=> Model.Repositories.Add(repo));
+            result.Repositories.ForEach(repo => Model.Repositories.Add(repo));
 
             Model.Loading = false;
 
@@ -194,6 +189,5 @@ namespace ReVersion.Views
         }
 
         #endregion
-
     }
 }

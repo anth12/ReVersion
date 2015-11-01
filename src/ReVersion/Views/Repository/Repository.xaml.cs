@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
@@ -8,7 +9,7 @@ using ReVersion.Services.SvnServer.Response;
 namespace ReVersion.Views.Repository
 {
     /// <summary>
-    /// Interaction logic for Repository.xaml
+    ///     Interaction logic for Repository.xaml
     /// </summary>
     public partial class Repository : UserControl
     {
@@ -17,7 +18,7 @@ namespace ReVersion.Views.Repository
             InitializeComponent();
         }
 
-        private void Checkout_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Checkout_Click(object sender, RoutedEventArgs e)
         {
             var data = (RepositoryResult) DataContext;
 

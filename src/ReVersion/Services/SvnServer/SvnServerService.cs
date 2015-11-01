@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ReVersion.Services.Settings;
@@ -11,6 +10,8 @@ namespace ReVersion.Services.SvnServer
 {
     public class SvnServerService
     {
+        private readonly List<ISvnServer> subversionServers;
+
         public SvnServerService()
         {
             var iSvnServerType = typeof (ISvnServer);
@@ -22,10 +23,7 @@ namespace ReVersion.Services.SvnServer
                 .Select(Activator.CreateInstance)
                 .Cast<ISvnServer>()
                 .ToList();
-            
         }
-
-        private readonly List<ISvnServer> subversionServers;
 
         public async Task<ListRepositoriesResponse> ListRepositories(bool forceReload = false)
         {
@@ -35,24 +33,23 @@ namespace ReVersion.Services.SvnServer
         private ListRepositoriesResponse LoadRepositories(bool forceReload)
         {
             var result = new ListRepositoriesResponse();
-            
+
             foreach (var svnServerSettings in SettingsService.Current.Servers)
             {
                 if (!forceReload && svnServerSettings.RepoUpdateDate > DateTime.Now.AddDays(-7))
                 {
                     //Attempt to load the data
-                    var repoList = AppDataHelper.LoadJson<List<RepositoryResult>>(svnServerSettings.Id.ToString(), "cache");
+                    var repoList = AppDataHelper.LoadJson<List<RepositoryResult>>(svnServerSettings.Id.ToString(),
+                        "cache");
                     if (repoList != null && repoList.Any())
                     {
                         result.Repositories.AddRange(repoList);
                         continue;
                     }
-
                 }
 
                 foreach (var subversionServer in subversionServers)
                 {
-                    
                     if (subversionServer.ServerType == svnServerSettings.Type)
                     {
                         try
@@ -72,7 +69,6 @@ namespace ReVersion.Services.SvnServer
                                 svnServerSettings.RepoUpdateDate = DateTime.Now;
                                 SettingsService.Save();
                             }
-
                         }
                         catch (Exception ex)
                         {
@@ -84,7 +80,6 @@ namespace ReVersion.Services.SvnServer
                         }
                     }
                 }
-
             }
 
             //Order the repo's

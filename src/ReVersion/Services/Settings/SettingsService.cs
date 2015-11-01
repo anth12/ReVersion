@@ -12,7 +12,7 @@ namespace ReVersion.Services.Settings
         {
             Load();
         }
-        
+
         public static SettingsModel Current { get; set; }
 
         public static Result Import(string importPath)
@@ -53,6 +53,5 @@ namespace ReVersion.Services.Settings
         {
             AppDataHelper.SaveJson("settings", Current);
         }
-        
     }
 }

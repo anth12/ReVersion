@@ -6,11 +6,9 @@ using System.Threading;
 namespace ReVersion.Utilities.Helpers
 {
     [SecurityPermission(SecurityAction.LinkDemand,
-                                Unrestricted = true)]
+        Unrestricted = true)]
     public static class CommandLineHelper
     {
-        private delegate string StringDelegate();
-
         public static string Run(string fileName, string arguments, out string errorMessage)
         {
             errorMessage = "";
@@ -58,7 +56,7 @@ namespace ReVersion.Utilities.Helpers
             }
             else
             {
-                WaitHandle[] arWaitHandles = new WaitHandle[2];
+                var arWaitHandles = new WaitHandle[2];
                 arWaitHandles[0] = outAR.AsyncWaitHandle;
                 arWaitHandles[1] = errAR.AsyncWaitHandle;
 
@@ -103,5 +101,7 @@ namespace ReVersion.Utilities.Helpers
         {
             return Run(fileName, "");
         }
+
+        private delegate string StringDelegate();
     }
 }

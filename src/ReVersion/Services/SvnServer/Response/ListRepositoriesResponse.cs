@@ -6,7 +6,6 @@ namespace ReVersion.Services.SvnServer.Response
     public class ListRepositoriesResponse : Result
     {
         public List<RepositoryResult> Repositories { get; set; } = new List<RepositoryResult>();
-        
     }
 
     public class RepositoryResult

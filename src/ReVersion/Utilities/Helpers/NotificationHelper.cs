@@ -60,8 +60,6 @@ namespace ReVersion.Utilities.Helpers
             //toast.Failed += ToastFailed;
 
             ToastNotificationManager.CreateToastNotifier(APP_ID).Show(toast);
-            
         }
-
     }
 }

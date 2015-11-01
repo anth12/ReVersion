@@ -10,7 +10,7 @@ using ReVersion.Services.Settings;
 namespace ReVersion.Views
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    ///     Interaction logic for Settings.xaml
     /// </summary>
     public partial class SettingsWindow : MetroWindow
     {
@@ -18,11 +18,12 @@ namespace ReVersion.Views
         {
             InitializeComponent();
         }
-        
+
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            NamingConvention_ComboBox.ItemsSource = Enum.GetValues(typeof(SvnNamingConvention)).Cast<SvnNamingConvention>();
-            this.DataContext = SettingsService.Current;
+            NamingConvention_ComboBox.ItemsSource =
+                Enum.GetValues(typeof (SvnNamingConvention)).Cast<SvnNamingConvention>();
+            DataContext = SettingsService.Current;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -41,9 +42,8 @@ namespace ReVersion.Views
 
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                ((SettingsModel)DataContext).CheckoutFolder = folderPicker.SelectedPath;
+                ((SettingsModel) DataContext).CheckoutFolder = folderPicker.SelectedPath;
             }
-
         }
 
         private void SettingsWindow_OnClosing(object sender, CancelEventArgs e)

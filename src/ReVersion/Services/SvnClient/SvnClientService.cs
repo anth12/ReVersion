@@ -14,7 +14,7 @@ namespace ReVersion.Services.SvnClient
 
             if (!projectFolder.EndsWith("\\"))
                 projectFolder += "\\";
-            
+
             projectFolder += request.ProjectName.ToConventionCase(SettingsService.Current.NamingConvention) + "\\trunk";
             //TODO make trunk optional
 
@@ -25,10 +25,10 @@ namespace ReVersion.Services.SvnClient
 
             request.SvnServerUrl = request.SvnServerUrl.RemoveTrailing('/');
 
-            var bat = 
+            var bat =
                 $"svn checkout {request.SvnServerUrl}/trunk \"{projectFolder}\" " +
-                    $"--username {request.SvnUsername} " +
-                    $"--password {request.SvnPassword}";
+                $"--username {request.SvnUsername} " +
+                $"--password {request.SvnPassword}";
             AppDataHelper.WriteFile("checkout", "bat", bat);
             var filePath = AppDataHelper.FilePath("checkout", "bat");
 
@@ -44,6 +44,5 @@ namespace ReVersion.Services.SvnClient
                 NotificationHelper.Show($"{request.ProjectName} checked out");
             }
         }
-        
     }
 }

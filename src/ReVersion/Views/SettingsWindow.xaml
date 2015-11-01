@@ -1,65 +1,68 @@
 ﻿<Controls:MetroWindow x:Class="ReVersion.Views.SettingsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReVersion.Views"
-        xmlns:m="clr-namespace:ReVersion.Models"
-        xmlns:vw="clr-namespace:ReVersion.Views.Settings"
-        mc:Ignorable="d"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Settings" Height="500" Width="500" GlowBrush="#666"
-                      Loaded="SettingsWindow_OnLoaded" 
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:ReVersion.Views"
+                      xmlns:m="clr-namespace:ReVersion.Models"
+                      xmlns:vw="clr-namespace:ReVersion.Views.Settings"
+                      mc:Ignorable="d"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      Title="Settings" Height="500" Width="500" GlowBrush="#666"
+                      Loaded="SettingsWindow_OnLoaded"
                       Closing="SettingsWindow_OnClosing">
     <Window.Resources>
         <DataTemplate DataType="{x:Type m:SvnServerModel}">
-            <vw:SvnServer></vw:SvnServer>
+            <vw:SvnServer />
         </DataTemplate>
     </Window.Resources>
-    
 
-    
+
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        
-        <Label Content="Checkout Folder"></Label>
+
+        <Label Content="Checkout Folder" />
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="CheckoutFolder_Textbox" Text="{Binding CheckoutFolder}"/>
-            <Button x:Name="CheckoutFolder_FolderPicker" Content="..." Grid.Column="1" Click="CheckoutFolder_FolderPicker_OnClick"/>
+            <TextBox x:Name="CheckoutFolder_Textbox" Text="{Binding CheckoutFolder}" />
+            <Button x:Name="CheckoutFolder_FolderPicker" Content="..." Grid.Column="1"
+                    Click="CheckoutFolder_FolderPicker_OnClick" />
         </Grid>
 
-        <Label Content="Naming Convention" Grid.Row="1"></Label>
-        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding NamingConvention}" Grid.Row="1" Grid.Column="1"/>
+        <Label Content="Naming Convention" Grid.Row="1" />
+        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding NamingConvention}" Grid.Row="1"
+                  Grid.Column="1" />
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NamingConventionDescription}" TextWrapping="Wrap" MinWidth="200"/>
-        
-        <Label Content="Svn Servers" Grid.Row="3"></Label>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="3" Grid.Column="1">
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NamingConventionDescription}" TextWrapping="Wrap"
+                   MinWidth="200" />
+
+        <Label Content="Svn Servers" Grid.Row="3" />
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="3"
+                      Grid.Column="1">
             <StackPanel Orientation="Vertical">
-            <ItemsControl ItemsSource="{Binding Servers}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-            <Button Content="Add Server" Click="ButtonBase_OnClick" Grid.Column="1"></Button>
-        </StackPanel>
+                <ItemsControl ItemsSource="{Binding Servers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <Button Content="Add Server" Click="ButtonBase_OnClick" Grid.Column="1" />
+            </StackPanel>
         </ScrollViewer>
-        
+
     </Grid>
 </Controls:MetroWindow>

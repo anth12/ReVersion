@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ReVersion.Services.SvnServer.Requests
+﻿namespace ReVersion.Services.SvnServer.Requests
 {
     public class ListRepositoriesRequest
     {

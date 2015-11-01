@@ -14,8 +14,8 @@ namespace ReVersion.Services.SvnServer.Impl
 
         public ListRepositoriesResponse ListRepositories(SvnServerModel request)
         {
-            var result = new ListRepositoriesResponse { Status = true };
-            
+            var result = new ListRepositoriesResponse {Status = true};
+
             //Login
             //svn url = requet.Url + "svn/";
 
@@ -44,8 +44,8 @@ namespace ReVersion.Services.SvnServer.Impl
                     return result;
                 }
 
-                var serializer = new XmlSerializer(typeof(Response));
-                var response = (Response)serializer.Deserialize(repoListResponse.GetResponseStream());
+                var serializer = new XmlSerializer(typeof (Response));
+                var response = (Response) serializer.Deserialize(repoListResponse.GetResponseStream());
 
                 result.Repositories.AddRange(response.Command.Repositories.Repository.Select(r => new RepositoryResult
                 {
@@ -98,6 +98,5 @@ namespace ReVersion.Services.SvnServer.Impl
         }
 
         #endregion
-
     }
 }

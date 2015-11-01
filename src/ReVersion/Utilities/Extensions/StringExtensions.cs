@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ReVersion.Models;
 
 namespace ReVersion.Utilities.Extensions
 {
     public static class StringExtensions
     {
+        #region Splitting
+
+        public static string[] Split(this string text, string splitTerm)
+        {
+            return text.Split(new[] {splitTerm}, StringSplitOptions.None);
+        }
+
+        #endregion
+
         #region String formatting
 
         public static string ToConventionCase(this string value, SvnNamingConvention convention)
@@ -38,7 +45,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Capitalises the first letter of a string
+        ///     Capitalises the first letter of a string
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -51,7 +58,8 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Convert string to Camel hump format e.g. 'Some string here' => 'someStringHere' || 'Some-String-here' => 'someStringHere'
+        ///     Convert string to Camel hump format e.g. 'Some string here' => 'someStringHere' || 'Some-String-here' =>
+        ///     'someStringHere'
         /// </summary>
         /// <param name="str">Text to Camel hump format</param>
         /// <returns>Camel hump formatted string</returns>
@@ -66,7 +74,8 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Convert string to Pascal format e.g. 'Some string here' => 'SomeStringHere' || 'Some-String-here' => 'SomeStringHere'
+        ///     Convert string to Pascal format e.g. 'Some string here' => 'SomeStringHere' || 'Some-String-here' =>
+        ///     'SomeStringHere'
         /// </summary>
         /// <param name="str">Text to Pascal format</param>
         /// <returns>Pascal formatted string</returns>
@@ -79,7 +88,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Formats a string to a generic hyphen case e.g. "Some Random_Text" => "some-random-text"
+        ///     Formats a string to a generic hyphen case e.g. "Some Random_Text" => "some-random-text"
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -97,7 +106,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Formats a string to a generic hyphen case e.g. "Some Random-Text" => "some_random_text"
+        ///     Formats a string to a generic hyphen case e.g. "Some Random-Text" => "some_random_text"
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -115,7 +124,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Proxy to the standard `string.Format`
+        ///     Proxy to the standard `string.Format`
         /// </summary>
         /// <param name="format">string format</param>
         /// <param name="args">format parameters</param>
@@ -127,19 +136,10 @@ namespace ReVersion.Utilities.Extensions
 
         #endregion
 
-        #region Splitting
-
-        public static string[] Split(this string text, string splitTerm)
-        {
-            return text.Split(new[] { splitTerm }, StringSplitOptions.None);
-        }
-
-        #endregion
-
         #region Remove Starting/ending text
 
         /// <summary>
-        /// Remove Character from the start of a string
+        ///     Remove Character from the start of a string
         /// </summary>
         /// <param name="unwantedChar">string to remove from the start of the string (if present)</param>
         /// <returns>Text with starting term removed</returns>
@@ -149,7 +149,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Remove string from the start of a string
+        ///     Remove string from the start of a string
         /// </summary>
         /// <param name="unwantedString">string to remove from the start of the string (if present)</param>
         /// <returns>Text with starting term removed</returns>
@@ -162,7 +162,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Remove Character from the end of a string
+        ///     Remove Character from the end of a string
         /// </summary>
         /// <param name="unwantedChar">string to remove from the start of the string (if present)</param>
         /// <returns>Text with ending term removed</returns>
@@ -172,7 +172,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Remove string from the end of a string
+        ///     Remove string from the end of a string
         /// </summary>
         /// <param name="unwantedString">string to remove from the start of the string (if present)</param>
         /// <returns>Text with ending term removed</returns>
@@ -189,7 +189,7 @@ namespace ReVersion.Utilities.Extensions
         #region Ensure Starts/Ends with
 
         /// <summary>
-        /// Ensures the source string starts with the 'startingChar' parameter
+        ///     Ensures the source string starts with the 'startingChar' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'startingChar' parameter is prepended to</param>
         /// <param name="startingChar">string to ensure is prepended to the source</param>
@@ -200,7 +200,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string starts with the 'startingString' parameter
+        ///     Ensures the source string starts with the 'startingString' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'startingString' parameter is prepended to</param>
         /// <param name="startingString">string to ensure is prepended to the source</param>
@@ -216,7 +216,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string ends with the 'endingChar' parameter
+        ///     Ensures the source string ends with the 'endingChar' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'endingChar' parameter is appended to</param>
         /// <param name="endingChar">string to ensure is appended to the source</param>
@@ -227,7 +227,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string ends with the 'endingString' parameter
+        ///     Ensures the source string ends with the 'endingString' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'endingString' parameter is appended to</param>
         /// <param name="endingString">string to ensure is appended to the source</param>
@@ -245,7 +245,7 @@ namespace ReVersion.Utilities.Extensions
         #region Not Start/Ending with
 
         /// <summary>
-        /// Ensures the source string does not start with the 'startingChar' parameter
+        ///     Ensures the source string does not start with the 'startingChar' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'startingChar' parameter does not start with</param>
         /// <param name="startingChar">string to ensure the source does not start with</param>
@@ -256,7 +256,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string does not start with the 'startingString' parameter
+        ///     Ensures the source string does not start with the 'startingString' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'startingString' parameter does not start with</param>
         /// <param name="startingString">string to ensure the source does not start with</param>
@@ -272,7 +272,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string does not end with the 'endingChar' parameter
+        ///     Ensures the source string does not end with the 'endingChar' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'endingChar' parameter does not end with</param>
         /// <param name="endingChar">string to ensure the source does not end with</param>
@@ -283,7 +283,7 @@ namespace ReVersion.Utilities.Extensions
         }
 
         /// <summary>
-        /// Ensures the source string does not end with the 'endingString' parameter
+        ///     Ensures the source string does not end with the 'endingString' parameter
         /// </summary>
         /// <param name="source">String to ensure the 'endingString' parameter does not end with</param>
         /// <param name="endingString">string to ensure the source does not end with</param>
@@ -326,6 +326,7 @@ namespace ReVersion.Utilities.Extensions
                 return word.ToUpper();
             return word.Substring(0, 1).ToUpper() + word.Substring(1, word.Length - 1).ToLower();
         }
+
         private static List<string> CaseConvertSplitter(string source)
         {
             //ignore apostrophes
@@ -338,13 +339,12 @@ namespace ReVersion.Utilities.Extensions
             var separatedString = splitRegex.Replace(source, " $0");
 
             return replaceRegex.Replace(separatedString, " ")
-                    .Split(' ')
-                    .Select(x => x.Trim().ToLower())
-                    .Where(x => !string.IsNullOrWhiteSpace(x))
-                    .ToList();
+                .Split(' ')
+                .Select(x => x.Trim().ToLower())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .ToList();
         }
 
         #endregion
-
     }
 }

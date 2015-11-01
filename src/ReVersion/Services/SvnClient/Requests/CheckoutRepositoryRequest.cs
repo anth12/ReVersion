@@ -1,6 +1,4 @@
-﻿
-
-namespace ReVersion.Services.SvnClient.Requests
+﻿namespace ReVersion.Services.SvnClient.Requests
 {
     public class CheckoutRepositoryRequest
     {

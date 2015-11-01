@@ -16,10 +16,9 @@ namespace ReVersion.Services.SvnServer.Impl
     {
         public SvnServerType ServerType { get; } = SvnServerType.Sven;
 
-
         public ListRepositoriesResponse ListRepositories(SvnServerModel request)
         {
-            var result = new ListRepositoriesResponse { Status = true };
+            var result = new ListRepositoriesResponse {Status = true};
 
             //Login
 
@@ -42,7 +41,8 @@ namespace ReVersion.Services.SvnServer.Impl
                 wb.Post(request.BaseUrl + "/ubersvn/views/platform/shared/welcome.jsf", loginData);
 
                 //Load the Repo browser to get a view state
-                var repoBrowserResponse = wb.Get(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf");
+                var repoBrowserResponse =
+                    wb.Get(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf");
                 viewState = GetResponseViewState(repoBrowserResponse);
 
                 var repoListData = new NameValueCollection
@@ -60,10 +60,11 @@ namespace ReVersion.Services.SvnServer.Impl
                     ["repoTableId_paging"] = "true",
                     ["repoTableId_first"] = "0",
                     ["repoTableId_rows"] = "150",
-                    ["repoTableId_page"] = "2",
+                    ["repoTableId_page"] = "2"
                 };
 
-                var repoListResponse = wb.Post(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf", repoListData);
+                var repoListResponse =
+                    wb.Post(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf", repoListData);
 
                 if (repoListResponse == null)
                 {
@@ -85,7 +86,6 @@ namespace ReVersion.Services.SvnServer.Impl
                         Url = repo.ToString()
                     });
                 }
-               
             }
 
             return result;
@@ -100,8 +100,8 @@ namespace ReVersion.Services.SvnServer.Impl
 
             var viewState =
                 responseDoc.DocumentNode.SelectNodes("//input[@name=\"javax.faces.ViewState\"]")
-                .First()
-                .Attributes["value"].Value;
+                    .First()
+                    .Attributes["value"].Value;
 
             return HttpUtility.UrlEncode(viewState);
         }

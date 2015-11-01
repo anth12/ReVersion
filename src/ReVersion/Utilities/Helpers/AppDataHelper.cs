@@ -57,7 +57,7 @@ namespace ReVersion.Utilities.Helpers
             if (directory.IsNotBlank())
             {
                 appDataPath = $"{appDataPath}\\{directory}";
-                if (!Directory.Exists(appDataPath)) 
+                if (!Directory.Exists(appDataPath))
                 {
                     Directory.CreateDirectory(appDataPath);
                 }
