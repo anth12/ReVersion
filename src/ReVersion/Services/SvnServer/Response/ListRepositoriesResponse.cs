@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ReVersion.Services.SvnServer.Response
 {
@@ -10,6 +11,7 @@ namespace ReVersion.Services.SvnServer.Response
 
     public class RepositoryResult
     {
+        public Guid SvnServerId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
     }

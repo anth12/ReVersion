@@ -80,6 +80,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 {
                     result.Repositories.Add(new RepositoryResult
                     {
+                        SvnServerId = request.Id,
                         Name = repo.ToString().Split('/').Last(),
                         Url = repo.ToString()
                     });

@@ -49,6 +49,7 @@ namespace ReVersion.Services.SvnServer.Impl
 
                 result.Repositories.AddRange(response.Command.Repositories.Repository.Select(r => new RepositoryResult
                 {
+                    SvnServerId = request.Id,
                     Name = r.Name,
                     Url = request.BaseUrl + "/svn/" + r.Name
                 }));

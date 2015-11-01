@@ -37,6 +37,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 {
                     result.Repositories.Add(new RepositoryResult
                     {
+                        SvnServerId = request.Id,
                         Name = repoNode.Name,
                         Url = $"{request.BaseUrl}/{repoNode.Href}"
                     });

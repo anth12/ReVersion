@@ -14,7 +14,7 @@ namespace ReVersion.Utilities.Helpers
         public static string Run(string fileName, string arguments, out string errorMessage)
         {
             errorMessage = "";
-            Process cmdLineProcess = new Process();
+            var cmdLineProcess = new Process();
             using (cmdLineProcess)
             {
                 cmdLineProcess.StartInfo.FileName = fileName;
@@ -26,32 +26,24 @@ namespace ReVersion.Utilities.Helpers
 
                 if (cmdLineProcess.Start())
                 {
-                    return ReadProcessOutput(cmdLineProcess,
-                           ref errorMessage, fileName);
+                    return ReadProcessOutput(cmdLineProcess, ref errorMessage, fileName);
                 }
-                else
-                {
-                    throw new Exception(String.Format(
-                        "Could not start command line process: {0}",
-                        fileName));
-                    /* Note: arguments aren't also shown in the 
+
+                throw new Exception($"Could not start command line process: {fileName}");
+                /* Note: arguments aren't also shown in the 
                      * exception as they might contain privileged 
                      * information (such as passwords).
                      */
-                }
             }
         }
 
         private static string ReadProcessOutput(Process cmdLineProcess, ref string errorMessage, string fileName)
         {
-            StringDelegate outputStreamAsyncReader
-               = new StringDelegate(cmdLineProcess.StandardOutput.ReadToEnd);
-            StringDelegate errorStreamAsyncReader
-               = new StringDelegate(cmdLineProcess.StandardError.ReadToEnd);
+            StringDelegate outputStreamAsyncReader = cmdLineProcess.StandardOutput.ReadToEnd;
+            StringDelegate errorStreamAsyncReader = cmdLineProcess.StandardError.ReadToEnd;
 
-            IAsyncResult outAR
-                = outputStreamAsyncReader.BeginInvoke(null, null);
-            IAsyncResult errAR = errorStreamAsyncReader.BeginInvoke(null, null);
+            var outAR = outputStreamAsyncReader.BeginInvoke(null, null);
+            var errAR = errorStreamAsyncReader.BeginInvoke(null, null);
 
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
             {
@@ -72,8 +64,7 @@ namespace ReVersion.Utilities.Helpers
 
                 if (!WaitHandle.WaitAll(arWaitHandles))
                 {
-                    throw new Exception(
-                        String.Format("Command line aborted: {0}", fileName));
+                    throw new Exception($"Command line aborted: {fileName}");
                     /* Note: arguments aren't also shown in the 
                      * exception as they might contain privileged 
                      * information (such as passwords).
@@ -81,7 +72,7 @@ namespace ReVersion.Utilities.Helpers
                 }
             }
 
-            string results = outputStreamAsyncReader.EndInvoke(outAR);
+            var results = outputStreamAsyncReader.EndInvoke(outAR);
             errorMessage = errorStreamAsyncReader.EndInvoke(errAR);
 
             /* At this point the process should surely have exited,
@@ -98,10 +89,9 @@ namespace ReVersion.Utilities.Helpers
 
         public static string Run(string fileName, string arguments)
         {
-            string result;
-            string errorMsg = String.Empty;
+            string errorMsg;
 
-            result = Run(fileName, arguments, out errorMsg);
+            var result = Run(fileName, arguments, out errorMsg);
 
             if (errorMsg.Length > 0)
                 throw new Exception(errorMsg);

@@ -41,7 +41,7 @@ namespace ReVersion.Services.SvnServer
                 if (!forceReload && svnServerSettings.RepoUpdateDate > DateTime.Now.AddDays(-7))
                 {
                     //Attempt to load the data
-                    var repoList = AppDataHelper.LoadJson<List<RepositoryResult>>(svnServerSettings.Id.ToString());
+                    var repoList = AppDataHelper.LoadJson<List<RepositoryResult>>(svnServerSettings.Id.ToString(), "cache");
                     if (repoList != null && repoList.Any())
                     {
                         result.Repositories.AddRange(repoList);
@@ -68,7 +68,7 @@ namespace ReVersion.Services.SvnServer
                                 result.Repositories.AddRange(response.Repositories);
 
                                 //Save the results
-                                AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories);
+                                AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories, "cache");
                                 svnServerSettings.RepoUpdateDate = DateTime.Now;
                                 SettingsService.Save();
                             }
@@ -77,6 +77,10 @@ namespace ReVersion.Services.SvnServer
                         catch (Exception ex)
                         {
                             result.Messages.Add(ex.Message);
+
+#if DEBUG
+                            //throw ex;
+#endif
                         }
                     }
                 }

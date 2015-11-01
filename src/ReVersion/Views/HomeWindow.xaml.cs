@@ -143,14 +143,14 @@ namespace ReVersion.Views
         {
             Model.Repositories.CollectionChanged += (sender, args) =>
             {
-                ApplyFilder();
+                ApplyFilter();
             };
 
             Model.PropertyChanged += (sender, args) =>
             {
                 if(!Model.Loading && args.PropertyName == nameof(Model.Search) || args.PropertyName == nameof(Model.Repositories))
                 {
-                    ApplyFilder();
+                    ApplyFilter();
                     
                     Model.OnPropertyChanged(nameof(Model.CountSummary));
                 }
@@ -158,7 +158,7 @@ namespace ReVersion.Views
             };
         }
 
-        private async void ApplyFilder()
+        private async void ApplyFilter()
         {
             //TODO make async
             var searchTerm = Model.Search.ToLower();

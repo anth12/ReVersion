@@ -65,12 +65,12 @@ namespace ReVersion.Models
 
         public void SetPassword(string password)
         {
-            Password = AuthenticationHelper.Encrypt(password);
+            Password = (new AuthenticationHelper()).Encrypt(password);
         }
 
         public string GetPassword()
         {
-            return AuthenticationHelper.Decrypt(Password);
+            return (new AuthenticationHelper()).Decrypt(Password);
         }
     }
 

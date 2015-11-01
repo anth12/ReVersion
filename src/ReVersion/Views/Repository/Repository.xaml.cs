@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ReVersion.Services.Settings;
+using ReVersion.Services.SvnClient;
+using ReVersion.Services.SvnClient.Requests;
+using ReVersion.Services.SvnServer.Response;
 
 namespace ReVersion.Views.Repository
 {
@@ -23,6 +15,22 @@ namespace ReVersion.Views.Repository
         public Repository()
         {
             InitializeComponent();
+        }
+
+        private void Checkout_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var data = (RepositoryResult) DataContext;
+
+            var svnServer = SettingsService.Current.Servers.First(s => s.Id == data.SvnServerId);
+
+            var svnClientService = new SvnClientService();
+            svnClientService.CheckoutRepository(new CheckoutRepositoryRequest
+            {
+                SvnUsername = svnServer.Username,
+                SvnPassword = svnServer.GetPassword(),
+                ProjectName = data.Name,
+                SvnServerUrl = data.Url
+            });
         }
     }
 }
