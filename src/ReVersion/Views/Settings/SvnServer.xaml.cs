@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using ReVersion.Models;
+using ReVersion.Models.Settings;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
 

@@ -8,11 +8,11 @@
                       xmlns:vw="clr-namespace:ReVersion.Views.Settings"
                       mc:Ignorable="d"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:settings="clr-namespace:ReVersion.Models.Settings"
                       Title="Settings" Height="500" Width="500" GlowBrush="#666"
-                      Loaded="SettingsWindow_OnLoaded"
-                      Closing="SettingsWindow_OnClosing">
+                      Loaded="SettingsWindow_OnLoaded">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type m:SvnServerModel}">
+        <DataTemplate DataType="{x:Type settings:SvnServerModel}">
             <vw:SvnServer />
         </DataTemplate>
     </Window.Resources>
@@ -23,7 +23,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,37 +34,40 @@
 
 
         <Label Content="Checkout Folder" />
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="CheckoutFolder_Textbox" Text="{Binding CheckoutFolder}" />
-            <Button x:Name="CheckoutFolder_FolderPicker" Content="..." Grid.Column="1"
-                    Click="CheckoutFolder_FolderPicker_OnClick" />
+            <TextBox Text="{Binding Model.CheckoutFolder}" />
+            <Button Content="..." Grid.Column="1" Command="{Binding CheckoutFolderPickerCommand}" />
         </Grid>
 
-        <Label Content="Naming Convention" Grid.Row="1" />
-        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding NamingConvention}" Grid.Row="1"
+        <Label Content="Default Svn path" Grid.Row="1" />
+        <TextBox Text="{Binding Model.DefaultSvnPath}" Grid.Row="1" Grid.Column="1" />
+
+        <Label Content="Naming Convention" Grid.Row="2" />
+        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding Model.NamingConvention}" Grid.Row="2"
                   Grid.Column="1" />
 
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding NamingConventionDescription}" TextWrapping="Wrap"
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Model.NamingConventionDescription}" TextWrapping="Wrap"
                    MinWidth="200" />
 
-        <Label Content="Svn Servers" Grid.Row="3" />
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="3"
+        <Label Content="Svn Servers" Grid.Row="4" />
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="4"
                       Grid.Column="1">
             <StackPanel Orientation="Vertical">
-                <ItemsControl ItemsSource="{Binding Servers}">
+                <ItemsControl ItemsSource="{Binding Model.Servers}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <Button Content="Add Server" Click="ButtonBase_OnClick" Grid.Column="1" />
+                <Button Content="Add Server" Command="{Binding AddServerCommand}" Grid.Column="1" />
             </StackPanel>
         </ScrollViewer>
 
+        <Button Command="{Binding SaveAndCloseCommand}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Save &amp; Close"></Button>
     </Grid>
 </Controls:MetroWindow>

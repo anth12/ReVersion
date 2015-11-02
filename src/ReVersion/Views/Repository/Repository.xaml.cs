@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ReVersion.Services.Settings;
@@ -24,14 +25,19 @@ namespace ReVersion.Views.Repository
 
             var svnServer = SettingsService.Current.Servers.First(s => s.Id == data.SvnServerId);
 
-            var svnClientService = new SvnClientService();
-            svnClientService.CheckoutRepository(new CheckoutRepositoryRequest
+            Checkout(new CheckoutRepositoryRequest
             {
                 SvnUsername = svnServer.Username,
                 SvnPassword = svnServer.GetPassword(),
                 ProjectName = data.Name,
                 SvnServerUrl = data.Url
             });
+        }
+
+        private async void Checkout(CheckoutRepositoryRequest request)
+        {
+            var svnClientService = new SvnClientService();
+            await Task.Run(()=> svnClientService.CheckoutRepository(request));
         }
     }
 }

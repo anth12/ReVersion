@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using ReVersion.Models;
+using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
 
@@ -19,7 +20,7 @@ namespace ReVersion.Services.SvnServer.Impl
             using (var wb = new WebClientSession())
             {
                 //Load the login page to grab a viewstate
-                var homePageResponse = wb.Authenticate(request.BaseUrl + "/svn/", request.Username, request.Password);
+                var homePageResponse = wb.Authenticate(request.BaseUrl + "/svn/", request.Username, request.GetPassword());
 
                 var serializer = new XmlSerializer(typeof (Response));
                 var response = (Response) serializer.Deserialize(homePageResponse.GetResponseStream());

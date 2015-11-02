@@ -13,7 +13,7 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <CheckBox />
+        <CheckBox x:Name="BatchCheckout_Checkbox"/>
 
         <StackPanel Grid.Column="1">
             <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Name, Mode=OneWay}" IsReadOnly="True"

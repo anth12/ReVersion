@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using ReVersion.Models;
+using ReVersion.Models.Settings;
 using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.Settings

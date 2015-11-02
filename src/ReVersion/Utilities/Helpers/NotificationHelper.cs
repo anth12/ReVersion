@@ -57,7 +57,6 @@ namespace ReVersion.Utilities.Helpers
 
             //toast.Activated += ToastActivated;
             //toast.Dismissed += ToastDismissed;
-            //toast.Failed += ToastFailed;
 
             ToastNotificationManager.CreateToastNotifier(APP_ID).Show(toast);
         }

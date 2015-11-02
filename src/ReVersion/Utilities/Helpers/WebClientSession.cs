@@ -10,6 +10,7 @@ namespace ReVersion.Utilities.Helpers
         public WebClientSession()
         {
             CookieContainer = new CookieContainer();
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
         }
 
         public CookieContainer CookieContainer { get; set; }

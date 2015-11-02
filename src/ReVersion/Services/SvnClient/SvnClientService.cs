@@ -1,22 +1,25 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
+using SharpSvn;
 
 namespace ReVersion.Services.SvnClient
 {
     public class SvnClientService
     {
-        public async void CheckoutRepository(CheckoutRepositoryRequest request)
+        public bool CheckoutRepository(CheckoutRepositoryRequest request)
         {
             var projectFolder = SettingsService.Current.CheckoutFolder;
 
             if (!projectFolder.EndsWith("\\"))
                 projectFolder += "\\";
 
-            projectFolder += request.ProjectName.ToConventionCase(SettingsService.Current.NamingConvention) + "\\trunk";
-            //TODO make trunk optional
+            projectFolder += request.ProjectName.ToConventionCase(SettingsService.Current.NamingConvention) +
+                                $"\\{SettingsService.Current.DefaultSvnPath}";
 
             if (!Directory.Exists(projectFolder))
             {
@@ -25,24 +28,26 @@ namespace ReVersion.Services.SvnClient
 
             request.SvnServerUrl = request.SvnServerUrl.RemoveTrailing('/');
 
-            var bat =
-                $"svn checkout {request.SvnServerUrl}/trunk \"{projectFolder}\" " +
-                $"--username {request.SvnUsername} " +
-                $"--password {request.SvnPassword}";
-            AppDataHelper.WriteFile("checkout", "bat", bat);
-            var filePath = AppDataHelper.FilePath("checkout", "bat");
-
-            string errorResult;
-            var successResult = CommandLineHelper.Run(filePath, "", out errorResult);
-
-            if (errorResult.IsNotBlank())
+            using (var client = new SharpSvn.SvnClient())
             {
-                NotificationHelper.Show(SvnErrorHandling.FormatError(errorResult));
+                try
+                {
+                    client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
+                    var result =
+                        client.CheckOut(
+                            new SvnUriTarget($"{request.SvnServerUrl}/{SettingsService.Current.DefaultSvnPath}"),
+                            projectFolder);
+                }
+                catch (Exception ex)
+                {
+                    NotificationHelper.Show(SvnErrorHandling.FormatError(ex.Message));
+                    return false;
+                }
             }
-            else
-            {
-                NotificationHelper.Show($"{request.ProjectName} checked out");
-            }
+
+            NotificationHelper.Show($"{request.ProjectName} checked out");
+            return true;
+            
         }
     }
 }

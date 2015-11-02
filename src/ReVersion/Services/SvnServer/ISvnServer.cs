@@ -1,4 +1,4 @@
-﻿using ReVersion.Models;
+﻿using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 
 namespace ReVersion.Services.SvnServer

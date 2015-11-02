@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Xml.Serialization;
 using ReVersion.Models;
+using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
 

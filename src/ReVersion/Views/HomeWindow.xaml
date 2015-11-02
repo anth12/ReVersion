@@ -9,7 +9,7 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
                       mc:Ignorable="d"
-                      Title="Home" Height="600" Width="900" Loaded="HomeWindow_OnLoaded" Closed="HomeWindow_OnClosed"
+                      Title="Home" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
         <DataTemplate DataType="{x:Type m:RepositoryResult}">
@@ -20,39 +20,38 @@
     <Grid>
         <Menu IsMainMenu="True">
             <MenuItem Header="File">
-                <MenuItem Header="Import Settings" Click="ImportSettings_OnClick" />
-                <MenuItem Header="Export Settings" Click="ExportSettings_OnClick" />
+                <MenuItem Header="Import Settings" Command="{Binding ImportSettingsCommand}" />
+                <MenuItem Header="Export Settings" Command="{Binding ExportSettingsCommand}" />
                 <Separator />
-                <MenuItem Header="Settings" Click="OpenSettings_OnClick" />
+                <MenuItem Header="Settings" Command="{Binding OpenSettingsCommand}" />
                 <Separator />
-                <MenuItem Header="Exit" Click="Exit_OnClick" />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
 
             <MenuItem Header="Actions">
-                <MenuItem Header="SVN Update all" Click="SvnUpdate_OnClick" />
-                <MenuItem Header="Refresh SVN repo list" Click="RefreshRepoList_OnClick" />
+                <MenuItem Header="SVN Update all" Command="{Binding SvnUpdateCommand}" />
+                <MenuItem Header="Refresh SVN repo list" Command="{Binding RefreshRepoListCommand}" />
             </MenuItem>
 
             <MenuItem Header="_Help">
-                <MenuItem Header="Help" Click="Help_OnClick" />
-                <MenuItem Header="About" Click="About_OnClick" />
+                <MenuItem Header="Help" Command="{Binding HelpCommand}" />
+                <MenuItem Header="About" Command="{Binding AboutCommand}" />
             </MenuItem>
 
         </Menu>
 
         <Grid Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 10 0">
             <!-- Count Summary -->
-            <Label Content="{Binding CountSummary}" />
-
-            <TextBox Width="180" Height="29" Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding Model.CountSummary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-120"/>
+            <TextBox Width="180" Height="29" Text="{Binding Model.Search, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="🔎" HorizontalAlignment="Right" VerticalAlignment="Center" />
         </Grid>
 
-        <controls:ProgressRing IsActive="{Binding Loading}" />
+        <controls:ProgressRing IsActive="{Binding Model.Loading}" />
 
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
-                <ItemsControl ItemsSource="{Binding FilteredRepositories}">
+                <ItemsControl ItemsSource="{Binding Model.FilteredRepositories}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />

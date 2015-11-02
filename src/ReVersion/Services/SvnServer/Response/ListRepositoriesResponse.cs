@@ -10,8 +10,10 @@ namespace ReVersion.Services.SvnServer.Response
 
     public class RepositoryResult
     {
+        public bool CheckedOut { get; set; }
         public Guid SvnServerId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
+
     }
 }
