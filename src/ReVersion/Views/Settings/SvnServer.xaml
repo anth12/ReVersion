@@ -1,37 +1,36 @@
 ﻿<UserControl x:Class="ReVersion.Views.Settings.SvnServer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ReVersion.Views.Settings"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="160" d:DesignWidth="300" Width="300" Loaded="SvnServer_OnLoaded">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Label Content="Svn Type"/>
-        <ComboBox x:Name="SvnTypeDropdown" Grid.Column="1" SelectedItem="{Binding Type}">
-        </ComboBox>
+        <Label Content="Svn Type" />
+        <ComboBox x:Name="SvnTypeDropdown" Grid.Column="1" SelectedItem="{Binding Type}" />
 
-        <Label Grid.Row="1" Content="Base Url"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseUrl}"></TextBox>
+        <Label Grid.Row="1" Content="Base Url" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseUrl}" />
 
-        <Label Grid.Row="2" Content="Username"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Username}"></TextBox>
+        <Label Grid.Row="2" Content="Username" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Username}" />
 
-        <Label Grid.Row="3" Content="Password"/>
-        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Grid.Column="1" PasswordChanged="PasswordBox_OnPasswordChanged"></PasswordBox>
+        <Label Grid.Row="3" Content="Password" />
+        <PasswordBox x:Name="PasswordBox" Grid.Row="3" Grid.Column="1" PasswordChanged="PasswordBox_OnPasswordChanged" />
 
-        <Button Content="X" Grid.Column="2" Click="Remove_OnClick"></Button>
+        <Button Content="X" Grid.Column="2" Click="Remove_OnClick" />
     </Grid>
 </UserControl>

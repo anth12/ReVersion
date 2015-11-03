@@ -1,12 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using MahApps.Metro.Controls;
-using ReVersion.Models;
-using ReVersion.Services.Settings;
+using ReVersion.Models.Settings;
 
 namespace ReVersion.Views
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    ///     Interaction logic for Settings.xaml
     /// </summary>
     public partial class SettingsWindow : MetroWindow
     {
@@ -14,15 +15,12 @@ namespace ReVersion.Views
         {
             InitializeComponent();
         }
-        
+
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = SettingsService.Current;
+            NamingConvention_ComboBox.ItemsSource =
+                Enum.GetValues(typeof (SvnNamingConvention)).Cast<SvnNamingConvention>();
         }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            SettingsService.Current.Servers.Add(new SvnServer());
-        }
+        
     }
 }
