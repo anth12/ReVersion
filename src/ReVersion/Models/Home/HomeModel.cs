@@ -19,8 +19,9 @@ namespace ReVersion.Models.Home
         private bool loading;
         private string search;
 
-
         public string CountSummary => $"Showing {viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {viewModel.Repositories.Count()}";
+        public string CheckoutSummary => $"Checkout {viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
+        public int SelectedRepositories => viewModel.Repositories.Count(r=> r.Model.IsChecked);
 
         public bool Loading
         {
@@ -33,7 +34,9 @@ namespace ReVersion.Models.Home
             get { return search; }
             set { SetField(ref search, value); }
         }
-        
+
+        public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.IsChecked);
+
         #endregion
 
         #region Business Logic
@@ -41,6 +44,13 @@ namespace ReVersion.Models.Home
         public void FilterUpdated()
         {
             OnPropertyChanged(nameof(CountSummary));
+        }
+
+        internal void BulkUpdateUpdated()
+        {
+            OnPropertyChanged(nameof(CheckoutSummary));
+            OnPropertyChanged(nameof(SelectedRepositories));
+            OnPropertyChanged(nameof(IsBulkCheckoutButtonActive));
         }
 
         #endregion

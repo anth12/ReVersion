@@ -59,7 +59,7 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>EA47B74CDBA8FB2274410262AF75C215FAE82754</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>42433E04967B68495E35ABFEFA72DF08A805240E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
@@ -131,6 +131,8 @@
     <Compile Include="Models\Settings\SvnNamingConvention.cs" />
     <Compile Include="Models\Settings\SvnServerModel.cs" />
     <Compile Include="Services\SvnClient\SvnErrorHandling.cs" />
+    <Compile Include="Utilities\Converters\ReverseVisibilityValueConverter.cs" />
+    <Compile Include="Utilities\Converters\VisibilityValueConverter.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\Helpers\AppDataHelper.cs" />
     <Compile Include="Utilities\Helpers\AuthenticationHelper.cs" />
@@ -219,6 +221,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ReVersion_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
