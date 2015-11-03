@@ -9,13 +9,15 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
                       xmlns:home="clr-namespace:ReVersion.ViewModels.Home"
+                      xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
-                      Title="Home" Height="600" Width="900" Closed="HomeWindow_OnClosed"
+                      Title="ReVersion" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
         <DataTemplate DataType="{x:Type home:RepositoryViewModel}">
             <vw:Repository />
         </DataTemplate>
+        <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
     </Window.Resources>
 
     <Grid>
@@ -29,18 +31,24 @@
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
 
-            <MenuItem Header="Actions">
-                <MenuItem Header="SVN Update all" Command="{Binding SvnUpdateCommand}" />
+            <MenuItem Header="View">
+                <MenuItem Header="Bulk Checkout" Command="{Binding ToggleBulkCheckoutCommand}" IsCheckable="true"/>
                 <MenuItem Header="Refresh SVN repo list" Command="{Binding RefreshRepoListCommand}" />
             </MenuItem>
 
-            <MenuItem Header="_Help">
+            <MenuItem Header="Actions">
+                <MenuItem Header="SVN Update all" Command="{Binding SvnUpdateCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="Help">
                 <MenuItem Header="Help" Command="{Binding HelpCommand}" />
                 <MenuItem Header="About" Command="{Binding AboutCommand}" />
             </MenuItem>
 
         </Menu>
 
+        <Button Height="30" Margin="0, 5" HorizontalAlignment="Center" VerticalAlignment="Top" Content="{Binding Model.CheckoutSummary}" Command="{Binding BulkCheckoutCommand}" Visibility="{Binding Model.IsBulkCheckoutButtonActive, Converter={StaticResource visibilityConverter}}"></Button>
+        
         <Grid Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 10 0">
             <!-- Count Summary -->
             <Label Content="{Binding Model.CountSummary}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-120"/>
@@ -49,9 +57,8 @@
         </Grid>
 
         <controls:ProgressRing IsActive="{Binding Model.Loading}" />
-<!--
-        TODO: Currently the UI model binding grinds to a hault when filtering as new controls are created, they need to be Enabled/Disabled
--->
+
+        
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
                 <ItemsControl ItemsSource="{Binding Repositories}">

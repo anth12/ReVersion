@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:ReVersion.Views.Repository"
              mc:Ignorable="d"
+             xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
              d:DesignHeight="50" d:DesignWidth="350">
+    <UserControl.Resources>
+        <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
+        <c:ReverseVisibilityValueConverter x:Key="reverseVisibilityConverter"></c:ReverseVisibilityValueConverter>
+    </UserControl.Resources>
     <Grid Margin="5" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.Visibility}" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -13,14 +17,13 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <CheckBox IsChecked="{Binding Model.IsChecked}"/>
-
         <StackPanel Grid.Column="1">
             <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name, Mode=OneWay}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="18" MaxWidth="300" />
             <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url, Mode=OneWay}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
         </StackPanel>
-        <Button Grid.Column="2" Content="Checkout" Command="{Binding CheckoutCommand}" />
+        <Button Grid.Column="2" Content="Checkout" Command="{Binding CheckoutCommand}" Visibility="{Binding Model.BulkCheckoutVisible, Converter={StaticResource reverseVisibilityConverter}}"/>
+        <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutVisible, Converter={StaticResource visibilityConverter}}"/>
     </Grid>
 </UserControl>

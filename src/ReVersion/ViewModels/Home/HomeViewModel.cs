@@ -32,11 +32,14 @@ namespace ReVersion.ViewModels.Home
             OpenSettingsCommand = CommandFromFunction(x => OpenSettings());
             ExitCommand = CommandFromFunction(x => Exit());
 
+            ToggleBulkCheckoutCommand = CommandFromFunction(x => ToggleBulkCheckout());
             SvnRefreshCommand = CommandFromFunction(x => SvnRefresh());
             SvnUpdateCommand = CommandFromFunction(x => SvnUpdate());
 
             AboutCommand = CommandFromFunction(x => About());
             HelpCommand = CommandFromFunction(x => Help());
+
+            BulkCheckoutCommand = CommandFromFunction(x => BulkCheckout());
 
             //Model binding
             Repositories.CollectionChanged += (sender, args) => { Model.FilterUpdated(); };
@@ -50,10 +53,9 @@ namespace ReVersion.ViewModels.Home
                 }
             };
 
-
             //Configure the search filter
             Filter = (model) => Model.Search.IsBlank()
-                             || model.Model.Name.ToLower().Contains(Model.Search.ToLower());
+                             || model.Model.Name.ToCamelCase().ToLower().Contains(Model.Search.ToCamelCase().ToLower());
 
             //Finally, load the data
             LoadRepositories();
@@ -67,11 +69,14 @@ namespace ReVersion.ViewModels.Home
 
         public ICommand ExitCommand { get; set; }
 
+        public ICommand ToggleBulkCheckoutCommand { get; set; }
         public ICommand SvnUpdateCommand { get; set; }
         public ICommand SvnRefreshCommand { get; set; }
 
         public ICommand AboutCommand { get; set; }
         public ICommand HelpCommand { get; set; }
+
+        public ICommand BulkCheckoutCommand { get; set; }
 
 
         #region Menu events
@@ -125,6 +130,30 @@ namespace ReVersion.ViewModels.Home
         #endregion
 
         #region Actions
+
+        private void ToggleBulkCheckout()
+        {
+            foreach (var repository in Repositories)
+            {
+                repository.Model.BulkCheckoutVisible = !repository.Model.BulkCheckoutVisible;
+            }
+        }
+
+        private void BulkCheckout()
+        {
+            foreach (var repository in Repositories)
+            {
+                if (repository.Model.IsChecked)
+                {
+                    repository.CheckoutCommand.Execute(null);
+                }
+            }
+        }
+
+        private void CheckoutUpdated(object sender, EventArgs e)
+        {
+            Model.BulkUpdateUpdated();
+        }
 
         private void SvnUpdate()
         {
@@ -184,9 +213,10 @@ namespace ReVersion.ViewModels.Home
             var result = await subversionServerCollator.ListRepositories(forceReload);
 
             Repositories.Clear();
-            result.Repositories.ForEach(repo => Repositories.Add(new RepositoryViewModel
+            result.Repositories.ForEach(repo =>
             {
-                Model = new RepositoryModel
+
+                var model = new RepositoryModel
                 {
                     CheckedOut = repo.CheckedOut,
                     Name = repo.Name,
@@ -194,8 +224,21 @@ namespace ReVersion.ViewModels.Home
                     Url = repo.Url,
                     IsEnabled = true,
                     Visibility = Visibility.Visible
-                }
-            }));
+                };
+
+                model.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == nameof(model.IsChecked))
+                    {
+                        Model.BulkUpdateUpdated();
+                    }
+                };
+
+                Repositories.Add(new RepositoryViewModel
+                {
+                    Model = model
+                });
+            });
 
             Model.Loading = false;
 

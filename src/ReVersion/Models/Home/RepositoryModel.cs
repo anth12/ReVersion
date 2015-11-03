@@ -10,6 +10,7 @@ namespace ReVersion.Models.Home
         private bool isChecked;
         private bool isEnabled;
         private Visibility visibility;
+        private bool bulkCheckoutVisible;
         private string name;
         private Guid svnServerId;
         private string url;
@@ -36,6 +37,12 @@ namespace ReVersion.Models.Home
         {
             get { return visibility; }
             set { SetField(ref visibility, value); }
+        }
+
+        public bool BulkCheckoutVisible
+        {
+            get { return bulkCheckoutVisible; }
+            set { SetField(ref bulkCheckoutVisible, value); }
         }
 
         public string Name

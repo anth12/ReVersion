@@ -18,7 +18,6 @@ namespace ReVersion.ViewModels.Home
             CheckoutCommand = CommandFromFunction(c=> Checkout());
         }
         
-
         #region Commands
         public ICommand CheckoutCommand { get; set; }
         #endregion
