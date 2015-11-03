@@ -14,6 +14,5 @@ namespace ReVersion.Services.SvnServer.Response
         public Guid SvnServerId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
-
     }
 }

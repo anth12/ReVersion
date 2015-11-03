@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,7 @@ using ReVersion.Models.Home;
 using ReVersion.Services;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
-using ReVersion.Services.SvnServer.Response;
+using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using ReVersion.Views;
 
@@ -19,6 +20,9 @@ namespace ReVersion.ViewModels.Home
     {
         public HomeViewModel()
         {
+            Model = new HomeModel(this);
+
+            repositories = new ObservableCollection<RepositoryViewModel>();
 
             //Configure Commands
             ImportSettingsCommand = CommandFromFunction(x => ImportSettings());
@@ -35,23 +39,27 @@ namespace ReVersion.ViewModels.Home
             HelpCommand = CommandFromFunction(x => Help());
 
             //Model binding
-            Model.Repositories.CollectionChanged += (sender, args) => { ApplyFilter(); };
+            Repositories.CollectionChanged += (sender, args) => { Model.FilterUpdated(); };
 
-            PropertyChanged += (sender, args) =>
+            Model.PropertyChanged += (sender, args) =>
             {
                 if (!Model.Loading && args.PropertyName == nameof(Model.Search) ||
-                    args.PropertyName == nameof(Model.Repositories))
+                    args.PropertyName == nameof(Repositories))
                 {
-                    ApplyFilter();
-
-                    OnPropertyChanged(nameof(Model.CountSummary));
+                    FilterUpdated();
                 }
             };
+
+
+            //Configure the search filter
+            Filter = (model) => Model.Search.IsBlank()
+                             || model.Model.Name.ToLower().Contains(Model.Search.ToLower());
 
             //Finally, load the data
             LoadRepositories();
         }
-        
+
+
         #region Commands
         public ICommand ImportSettingsCommand { get; set; }
         public ICommand ExportSettingsCommand { get; set; }
@@ -153,24 +161,19 @@ namespace ReVersion.ViewModels.Home
         #endregion
 
         #endregion
-        
+
         #region Business Logic
 
-        private async void ApplyFilter()
+        private Func<RepositoryViewModel, bool> Filter;
+
+        private ObservableCollection<RepositoryViewModel> repositories;
+
+        public ObservableCollection<RepositoryViewModel> Repositories
         {
-            //TODO make async
-            var searchTerm = Model.Search.ToLower();
-
-            //Apply the filtering
-            var filteredRepositories = Model.Repositories
-                .Where(repo => repo.Name.ToLower().Contains(searchTerm))
-                .ToList();
-
-
-            Model.FilteredRepositories.Clear();
-            OnPropertyChanged(nameof(Model.CountSummary));
-            filteredRepositories.ForEach(Model.FilteredRepositories.Add);
+            get { return repositories; }
+            set { SetField(ref repositories, value); }
         }
+
 
         private async void LoadRepositories(bool forceReload = false)
         {
@@ -180,8 +183,19 @@ namespace ReVersion.ViewModels.Home
 
             var result = await subversionServerCollator.ListRepositories(forceReload);
 
-            Model.Repositories.Clear();
-            result.Repositories.ForEach(repo => Model.Repositories.Add(repo));
+            Repositories.Clear();
+            result.Repositories.ForEach(repo => Repositories.Add(new RepositoryViewModel
+            {
+                Model = new RepositoryModel
+                {
+                    CheckedOut = repo.CheckedOut,
+                    Name = repo.Name,
+                    SvnServerId = repo.SvnServerId,
+                    Url = repo.Url,
+                    IsEnabled = true,
+                    Visibility = Visibility.Visible
+                }
+            }));
 
             Model.Loading = false;
 
@@ -190,6 +204,19 @@ namespace ReVersion.ViewModels.Home
                 NotificationHelper.ShowResult(result);
             }
         }
+
+        public void FilterUpdated()
+        {
+            foreach (var repo in Repositories)
+            {
+                var active = Filter.Invoke(repo);
+                repo.Model.IsEnabled = active;
+                repo.Model.Visibility = active ? Visibility.Visible : Visibility.Collapsed;
+            }
+
+            Model.FilterUpdated();
+        }
+
 
         #endregion
     }

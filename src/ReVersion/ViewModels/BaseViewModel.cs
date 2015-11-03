@@ -8,11 +8,10 @@ using ReVersion.Models;
 namespace ReVersion.ViewModels
 {
     public abstract class BaseViewModel<TModel> : INotifyPropertyChanged
-        where TModel : IModel, new()
+        where TModel : IModel
     {
         protected BaseViewModel()
         {
-            model = new TModel();
         }  
 
         private TModel model;
@@ -48,7 +47,7 @@ namespace ReVersion.ViewModels
         {
             return new RelayCommand(func);
         }
-
+        
         #endregion
     }
 }

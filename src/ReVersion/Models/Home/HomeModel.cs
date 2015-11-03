@@ -1,26 +1,26 @@
-﻿using System.Collections.ObjectModel;
-using ReVersion.Services.SvnServer.Response;
+﻿using System.Linq;
+using ReVersion.ViewModels.Home;
 
 namespace ReVersion.Models.Home
 {
     public class HomeModel : BaseModel
     {
-        public HomeModel()
+        public HomeModel(HomeViewModel viewModel)
         {
             search = "";
-            repositories = new ObservableCollection<RepositoryResult>();
-            filteredRepositories = new ObservableCollection<RepositoryResult>();
+            this.viewModel = viewModel;
         }
+
+        private HomeViewModel viewModel;
+
 
         #region Properties
 
         private bool loading;
         private string search;
-        private ObservableCollection<RepositoryResult> filteredRepositories;
-        private ObservableCollection<RepositoryResult> repositories;
 
 
-        public string CountSummary => $"Showing {FilteredRepositories.Count} of {Repositories.Count}";
+        public string CountSummary => $"Showing {viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {viewModel.Repositories.Count()}";
 
         public bool Loading
         {
@@ -33,20 +33,16 @@ namespace ReVersion.Models.Home
             get { return search; }
             set { SetField(ref search, value); }
         }
+        
+        #endregion
 
-        public ObservableCollection<RepositoryResult> FilteredRepositories
-        {
-            get { return filteredRepositories; }
-            set { SetField(ref filteredRepositories, value); OnPropertyChanged(nameof(CountSummary)); }
-        }
+        #region Business Logic
 
-        public ObservableCollection<RepositoryResult> Repositories
+        public void FilterUpdated()
         {
-            get { return repositories; }
-            set { SetField(ref repositories, value); }
+            OnPropertyChanged(nameof(CountSummary));
         }
 
         #endregion
-        
     }
 }

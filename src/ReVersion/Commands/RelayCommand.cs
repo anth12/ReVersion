@@ -6,7 +6,7 @@ namespace ReVersion.Commands
     public class RelayCommand : ICommand
     {
         private Action<object> _action;
-
+        
         public RelayCommand(Action<object> action)
         {
             _action = action;

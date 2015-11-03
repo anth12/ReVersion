@@ -8,11 +8,12 @@
                       xmlns:vw="clr-namespace:ReVersion.Views.Repository"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
+                      xmlns:home="clr-namespace:ReVersion.ViewModels.Home"
                       mc:Ignorable="d"
                       Title="Home" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type m:RepositoryResult}">
+        <DataTemplate DataType="{x:Type home:RepositoryViewModel}">
             <vw:Repository />
         </DataTemplate>
     </Window.Resources>
@@ -48,10 +49,12 @@
         </Grid>
 
         <controls:ProgressRing IsActive="{Binding Model.Loading}" />
-
+<!--
+        TODO: Currently the UI model binding grinds to a hault when filtering as new controls are created, they need to be Enabled/Disabled
+-->
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
             <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
-                <ItemsControl ItemsSource="{Binding Model.FilteredRepositories}">
+                <ItemsControl ItemsSource="{Binding Repositories}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" />
