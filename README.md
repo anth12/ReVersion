@@ -5,4 +5,8 @@ A WPF desktop application to assist managing working copies of SVN repositories 
 
 ReVersion allows developers working on many different projects, often on multiple servers, the ability to search a single location for the repository they require with the ability to checkout a number of repositories at once to assist setting up new PC's.
 
-ReVersion is not an SVN client!
+## Supported Svn servers
+* Submin
+* Uber Svn
+* Visual Svn
+* WebSvn
