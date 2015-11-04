@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Helpers;
+using ReVersion.Utilities.Extensions;
 
 namespace ReVersion.Models.Settings
 {
@@ -55,8 +56,8 @@ namespace ReVersion.Models.Settings
         [JsonIgnore]
         public string RawPassword
         {
-            get { return new AuthenticationHelper().Decrypt(Password); }
-            set { Password = new AuthenticationHelper().Encrypt(Password); }
+            get { return Password.IsNotBlank() ? new AuthenticationHelper().Decrypt(Password) : ""; }
+            set { Password = value.IsNotBlank() ? new AuthenticationHelper().Encrypt(value) : ""; }
         }
 
         #endregion

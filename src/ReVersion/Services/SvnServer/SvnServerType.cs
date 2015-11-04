@@ -4,6 +4,7 @@
     {
         Submin,
         Sven,
-        VisualSvn
+        VisualSvn,
+        WebSvn
     }
 }
