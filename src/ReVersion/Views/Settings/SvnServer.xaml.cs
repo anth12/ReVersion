@@ -6,6 +6,7 @@ using ReVersion.Models;
 using ReVersion.Models.Settings;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
+using ReVersion.ViewModels.Settings;
 
 namespace ReVersion.Views.Settings
 {
@@ -22,20 +23,12 @@ namespace ReVersion.Views.Settings
         private void SvnServer_OnLoaded(object sender, RoutedEventArgs e)
         {
             SvnTypeDropdown.ItemsSource = Enum.GetValues(typeof (SvnServerType)).Cast<SvnServerType>();
+            Password_Textbox.Password = ((SvnServerViewModel)DataContext).Model.RawPassword;
         }
 
-        private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+        private void Password_Textbox_OnPasswordChanged(object sender, RoutedEventArgs e)
         {
-            var svnServerSettings = (SvnServerModel) DataContext;
-            svnServerSettings.SetPassword(PasswordBox.Password);
-        }
-
-        private void Remove_OnClick(object sender, RoutedEventArgs e)
-        {
-            var svnServerSettings = (SvnServerModel) DataContext;
-
-            var server = SettingsService.Current.Servers.First(s => s.Id == svnServerSettings.Id);
-            SettingsService.Current.Servers.Remove(server);
+            ((SvnServerViewModel) DataContext).Model.RawPassword = Password_Textbox.Password;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Utilities.Extensions;
@@ -11,15 +10,18 @@ namespace ReVersion.Services.SvnClient
 {
     public class SvnClientService
     {
+        public bool IsCheckedOut(IsCheckedOutRequest request)
+        {
+            var projectFolder = GetRepositoryFolder(request.ProjectName);
+
+            return Directory.Exists(projectFolder);
+            // TODO we are assuming that because the folder exists the repo must be there... 
+            // needs to be verified (checkout can fail or be removed)
+        }
+
         public bool CheckoutRepository(CheckoutRepositoryRequest request)
         {
-            var projectFolder = SettingsService.Current.CheckoutFolder;
-
-            if (!projectFolder.EndsWith("\\"))
-                projectFolder += "\\";
-
-            projectFolder += request.ProjectName.ToConventionCase(SettingsService.Current.NamingConvention) +
-                                $"\\{SettingsService.Current.DefaultSvnPath}";
+            var projectFolder = GetRepositoryFolder(request.ProjectName);
 
             if (!Directory.Exists(projectFolder))
             {
@@ -48,6 +50,18 @@ namespace ReVersion.Services.SvnClient
             NotificationHelper.Show($"{request.ProjectName} checked out");
             return true;
             
+        }
+
+        private string GetRepositoryFolder(string repositoryName)
+        {
+            var repositoryFolder = SettingsService.Current.CheckoutFolder;
+
+            if (!repositoryFolder.EndsWith("\\"))
+                repositoryFolder += "\\";
+
+            repositoryFolder += repositoryName.ToConventionCase(SettingsService.Current.NamingConvention) +
+                                $"\\{SettingsService.Current.DefaultSvnPath}";
+            return repositoryFolder;
         }
     }
 }
