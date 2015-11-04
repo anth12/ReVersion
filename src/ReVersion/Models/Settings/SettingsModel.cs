@@ -10,16 +10,21 @@ namespace ReVersion.Models.Settings
         public SettingsModel()
         {
             defaultSvnPath = "trunk";
-            servers = new ObservableCollection<SvnServerModel>();
+            Servers = new ObservableCollection<SvnServerModel>();
         }
 
         #region Properties
         private string checkoutFolder;
         private string defaultSvnPath;
         private SvnNamingConvention namingConvention;
-
         private ObservableCollection<SvnServerModel> servers;
 
+
+        public ObservableCollection<SvnServerModel> Servers
+        {
+            get { return servers; }
+            set { SetField(ref servers, value); }
+        }
 
         [JsonIgnore]
         public string NamingConventionDescription => NamingConvention.GetAttributeOfType<DescriptionAttribute>().Description;
@@ -41,13 +46,7 @@ namespace ReVersion.Models.Settings
             get { return namingConvention; }
             set { SetField(ref namingConvention, value); OnPropertyChanged(nameof(NamingConventionDescription)); }
         }
-
-        public ObservableCollection<SvnServerModel> Servers
-        {
-            get { return servers; }
-            set { SetField(ref servers, value); }
-        }
-
+        
         #endregion
     }
 }

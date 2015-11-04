@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Helpers;
 
@@ -42,23 +43,20 @@ namespace ReVersion.Models.Settings
             set { SetField(ref username, value); }
         }
 
+        
         public string Password { get; set; }
-        protected byte[] Key { get; set; }
 
         public DateTime RepoUpdateDate
         {
             get { return repoUpdateDate; }
             set { SetField(ref repoUpdateDate, value); }
         }
-        
-        public void SetPassword(string password)
-        {
-            Password = (new AuthenticationHelper()).Encrypt(password);
-        }
 
-        public string GetPassword()
+        [JsonIgnore]
+        public string RawPassword
         {
-            return (new AuthenticationHelper()).Decrypt(Password);
+            get { return new AuthenticationHelper().Decrypt(Password); }
+            set { Password = new AuthenticationHelper().Encrypt(Password); }
         }
 
         #endregion

@@ -8,11 +8,11 @@
                       xmlns:vw="clr-namespace:ReVersion.Views.Settings"
                       mc:Ignorable="d"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      xmlns:settings="clr-namespace:ReVersion.Models.Settings"
+                      xmlns:vm="clr-namespace:ReVersion.ViewModels.Settings"
                       Title="Settings" Height="500" Width="500" GlowBrush="#666"
                       Loaded="SettingsWindow_OnLoaded">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type settings:SvnServerModel}">
+        <DataTemplate DataType="{x:Type vm:SvnServerViewModel}">
             <vw:SvnServer />
         </DataTemplate>
     </Window.Resources>
@@ -57,7 +57,7 @@
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="4"
                       Grid.Column="1">
             <StackPanel Orientation="Vertical">
-                <ItemsControl ItemsSource="{Binding Model.Servers}">
+                <ItemsControl ItemsSource="{Binding Servers}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />

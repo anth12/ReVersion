@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ReVersion.Services.Settings;
+using ReVersion.Services.SvnClient;
+using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
 
@@ -84,6 +86,15 @@ namespace ReVersion.Services.SvnServer
 
             //Order the repo's
             result.Repositories = result.Repositories.OrderBy(x => x.Name).ToList();
+
+            var svnClient = new SvnClientService();
+            foreach (var repository in result.Repositories)
+            {
+                repository.CheckedOut = svnClient.IsCheckedOut(new IsCheckedOutRequest
+                {
+                    ProjectName = repository.Name
+                });
+            }
 
             return result;
         }

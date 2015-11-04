@@ -33,7 +33,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 {
                     ["mainPortalForm"] = "mainPortalForm",
                     ["username"] = request.Username,
-                    ["password"] = request.GetPassword(),
+                    ["password"] = request.RawPassword,
                     ["loginButton"] = "",
                     ["javax.faces.ViewState"] = viewState
                 };

@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ReVersion.Models.Home;
@@ -27,21 +25,26 @@ namespace ReVersion.ViewModels.Home
         {
             var svnServer = SettingsService.Current.Servers.First(s => s.Id == Model.SvnServerId);
 
-            checkout(new CheckoutRepositoryRequest
+            var result = checkout(new CheckoutRepositoryRequest
             {
                 SvnUsername = svnServer.Username,
-                SvnPassword = svnServer.GetPassword(),
+                SvnPassword = svnServer.RawPassword,
                 ProjectName = Model.Name,
                 SvnServerUrl = Model.Url
-            });
+            }).Result;
+
+            if (result)
+            {
+                Model.CheckedOut = true;
+            }
         }
 
         #endregion
 
-        private async void checkout(CheckoutRepositoryRequest request)
+        private async Task<bool> checkout(CheckoutRepositoryRequest request)
         {
             var svnClientService = new SvnClientService();
-            await Task.Run(() => svnClientService.CheckoutRepository(request));
+            return await Task.Run(() => svnClientService.CheckoutRepository(request));
         }
     }
 }

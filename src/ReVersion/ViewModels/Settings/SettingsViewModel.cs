@@ -2,12 +2,9 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using ReVersion.Models.Settings;
 using ReVersion.Services.Settings;
-using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
-using ReVersion.ViewModels;
 
 namespace ReVersion.ViewModels.Settings
 {
@@ -15,11 +12,35 @@ namespace ReVersion.ViewModels.Settings
     {
         public SettingsViewModel()
         {
+            //TODO when closing, saettings need to be loaded from disk to override any in-memory changes bound from the UI
+            Model = new SettingsModel
+            {
+                CheckoutFolder = SettingsService.Current.CheckoutFolder,
+                DefaultSvnPath = SettingsService.Current.DefaultSvnPath,
+                NamingConvention = SettingsService.Current.NamingConvention
+            };
+
+            Servers = new ObservableCollection<SvnServerViewModel>();
+
+            foreach (var server in SettingsService.Current.Servers)
+            {
+                Servers.Add(new SvnServerViewModel(this)
+                {
+                    Model = server
+                });
+            }
 
             SaveAndCloseCommand = CommandFromFunction(x => SaveAndClose());
             AddServerCommand = CommandFromFunction(x => AddServer());
             RemoveServerCommand = CommandFromFunction(x => RemoveServer());
             CheckoutFolderPickerCommand = CommandFromFunction(x => CheckoutFolderPicker());
+        }
+
+        private ObservableCollection<SvnServerViewModel> servers;
+        public ObservableCollection<SvnServerViewModel> Servers
+        {
+            get { return servers; }
+            set { SetField(ref servers, value); }
         }
 
         #region Commands
@@ -28,10 +49,10 @@ namespace ReVersion.ViewModels.Settings
         public ICommand RemoveServerCommand { get; set; }
 
         public ICommand CheckoutFolderPickerCommand { get; set; }
-
+        #endregion
 
         #region Events
-        
+
 
         private void SaveAndClose()
         {
@@ -44,7 +65,10 @@ namespace ReVersion.ViewModels.Settings
 
         private void AddServer()
         {
-            Model.Servers.Add(new SvnServerModel());
+            Servers.Add(new SvnServerViewModel(this)
+            {
+                Model = new SvnServerModel()
+            });
         }
 
         private void RemoveServer()
@@ -68,8 +92,7 @@ namespace ReVersion.ViewModels.Settings
         }
 
         #endregion
-
-        #endregion
+        
         
     }
 }

@@ -25,7 +25,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 var loginData = new NameValueCollection
                 {
                     ["username"] = request.Username,
-                    ["password"] = request.GetPassword()
+                    ["password"] = request.RawPassword
                 };
 
                 //Do the login

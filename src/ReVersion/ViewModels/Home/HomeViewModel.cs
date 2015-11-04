@@ -12,6 +12,7 @@ using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
+using ReVersion.ViewModels.Settings;
 using ReVersion.Views;
 
 namespace ReVersion.ViewModels.Home
@@ -118,7 +119,10 @@ namespace ReVersion.ViewModels.Home
 
         private void OpenSettings()
         {
-            var settings = new SettingsWindow();
+            var settings = new SettingsWindow
+            {
+                DataContext = new SettingsViewModel()
+            };
             settings.Show();
         }
 
