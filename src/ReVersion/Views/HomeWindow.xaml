@@ -33,7 +33,7 @@
 
             <MenuItem Header="View">
                 <MenuItem Header="Bulk Checkout" Command="{Binding ToggleBulkCheckoutCommand}" IsCheckable="true"/>
-                <MenuItem Header="Refresh SVN repo list" Command="{Binding RefreshRepoListCommand}" />
+                <MenuItem Header="Refresh SVN repo list" Command="{Binding SvnRefreshCommand}" />
             </MenuItem>
 
             <MenuItem Header="Actions">
@@ -59,17 +59,17 @@
         <controls:ProgressRing IsActive="{Binding Model.Loading}" />
 
         
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
-            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
-                <ItemsControl ItemsSource="{Binding Repositories}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
+        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+            <ItemsControl ItemsSource="{Binding Repositories}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
 
 
     </Grid>

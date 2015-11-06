@@ -12,7 +12,6 @@ namespace ReVersion.ViewModels.Home
     {
         public RepositoryViewModel()
         {
-
             CheckoutCommand = CommandFromFunction(c=> Checkout());
         }
         

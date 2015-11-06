@@ -18,9 +18,9 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="1">
-            <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name, Mode=OneWay}" IsReadOnly="True"
+           <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="18" MaxWidth="300" />
-            <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url, Mode=OneWay}" IsReadOnly="True"
+            <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
         </StackPanel>
         <Button Grid.Column="2" Content="Checkout" Command="{Binding CheckoutCommand}" Visibility="{Binding Model.BulkCheckoutVisible, Converter={StaticResource reverseVisibilityConverter}}"/>

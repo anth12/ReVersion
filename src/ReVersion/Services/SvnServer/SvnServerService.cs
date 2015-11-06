@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
@@ -36,7 +37,7 @@ namespace ReVersion.Services.SvnServer
         {
             var result = new ListRepositoriesResponse();
 
-            foreach (var svnServerSettings in SettingsService.Current.Servers)
+            Parallel.ForEach(SettingsService.Current.Servers, svnServerSettings =>
             {
                 if (!forceReload && svnServerSettings.RepoUpdateDate > DateTime.Now.AddDays(-7))
                 {
@@ -46,43 +47,42 @@ namespace ReVersion.Services.SvnServer
                     if (repoList != null && repoList.Any())
                     {
                         result.Repositories.AddRange(repoList);
-                        continue;
+                        return;
                     }
                 }
 
-                foreach (var subversionServer in subversionServers)
+                var subversionServer = subversionServers.FirstOrDefault(s => s.ServerType == svnServerSettings.Type);
+                
+                try
                 {
-                    if (subversionServer.ServerType == svnServerSettings.Type)
+                    var response = subversionServer.ListRepositories(svnServerSettings);
+
+                    if (!response.Status)
                     {
-                        try
-                        {
-                            var response = subversionServer.ListRepositories(svnServerSettings);
+                        result.Messages.AddRange(response.Messages);
+                    }
+                    else
+                    {
+                        result.Repositories.AddRange(response.Repositories);
 
-                            if (!response.Status)
-                            {
-                                result.Messages.AddRange(response.Messages);
-                            }
-                            else
-                            {
-                                result.Repositories.AddRange(response.Repositories);
-
-                                //Save the results
-                                AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories, "cache");
-                                svnServerSettings.RepoUpdateDate = DateTime.Now;
-                                SettingsService.Save();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            result.Messages.Add(ex.Message);
+                        //Save the results
+                        AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories, "cache");
+                        svnServerSettings.RepoUpdateDate = DateTime.Now;
+                        SettingsService.Save();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.Messages.Add(ex.Message);
 
 #if DEBUG
-                            //throw ex;
+                    //throw ex;
 #endif
-                        }
-                    }
                 }
-            }
+                
+                
+            });
+            
 
             //Order the repo's
             result.Repositories = result.Repositories.OrderBy(x => x.Name).ToList();

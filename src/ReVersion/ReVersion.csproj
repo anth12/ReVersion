@@ -30,9 +30,10 @@
     <InstallUrl>http://reversion.azurewebsites.net/download/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -59,10 +60,10 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C07BF16BC9FF9A354F38EAAD60D86A5CF3396FF2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>FECA4FD62E4EB08971BBE0816F6E73AD2052CF4C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ReVersion_2_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -225,8 +226,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ReVersion_1_TemporaryKey.pfx" />
-    <None Include="ReVersion_2_TemporaryKey.pfx" />
     <None Include="ReVersion_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ namespace ReVersion.Services.SvnServer.Impl
                     ["repoTableId"] = "repoTableId",
                     ["repoTableId_paging"] = "true",
                     ["repoTableId_first"] = "0",
-                    ["repoTableId_rows"] = "150",
+                    ["repoTableId_rows"] = "999",
                     ["repoTableId_page"] = "2"
                 };
 

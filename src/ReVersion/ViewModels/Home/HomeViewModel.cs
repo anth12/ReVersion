@@ -3,8 +3,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using ReVersion.Models.Home;
 using ReVersion.Services;
@@ -19,8 +21,9 @@ namespace ReVersion.ViewModels.Home
 {
     public class HomeViewModel : BaseViewModel<HomeModel>
     {
-        public HomeViewModel()
+        public HomeViewModel(HomeWindow window)
         {
+            this.window = window;
             Model = new HomeModel(this);
 
             repositories = new ObservableCollection<RepositoryViewModel>();
@@ -62,6 +65,7 @@ namespace ReVersion.ViewModels.Home
             LoadRepositories();
         }
 
+        private HomeWindow window;
 
         #region Commands
         public ICommand ImportSettingsCommand { get; set; }
@@ -166,7 +170,7 @@ namespace ReVersion.ViewModels.Home
 
         private void SvnRefresh()
         {
-            //TODO
+            LoadRepositories(true);
         }
 
         #endregion
@@ -176,17 +180,12 @@ namespace ReVersion.ViewModels.Home
         private void About()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            MessageBox.Show($"Version: {fvi.FileVersion}");
+            DialogManager.ShowMessageAsync(window, $"ReVersion Version: {assembly.GetName().Version}", "By Anthony Halliday");
         }
 
         private void Help()
         {
-            NotificationHelper.ShowResult(Result.Success("test message goes herre"));
-
-            NotificationHelper.ShowResult(Result.Error("test message goes herre"));
-
-            //Process.Start("http://github.com/anth12/ReVersion");
+            Process.Start("http://github.com/anth12/ReVersion");
         }
 
         #endregion
@@ -216,10 +215,11 @@ namespace ReVersion.ViewModels.Home
 
             var result = await subversionServerCollator.ListRepositories(forceReload);
 
+
             Repositories.Clear();
             result.Repositories.ForEach(repo =>
             {
-
+                
                 var model = new RepositoryModel
                 {
                     CheckedOut = repo.CheckedOut,
@@ -242,6 +242,7 @@ namespace ReVersion.ViewModels.Home
                 {
                     Model = model
                 });
+                
             });
 
             Model.Loading = false;

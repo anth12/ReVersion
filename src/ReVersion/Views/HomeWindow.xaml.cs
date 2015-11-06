@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using MahApps.Metro.Controls;
-using ReVersion.Models;
-using ReVersion.Models.Home;
-using ReVersion.Services.SvnClient;
-using ReVersion.Services.SvnServer;
-using ReVersion.Utilities.Helpers;
-
 namespace ReVersion.Views
 {
     /// <summary>
