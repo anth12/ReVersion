@@ -45,7 +45,7 @@ namespace ReVersion.Utilities.Helpers
             }
 
             // Specify the absolute path to an image
-            var imagePath = "file:///" + Path.GetFullPath("Resources/logo.png");
+            var imagePath = "file:///" + Path.GetFullPath("Resources/logo_512.png");
             var imageElements = toastXml.GetElementsByTagName("image");
             var namedItem = imageElements[0].Attributes.GetNamedItem("src");
 

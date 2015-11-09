@@ -32,13 +32,29 @@ namespace ReVersion.Services.SvnClient
 
             using (var client = new SharpSvn.SvnClient())
             {
+                client.Authentication.SslServerTrustHandlers += (b, e) =>
+                {
+                    e.AcceptedFailures = e.Failures;
+                    e.Save = true; // Save acceptance to authentication store
+                };
+
                 try
                 {
-                    client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
                     var result =
                         client.CheckOut(
                             new SvnUriTarget($"{request.SvnServerUrl}/{SettingsService.Current.DefaultSvnPath}"),
                             projectFolder);
+                }
+                catch (SvnRepositoryIOException ex)
+                {
+                    if (ex.SvnErrorCode == SvnErrorCode.SVN_ERR_RA_ILLEGAL_URL)
+                    {
+                        //default path does not exist, checkout the root
+                        var result =
+                        client.CheckOut(
+                            new SvnUriTarget($"{request.SvnServerUrl}"),
+                            projectFolder);
+                    }
                 }
                 catch (Exception ex)
                 {

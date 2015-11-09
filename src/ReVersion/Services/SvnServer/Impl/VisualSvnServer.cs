@@ -32,7 +32,7 @@ namespace ReVersion.Services.SvnServer.Impl
                     {
                         SvnServerId = request.Id,
                         Name = repoNode.Name,
-                        Url = $"{request.BaseUrl}/{repoNode.Href}"
+                        Url = $"{request.BaseUrl}/svn/{repoNode.Href}"
                     });
                 }
             }

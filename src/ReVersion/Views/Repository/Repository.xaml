@@ -10,7 +10,7 @@
         <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
         <c:ReverseVisibilityValueConverter x:Key="reverseVisibilityConverter"></c:ReverseVisibilityValueConverter>
     </UserControl.Resources>
-    <Grid Margin="5" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.Visibility}" >
+    <Grid Margin="5" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.IsEnabled, Converter={StaticResource visibilityConverter}}" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition SharedSizeGroup="WrapPanelGroup" />
@@ -23,7 +23,7 @@
             <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
         </StackPanel>
-        <Button Grid.Column="2" Content="Checkout" Command="{Binding CheckoutCommand}" Visibility="{Binding Model.BulkCheckoutVisible, Converter={StaticResource reverseVisibilityConverter}}"/>
-        <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutVisible, Converter={StaticResource visibilityConverter}}"/>
+        <Button Grid.Column="2" Content="Checkout" Command="{Binding CheckoutCommand}" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource reverseVisibilityConverter}}"/>
+        <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource visibilityConverter}}"/>
     </Grid>
 </UserControl>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 
 namespace ReVersion.Models.Home
 {
@@ -9,8 +8,7 @@ namespace ReVersion.Models.Home
         private bool checkedOut;
         private bool isChecked;
         private bool isEnabled;
-        private Visibility visibility;
-        private bool bulkCheckoutVisible;
+        private bool bulkCheckoutActive;
         private string name;
         private Guid svnServerId;
         private string url;
@@ -32,17 +30,11 @@ namespace ReVersion.Models.Home
             get { return isEnabled; }
             set { SetField(ref isEnabled, value); }
         }
-
-        public Visibility Visibility
+        
+        public bool BulkCheckoutActive
         {
-            get { return visibility; }
-            set { SetField(ref visibility, value); }
-        }
-
-        public bool BulkCheckoutVisible
-        {
-            get { return bulkCheckoutVisible; }
-            set { SetField(ref bulkCheckoutVisible, value); }
+            get { return bulkCheckoutActive; }
+            set { SetField(ref bulkCheckoutActive, value); }
         }
 
         public string Name

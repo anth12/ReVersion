@@ -9,6 +9,7 @@
                       mc:Ignorable="d"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:vm="clr-namespace:ReVersion.ViewModels.Settings"
+                      Icon="/ReVersion;component/Resources/Icon_512.ico"
                       Title="Settings" Height="500" Width="500" GlowBrush="#666"
                       Loaded="SettingsWindow_OnLoaded">
     <Window.Resources>
@@ -68,6 +69,6 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Button Command="{Binding SaveAndCloseCommand}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Content="Save &amp; Close"></Button>
+        <Button Command="{Binding SaveAndCloseCommand}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" Margin="5 0" Content="Save"></Button>
     </Grid>
 </Controls:MetroWindow>

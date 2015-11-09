@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using ReVersion.Models.Home;
@@ -118,6 +119,7 @@ namespace ReVersion.ViewModels.Home
             if (clicked != null && clicked.Value)
             {
                 SettingsService.Export(fileDialog.FileName);
+                NotificationHelper.Show("Settings Exported");
             }
         }
 
@@ -143,8 +145,10 @@ namespace ReVersion.ViewModels.Home
         {
             foreach (var repository in Repositories)
             {
-                repository.Model.BulkCheckoutVisible = !repository.Model.BulkCheckoutVisible;
+                repository.Model.BulkCheckoutActive = !repository.Model.BulkCheckoutActive;
             }
+
+            CheckoutUpdated(null, null);
         }
 
         private void BulkCheckout()
@@ -182,10 +186,11 @@ namespace ReVersion.ViewModels.Home
             var assembly = Assembly.GetExecutingAssembly();
             DialogManager.ShowMessageAsync(window, $"ReVersion Version: {assembly.GetName().Version}", "By Anthony Halliday");
         }
+        
 
         private void Help()
         {
-            Process.Start("http://github.com/anth12/ReVersion");
+            Process.Start("https://github.com/anth12/ReVersion/wiki");
         }
 
         #endregion
@@ -226,8 +231,7 @@ namespace ReVersion.ViewModels.Home
                     Name = repo.Name,
                     SvnServerId = repo.SvnServerId,
                     Url = repo.Url,
-                    IsEnabled = true,
-                    Visibility = Visibility.Visible
+                    IsEnabled = true
                 };
 
                 model.PropertyChanged += (sender, args) =>
@@ -259,7 +263,6 @@ namespace ReVersion.ViewModels.Home
             {
                 var active = Filter.Invoke(repo);
                 repo.Model.IsEnabled = active;
-                repo.Model.Visibility = active ? Visibility.Visible : Visibility.Collapsed;
             }
 
             Model.FilterUpdated();

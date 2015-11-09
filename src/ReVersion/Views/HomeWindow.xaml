@@ -11,6 +11,7 @@
                       xmlns:home="clr-namespace:ReVersion.ViewModels.Home"
                       xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
+                      Icon="/ReVersion;component/Resources/Icon_512.ico"
                       Title="ReVersion" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
@@ -36,9 +37,9 @@
                 <MenuItem Header="Refresh SVN repo list" Command="{Binding SvnRefreshCommand}" />
             </MenuItem>
 
-            <MenuItem Header="Actions">
+            <!--<MenuItem Header="Actions">
                 <MenuItem Header="SVN Update all" Command="{Binding SvnUpdateCommand}" />
-            </MenuItem>
+            </MenuItem>-->
 
             <MenuItem Header="Help">
                 <MenuItem Header="Help" Command="{Binding HelpCommand}" />

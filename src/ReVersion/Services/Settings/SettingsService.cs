@@ -41,6 +41,11 @@ namespace ReVersion.Services.Settings
 
         public static void Export(string exportPath)
         {
+            if (File.Exists(exportPath))
+            {
+                File.Delete(exportPath);
+            }
+
             File.Copy(AppDataHelper.FilePath("settings"), exportPath);
         }
 

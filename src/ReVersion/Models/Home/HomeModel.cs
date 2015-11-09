@@ -35,7 +35,7 @@ namespace ReVersion.Models.Home
             set { SetField(ref search, value); }
         }
 
-        public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.IsChecked);
+        public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);
 
         #endregion
 
