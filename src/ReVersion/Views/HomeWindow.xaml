@@ -3,24 +3,35 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:local="clr-namespace:ReVersion.Views"
                       xmlns:m="clr-namespace:ReVersion.Services.SvnServer.Response"
                       xmlns:vw="clr-namespace:ReVersion.Views.Repository"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
-                      xmlns:home="clr-namespace:ReVersion.ViewModels.Home"
+                      xmlns:homeVM="clr-namespace:ReVersion.ViewModels.Home"
                       xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
                       Icon="/ReVersion;component/Resources/Icon_512.ico"
                       Title="ReVersion" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type home:RepositoryViewModel}">
+        <DataTemplate DataType="{x:Type homeVM:RepositoryViewModel}">
             <vw:Repository />
         </DataTemplate>
         <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
     </Window.Resources>
 
+    <controls:MetroWindow.Flyouts>
+        <controls:FlyoutsControl>
+
+            <controls:Flyout Header="Settings" Position="Right" Width="400" IsOpen="{Binding Model.SettingsActive}">
+
+                <settings:SettingsView DataContext="{Binding Settings}" Width="400"/>
+                
+            </controls:Flyout>
+            
+        </controls:FlyoutsControl>
+    </controls:MetroWindow.Flyouts>
+    
     <Grid>
         <Menu IsMainMenu="True">
             <MenuItem Header="File">

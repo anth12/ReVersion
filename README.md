@@ -14,6 +14,7 @@ ReVersion allows developers working on many different projects, often on multipl
 [Installation instructions/Wiki](https://github.com/anth12/ReVersion/wiki "Installation instructions/Wiki")
 
 Logo design by:
+
 <a href="http://l-saurus.co.uk/" target="blank">
 	<img src="http://www.l-saurusdesign.host-ed.me/Images/Index/l-saurus.gif" width="150"/>
 </a>

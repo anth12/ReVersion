@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using MahApps.Metro;
 using MahApps.Metro.Controls;
 namespace ReVersion.Views
 {
@@ -21,7 +20,7 @@ namespace ReVersion.Views
         {
             Application.Current.Shutdown();
         }
-
+        
         #endregion
         
     }

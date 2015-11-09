@@ -13,7 +13,7 @@ namespace ReVersion
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             var window = new HomeWindow();
-            var viewModel = new HomeViewModel(window);
+            var viewModel = new HomeViewModel();
 
             window.DataContext = viewModel;
             window.Show();

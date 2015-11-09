@@ -3,14 +3,12 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using MahApps.Metro;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using ReVersion.Models.Home;
-using ReVersion.Services;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Extensions;
@@ -22,12 +20,12 @@ namespace ReVersion.ViewModels.Home
 {
     public class HomeViewModel : BaseViewModel<HomeModel>
     {
-        public HomeViewModel(HomeWindow window)
+        public HomeViewModel()
         {
-            this.window = window;
             Model = new HomeModel(this);
 
             repositories = new ObservableCollection<RepositoryViewModel>();
+            settings = new SettingsViewModel();
 
             //Configure Commands
             ImportSettingsCommand = CommandFromFunction(x => ImportSettings());
@@ -65,9 +63,7 @@ namespace ReVersion.ViewModels.Home
             //Finally, load the data
             LoadRepositories();
         }
-
-        private HomeWindow window;
-
+        
         #region Commands
         public ICommand ImportSettingsCommand { get; set; }
         public ICommand ExportSettingsCommand { get; set; }
@@ -104,6 +100,12 @@ namespace ReVersion.ViewModels.Home
                 var result = SettingsService.Import(fileDialog.FileName);
                 if (result != null)
                     NotificationHelper.ShowResult(result);
+
+                if (result.Status)
+                {
+                    //When settings are imported, trigger an update
+                    LoadRepositories(true);
+                }
             }
         }
 
@@ -125,11 +127,7 @@ namespace ReVersion.ViewModels.Home
 
         private void OpenSettings()
         {
-            var settings = new SettingsWindow
-            {
-                DataContext = new SettingsViewModel()
-            };
-            settings.Show();
+            Model.SettingsActive = true;
         }
 
         private void Exit()
@@ -184,7 +182,8 @@ namespace ReVersion.ViewModels.Home
         private void About()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            DialogManager.ShowMessageAsync(window, $"ReVersion Version: {assembly.GetName().Version}", "By Anthony Halliday");
+
+            ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync($"ReVersion Version: {assembly.GetName().Version}", "By Anthony Halliday");
         }
         
 
@@ -200,6 +199,14 @@ namespace ReVersion.ViewModels.Home
         #endregion
 
         #region Business Logic
+
+        private SettingsViewModel settings;
+
+        public SettingsViewModel Settings
+        {
+            get { return settings; }
+            set { SetField(ref settings, value); }
+        }
 
         private Func<RepositoryViewModel, bool> Filter;
 

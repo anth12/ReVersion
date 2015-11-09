@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using ReVersion.ViewModels.Home;
+using ReVersion.ViewModels.Settings;
 
 namespace ReVersion.Models.Home
 {
@@ -18,6 +19,7 @@ namespace ReVersion.Models.Home
 
         private bool loading;
         private string search;
+        private bool settingActive;
 
         public string CountSummary => $"Showing {viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {viewModel.Repositories.Count()}";
         public string CheckoutSummary => $"Checkout {viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
@@ -33,6 +35,12 @@ namespace ReVersion.Models.Home
         {
             get { return search; }
             set { SetField(ref search, value); }
+        }
+        
+        public bool SettingsActive
+        {
+            get { return settingActive; }
+            set { SetField(ref settingActive, value); }
         }
 
         public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);

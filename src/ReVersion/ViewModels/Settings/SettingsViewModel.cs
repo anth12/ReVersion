@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 using ReVersion.Models.Settings;
@@ -11,7 +12,7 @@ namespace ReVersion.ViewModels.Settings
     {
         public SettingsViewModel()
         {
-            //TODO when closing, saettings need to be loaded from disk to override any in-memory changes bound from the UI
+            //TODO when closing, settings need to be loaded from disk to override any in-memory changes bound from the UI
             Model = new SettingsModel
             {
                 CheckoutFolder = SettingsService.Current.CheckoutFolder,
@@ -55,11 +56,12 @@ namespace ReVersion.ViewModels.Settings
 
         private void SaveAndClose()
         {
+            SettingsService.Current = Model;
+            SettingsService.Current.Servers.Clear();
+            Servers.ToList().ForEach(s=> SettingsService.Current.Servers.Add(s.Model));
+
             SettingsService.Save();
             NotificationHelper.Show("Settings Updated");
-            
-            // TODO
-            //Close();
         }
 
         private void AddServer()
