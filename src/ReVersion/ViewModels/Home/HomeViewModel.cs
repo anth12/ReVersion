@@ -25,11 +25,9 @@ namespace ReVersion.ViewModels.Home
             Model = new HomeModel(this);
 
             repositories = new ObservableCollection<RepositoryViewModel>();
-            settings = new SettingsViewModel();
+            settings = new SettingsViewModel(this);
 
             //Configure Commands
-            ImportSettingsCommand = CommandFromFunction(x => ImportSettings());
-            ExportSettingsCommand = CommandFromFunction(x => ExportSettings());
             OpenSettingsCommand = CommandFromFunction(x => OpenSettings());
 
             OpenSettingsCommand = CommandFromFunction(x => OpenSettings());
@@ -65,8 +63,6 @@ namespace ReVersion.ViewModels.Home
         }
         
         #region Commands
-        public ICommand ImportSettingsCommand { get; set; }
-        public ICommand ExportSettingsCommand { get; set; }
         public ICommand OpenSettingsCommand { get; set; }
 
         public ICommand ExitCommand { get; set; }
@@ -85,49 +81,9 @@ namespace ReVersion.ViewModels.Home
 
         #region File
 
-        private void ImportSettings()
-        {
-            var fileDialog = new OpenFileDialog
-            {
-                Filter = "Settings Files (.json)|*.json",
-                FilterIndex = 1
-            };
-
-            var clicked = fileDialog.ShowDialog();
-
-            if (clicked != null && clicked.Value)
-            {
-                var result = SettingsService.Import(fileDialog.FileName);
-                if (result != null)
-                    NotificationHelper.ShowResult(result);
-
-                if (result.Status)
-                {
-                    //When settings are imported, trigger an update
-                    LoadRepositories(true);
-                }
-            }
-        }
-
-        private void ExportSettings()
-        {
-            var fileDialog = new SaveFileDialog
-            {
-                Filter = "Settings Files (.json)|*.json"
-            };
-
-            var clicked = fileDialog.ShowDialog();
-
-            if (clicked != null && clicked.Value)
-            {
-                SettingsService.Export(fileDialog.FileName);
-                NotificationHelper.Show("Settings Exported");
-            }
-        }
-
         private void OpenSettings()
         {
-            Model.SettingsActive = true;
+            Model.SettingsActive = !Model.SettingsActive;
         }
 
         private void Exit()

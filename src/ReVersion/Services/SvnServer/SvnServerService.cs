@@ -33,6 +33,8 @@ namespace ReVersion.Services.SvnServer
             return await Task.Run(() => LoadRepositories(forceReload));
         }
 
+        private object _lock = new object();
+
         private ListRepositoriesResponse LoadRepositories(bool forceReload)
         {
             var result = new ListRepositoriesResponse();
@@ -63,7 +65,10 @@ namespace ReVersion.Services.SvnServer
                     }
                     else
                     {
-                        result.Repositories.AddRange(response.Repositories);
+                        //lock (_lock)
+                        
+                            result.Repositories.AddRange(response.Repositories);
+                        
 
                         //Save the results
                         AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories, "cache");

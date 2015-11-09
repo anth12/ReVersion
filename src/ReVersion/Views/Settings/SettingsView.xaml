@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReVersion.Views.Settings"
              xmlns:vm="clr-namespace:ReVersion.ViewModels.Settings"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400"
+             d:DesignHeight="600" d:DesignWidth="400"
              Loaded="SettingsView_OnLoaded">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type vm:SvnServerViewModel}">
@@ -24,6 +25,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -31,27 +33,37 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Content="Import" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ImportCommand}" />
+            <Button Grid.Column="1" Content="Export" Style="{DynamicResource SquareButtonStyle}" Command="{Binding ExportCommand}" />
 
-        <Label Content="Checkout Folder" Grid.Row="0"/>
-        <Grid Grid.Row="1">
+        </Grid>
+        
+        <Label Content="Checkout Folder" Grid.Row="1"/>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox Text="{Binding Model.CheckoutFolder}" />
-            <Button Content="..." Grid.Column="1" Command="{Binding CheckoutFolderPickerCommand}" />
+            <Button Content="..." Grid.Column="1" Command="{Binding CheckoutFolderPickerCommand}" Style="{DynamicResource AccentedSquareButtonStyle}" />
         </Grid>
 
-        <Label Content="Default Svn path" Grid.Row="2" />
-        <TextBox Text="{Binding Model.DefaultSvnPath}" Grid.Row="3" />
+        <Label Content="Default Svn path" Grid.Row="3" />
+        <TextBox Text="{Binding Model.DefaultSvnPath}" Grid.Row="4" />
 
-        <Label Content="Naming Convention" Grid.Row="4" />
-        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding Model.NamingConvention}" Grid.Row="5"/>
+        <Label Content="Naming Convention" Grid.Row="5" />
+        <ComboBox x:Name="NamingConvention_ComboBox" SelectedValue="{Binding Model.NamingConvention}" Grid.Row="6"/>
 
-        <TextBlock Grid.Row="6" Text="{Binding Model.NamingConventionDescription}" TextWrapping="Wrap" MinWidth="200" />
+        <TextBlock Grid.Row="7" Text="{Binding Model.NamingConventionDescription}" TextWrapping="Wrap" MinWidth="200" />
 
-        <Label Content="Svn Servers" Grid.Row="7" />
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="8">
+        <Label Content="Svn Servers" Grid.Row="8" />
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="9">
             <StackPanel Orientation="Vertical">
                 <ItemsControl ItemsSource="{Binding Servers}">
                     <ItemsControl.ItemsPanel>
@@ -60,11 +72,11 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <Button Content="Add Server" Command="{Binding AddServerCommand}" Grid.Column="1" />
+                <Button Content="Add Server" Command="{Binding AddServerCommand}" Style="{DynamicResource SquareButtonStyle}" Grid.Column="1" />
             </StackPanel>
         </ScrollViewer>
 
-        <Button Command="{Binding SaveAndCloseCommand}" Grid.Row="9" HorizontalAlignment="Right" Margin="0 5" Content="Save" FontSize="16"></Button>
+        <Button Command="{Binding SaveAndCloseCommand}" Grid.Row="10" Style="{DynamicResource AccentedSquareButtonStyle}" HorizontalAlignment="Right" Margin="5" Content="Save" FontSize="16"></Button>
     </Grid>
     
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using ReVersion.Services.ErrorLogging;
 using ReVersion.ViewModels.Home;
 using ReVersion.Views;
@@ -18,12 +19,13 @@ namespace ReVersion
             window.DataContext = viewModel;
             window.Show();
 
-            Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
-        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            ErrorLog.Log("Unhandled Exception", e.Exception);
+            ErrorLog.Log("Unhandled Exception", e.ExceptionObject.ToString());
         }
+        
     }
 }

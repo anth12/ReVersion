@@ -44,6 +44,7 @@ namespace ReVersion.Models.Home
         }
 
         public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);
+        public bool IsBulkCheckoutActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive);
 
         #endregion
 

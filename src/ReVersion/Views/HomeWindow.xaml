@@ -20,6 +20,26 @@
         <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
     </Window.Resources>
 
+
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+
+
+            <Button Command="{Binding SvnRefreshCommand}" 
+                    ToolTip="Refresh the listed Repositories from the SVN server's" 
+                    Content="Refresh" />
+            
+            <Button Command="{Binding OpenSettingsCommand}" 
+                    ToolTip="Open ReVersion Application Settings"
+                    Content="Settings" />
+
+            <Button Command="{Binding AboutCommand}" 
+                    ToolTip="About ReVersion"
+                    Content="About" />
+
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+    
     <controls:MetroWindow.Flyouts>
         <controls:FlyoutsControl>
 
@@ -33,33 +53,31 @@
     </controls:MetroWindow.Flyouts>
     
     <Grid>
-        <Menu IsMainMenu="True">
-            <MenuItem Header="File">
-                <MenuItem Header="Import Settings" Command="{Binding ImportSettingsCommand}" />
-                <MenuItem Header="Export Settings" Command="{Binding ExportSettingsCommand}" />
-                <Separator />
-                <MenuItem Header="Settings" Command="{Binding OpenSettingsCommand}" />
-                <Separator />
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
-            </MenuItem>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
 
-            <MenuItem Header="View">
-                <MenuItem Header="Bulk Checkout" Command="{Binding ToggleBulkCheckoutCommand}" IsCheckable="true"/>
-                <MenuItem Header="Refresh SVN repo list" Command="{Binding SvnRefreshCommand}" />
-            </MenuItem>
+            <CheckBox Content="Bulk Checkout"
+                    ToolTip="Checkout multiple repositories at once"
+                    IsChecked="{Binding Model.IsBulkCheckoutActive, Mode=OneWay}"
+                    Command="{Binding ToggleBulkCheckoutCommand}"
+                    Margin="5"/>
+        </StackPanel>
 
-            <!--<MenuItem Header="Actions">
-                <MenuItem Header="SVN Update all" Command="{Binding SvnUpdateCommand}" />
-            </MenuItem>-->
 
-            <MenuItem Header="Help">
-                <MenuItem Header="Help" Command="{Binding HelpCommand}" />
-                <MenuItem Header="About" Command="{Binding AboutCommand}" />
-            </MenuItem>
-
-        </Menu>
-
-        <Button Height="30" Margin="0, 5" HorizontalAlignment="Center" VerticalAlignment="Top" Content="{Binding Model.CheckoutSummary}" Command="{Binding BulkCheckoutCommand}" Visibility="{Binding Model.IsBulkCheckoutButtonActive, Converter={StaticResource visibilityConverter}}"></Button>
+        <Button
+            Height="30"
+            Margin="0, 5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Style="{DynamicResource SquareButtonStyle}"
+            Content="{Binding Model.CheckoutSummary}" 
+            Command="{Binding BulkCheckoutCommand}" 
+            Visibility="{Binding Model.IsBulkCheckoutButtonActive, Converter={StaticResource visibilityConverter}}">
+        </Button>
         
         <Grid Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 10 0">
             <!-- Count Summary -->
@@ -68,10 +86,10 @@
             <Label Content="🔎" HorizontalAlignment="Right" VerticalAlignment="Center" />
         </Grid>
 
-        <controls:ProgressRing IsActive="{Binding Model.Loading}" />
+    <controls:ProgressRing Grid.Row="1" IsActive="{Binding Model.Loading}" />
 
         
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="5 40 5 5">
+    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
             <ItemsControl ItemsSource="{Binding Repositories}">
                 <ItemsControl.ItemsPanel>
