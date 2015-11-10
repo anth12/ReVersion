@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Threading;
+using Microsoft.Win32;
+using ReVersion.Services.Analytics;
 using ReVersion.Services.ErrorLogging;
+using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.Home;
 using ReVersion.Views;
 
@@ -18,14 +22,76 @@ namespace ReVersion
 
             window.DataContext = viewModel;
             window.Show();
+            
+            Application.Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(AppDispatcherUnhandledException);
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if (HasRun() == false)
+            {
+                FirstRun();
+            }
         }
 
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        #region Event handling
+
+        private void AppDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            ErrorLog.Log("Unhandled Exception", e.ExceptionObject.ToString());
+            ErrorLog.Log("Unhandled Exception", e.Exception);
+
+
+#if DEBUG   // In debug mode do not custom-handle the exception, let Visual Studio handle it
+
+            e.Handled = false;
+
+#else
+
+            ShowUnhandeledException(e);    
+
+#endif     
         }
-        
+
+        private void ShowUnhandeledException(DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            string errorMessage =
+                $@"An application error occurred.
+Please check whether your data is correct and repeat the action. If this error occurs again there seems to be a more serious malfunction in the application, and you better close it and try again...
+Error:
+{e.Exception.Message +(e.Exception.InnerException != null? "\n" +e.Exception.InnerException.Message: null)}
+
+Do you want to continue?
+(if you click Yes the application will remain open, if you click No the application will close)";
+
+            if (
+                MessageBox.Show(errorMessage, "Application Error", MessageBoxButton.YesNoCancel, MessageBoxImage.Error) == MessageBoxResult.No)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        #endregion
+
+        #region Usage statistics
+
+        private bool HasRun()
+        {
+            const string REGISTRY_KEY = @"HKEY_CURRENT_USER\ReVersion";
+            const string REGISTY_VALUE = "FirstRun";
+            if (Convert.ToInt32(Registry.GetValue(REGISTRY_KEY, REGISTY_VALUE, 0)) == 0)
+            {
+                //Change the value since the program has run once now
+                Microsoft.Win32.Registry.SetValue(REGISTRY_KEY, REGISTY_VALUE, 1, Microsoft.Win32.RegistryValueKind.DWord);
+                return true;
+            }
+            return false;
+        }
+
+        private void FirstRun()
+        {
+            AnalyticsService.Session.CreatePageViewRequest("First-Run", "First Run").Send();
+        }
+
+        #endregion
+
     }
 }

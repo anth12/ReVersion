@@ -7,14 +7,11 @@ using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
 using ReVersion.Models.Home;
-using ReVersion.Services.Settings;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.Settings;
-using ReVersion.Views;
 
 namespace ReVersion.ViewModels.Home
 {
@@ -60,6 +57,7 @@ namespace ReVersion.ViewModels.Home
 
             //Finally, load the data
             LoadRepositories();
+            
         }
         
         #region Commands

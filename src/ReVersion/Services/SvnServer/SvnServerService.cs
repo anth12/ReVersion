@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ReVersion.Services.ErrorLogging;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
 using ReVersion.Services.SvnClient.Requests;
@@ -48,7 +49,10 @@ namespace ReVersion.Services.SvnServer
                         "cache");
                     if (repoList != null && repoList.Any())
                     {
-                        result.Repositories.AddRange(repoList);
+                        lock (_lock)
+                        {
+                            result.Repositories.AddRange(repoList);
+                        }
                         return;
                     }
                 }
@@ -65,10 +69,10 @@ namespace ReVersion.Services.SvnServer
                     }
                     else
                     {
-                        //lock (_lock)
-                        
+                        lock (_lock)
+                        {
                             result.Repositories.AddRange(response.Repositories);
-                        
+                        }
 
                         //Save the results
                         AppDataHelper.SaveJson(svnServerSettings.Id.ToString(), response.Repositories, "cache");
@@ -78,6 +82,8 @@ namespace ReVersion.Services.SvnServer
                 }
                 catch (Exception ex)
                 {
+                    ErrorLog.Log($"Error updating {svnServerSettings.Type} ({svnServerSettings.BaseUrl})", ex);
+
                     result.Messages.Add(ex.Message);
 
 #if DEBUG

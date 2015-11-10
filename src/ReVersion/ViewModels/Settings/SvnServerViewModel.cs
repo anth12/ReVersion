@@ -9,20 +9,20 @@ namespace ReVersion.ViewModels.Settings
         public SvnServerViewModel(SettingsViewModel parent)
         {
             this.parent = parent;
-            RemoveServerCommand = CommandFromFunction(x => RemoveServer());
+            RemoveCommand = CommandFromFunction(x => Remove());
 
         }
 
         private SettingsViewModel parent { get; set; }
 
         #region Commands
-        public ICommand RemoveServerCommand { get; set; }
+        public ICommand RemoveCommand { get; set; }
         #endregion
 
         #region Events
         
 
-        private void RemoveServer()
+        private void Remove()
         {
             parent.Servers.Remove(this);
         }

@@ -131,7 +131,6 @@ namespace ReVersion.ViewModels.Settings
 
         private void RemoveServer()
         {
-            //TODO
         }
 
         private void CheckoutFolderPicker()

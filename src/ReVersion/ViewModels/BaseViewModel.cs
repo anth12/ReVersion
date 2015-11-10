@@ -12,7 +12,8 @@ namespace ReVersion.ViewModels
     {
         protected BaseViewModel()
         {
-        }  
+        }
+        
 
         private TModel model;
         public TModel Model

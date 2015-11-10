@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using MahApps.Metro.Controls;
+using ReVersion.Services.Analytics;
+
 namespace ReVersion.Views
 {
     /// <summary>
@@ -11,6 +13,17 @@ namespace ReVersion.Views
         public HomeWindow()
         {
             InitializeComponent();
+            
+            var screenName = this.GetType().Name;
+
+            try
+            {
+                AnalyticsService.Session.CreatePageViewRequest(screenName, screenName).Send();
+            }
+            catch (Exception)
+            {
+                //Fail silently
+            }
         }
         
         #region Window Open/Close events

@@ -4,7 +4,7 @@ namespace ReVersion.Models.Settings
 {
     public enum SvnNamingConvention
     {
-        [Description("The name of all repositories is persevered in the Original format")]
+        [Description("The name of all Repositories is persevered in the Original format")]
         PreserveOriginal,
 
         [Description("The name of all Repositories are converted to upperCamelCase")]
