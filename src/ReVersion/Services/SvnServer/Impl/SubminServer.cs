@@ -9,7 +9,7 @@ using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
-    public class SubminServer : ISvnServer
+    internal class SubminServer : ISvnServer
     {
         public SvnServerType ServerType { get; } = SvnServerType.Submin;
 
@@ -62,7 +62,7 @@ namespace ReVersion.Services.SvnServer.Impl
         #region XML response objects (for mapping)
 
         [XmlRoot(ElementName = "repository")]
-        public class Repository
+        internal class Repository
         {
             [XmlAttribute(AttributeName = "valid")]
             public string Valid { get; set; }
@@ -72,14 +72,14 @@ namespace ReVersion.Services.SvnServer.Impl
         }
 
         [XmlRoot(ElementName = "repositories")]
-        public class Repositories
+        internal class Repositories
         {
             [XmlElement(ElementName = "repository")]
             public List<Repository> Repository { get; set; }
         }
 
         [XmlRoot(ElementName = "command")]
-        public class Command
+        internal class Command
         {
             [XmlElement(ElementName = "repositories")]
             public Repositories Repositories { get; set; }
@@ -92,7 +92,7 @@ namespace ReVersion.Services.SvnServer.Impl
         }
 
         [XmlRoot(ElementName = "response")]
-        public class Response
+        internal class Response
         {
             [XmlElement(ElementName = "command")]
             public Command Command { get; set; }

@@ -9,11 +9,11 @@ using SharpSvn;
 
 namespace ReVersion.Services.SvnClient
 {
-    public class SvnClientService
+    internal class SvnClientService
     {
         public bool IsCheckedOut(IsCheckedOutRequest request)
         {
-            var projectFolder = GetRepositoryFolder(request.ProjectName);
+            var projectFolder = DirectoryHelper.GetRepositoryFolder(request.ProjectName);
 
             return Directory.Exists(projectFolder);
             // TODO we are assuming that because the folder exists the repo must be there... 
@@ -22,7 +22,7 @@ namespace ReVersion.Services.SvnClient
 
         public bool CheckoutRepository(CheckoutRepositoryRequest request)
         {
-            var projectFolder = GetRepositoryFolder(request.ProjectName);
+            var projectFolder = DirectoryHelper.GetRepositoryFolder(request.ProjectName);
 
             if (!Directory.Exists(projectFolder))
             {
@@ -74,16 +74,6 @@ namespace ReVersion.Services.SvnClient
             
         }
 
-        private string GetRepositoryFolder(string repositoryName)
-        {
-            var repositoryFolder = SettingsService.Current.CheckoutFolder;
-
-            if (!repositoryFolder.EndsWith("\\"))
-                repositoryFolder += "\\";
-
-            repositoryFolder += repositoryName.ToConventionCase(SettingsService.Current.NamingConvention) +
-                                $"\\{SettingsService.Current.DefaultSvnPath}";
-            return repositoryFolder;
-        }
+        
     }
 }

@@ -6,7 +6,7 @@ using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.Settings
 {
-    public class SettingsService
+    internal class SettingsService
     {
         static SettingsService()
         {

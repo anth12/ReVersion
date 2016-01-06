@@ -5,7 +5,7 @@ using ReVersion.Services;
 
 namespace ReVersion.Utilities.Helpers
 {
-    public class NotificationHelper
+    internal class NotificationHelper
     {
         private const string AppId = "ReVersion";
 

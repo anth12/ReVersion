@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
              mc:Ignorable="d"
-             xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
              d:DesignHeight="50" d:DesignWidth="350">
     <UserControl.Resources>
-        <c:VisibilityValueConverter x:Key="VisibilityConverter"></c:VisibilityValueConverter>
-        <c:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></c:ReverseVisibilityValueConverter>
+        <converters:VisibilityValueConverter x:Key="VisibilityConverter"></converters:VisibilityValueConverter>
+        <converters:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></converters:ReverseVisibilityValueConverter>
     </UserControl.Resources>
 
-    <Border BorderBrush="Gray" BorderThickness="1" Margin="2" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}">
+    <Border BorderBrush="Gray" BorderThickness="1" Margin="2" 
+            IsEnabled="{Binding Model.IsEnabled}" 
+            Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}">
 
         <Grid Margin="3">
             <Grid.ColumnDefinitions>
@@ -21,6 +23,7 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="1">
+
                 <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="18" MaxWidth="300" />
                 <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url}" IsReadOnly="True"
@@ -29,14 +32,23 @@
 
             <Grid Grid.Column="2" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource ReverseVisibilityConverter}}">
 
-                <Button Width="76" Content="Checkout" Command="{Binding CheckoutCommand}" 
-                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource ReverseVisibilityConverter}}"/>
+                <Button Width="76" Content="Checkout" 
+                        IsEnabled="{Binding Model.CheckoutEnabled}"
+                        Command="{Binding CheckoutCommand}" 
+                        Style="{DynamicResource SquareButtonStyle}" 
+                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource ReverseVisibilityConverter}}"/>
 
-                <Button Width="76" Content="Checked out" IsEnabled="False"
-                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}}"/>
+                <Button Width="76"  Content="Browse" 
+                        Command="{Binding BrowseCommand}"
+                        Style="{DynamicResource SquareButtonStyle}" 
+                        Background="{Binding Model.BackgroundBrush}"
+                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}}"/>
 
             </Grid>
-            <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource VisibilityConverter}}"/>
+
+            <CheckBox Grid.Column="2" 
+                      IsChecked="{Binding Model.IsChecked}" 
+                      Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource VisibilityConverter}}"/>
         </Grid>
 
     </Border>

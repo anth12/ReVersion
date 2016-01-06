@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ReVersion.Services
 {
-    public class Result
+    internal class Result
     {
         public bool Status { get; set; }
         public List<string> Messages { get; set; } = new List<string>();

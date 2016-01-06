@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace ReVersion.Utilities.Converters
 {
-    public class VisibilityValueConverter : IValueConverter
+    internal class VisibilityValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

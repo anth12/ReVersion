@@ -11,7 +11,7 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace ReVersion.ViewModels.Settings
 {
-    public class SettingsViewModel : BaseViewModel<SettingsModel>
+    internal class SettingsViewModel : BaseViewModel<SettingsModel>
     {
         public SettingsViewModel(HomeViewModel home)
         {
@@ -116,7 +116,6 @@ namespace ReVersion.ViewModels.Settings
             Servers.ToList().ForEach(s=> SettingsService.Current.Servers.Add(s.Model));
 
             SettingsService.Save();
-            NotificationHelper.Show("Settings Updated");
 
             _home.OpenSettingsCommand.Execute(null);
         }

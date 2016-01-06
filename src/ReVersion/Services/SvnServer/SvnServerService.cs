@@ -12,7 +12,7 @@ using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer
 {
-    public class SvnServerService
+    internal class SvnServerService
     {
         private readonly List<ISvnServer> _subversionServers;
 

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace ReVersion.Models
 {
-    public class BaseModel : INotifyPropertyChanged, IModel
+    internal class BaseModel : INotifyPropertyChanged, IModel
     {
         #region Property Helpers
 

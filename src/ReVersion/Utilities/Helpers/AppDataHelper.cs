@@ -5,7 +5,7 @@ using ReVersion.Utilities.Extensions;
 
 namespace ReVersion.Utilities.Helpers
 {
-    public class AppDataHelper
+    internal class AppDataHelper
     {
         public static void WriteFile(string fileName, string fileType, string contents, string directory = "")
         {

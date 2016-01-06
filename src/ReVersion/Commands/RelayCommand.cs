@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace ReVersion.Commands
 {
-    public class RelayCommand : ICommand
+    internal class RelayCommand : ICommand
     {
         private readonly Action<object> _action;
         

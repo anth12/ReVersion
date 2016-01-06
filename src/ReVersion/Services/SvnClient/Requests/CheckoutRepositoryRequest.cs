@@ -1,6 +1,6 @@
 ﻿namespace ReVersion.Services.SvnClient.Requests
 {
-    public class CheckoutRepositoryRequest
+    internal class CheckoutRepositoryRequest
     {
         public string SvnUsername { get; set; }
         public string SvnPassword { get; set; }

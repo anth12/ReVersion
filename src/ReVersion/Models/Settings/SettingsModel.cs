@@ -5,7 +5,7 @@ using ReVersion.Utilities.Extensions;
 
 namespace ReVersion.Models.Settings
 {
-    public class SettingsModel : BaseModel
+    internal class SettingsModel : BaseModel
     {
         public SettingsModel()
         {

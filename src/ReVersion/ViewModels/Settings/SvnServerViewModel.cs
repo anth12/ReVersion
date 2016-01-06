@@ -4,7 +4,7 @@ using ReVersion.Models.Settings;
 
 namespace ReVersion.ViewModels.Settings
 {
-    public class SvnServerViewModel : BaseViewModel<SvnServerModel>
+    internal class SvnServerViewModel : BaseViewModel<SvnServerModel>
     {
         public SvnServerViewModel(SettingsViewModel parent)
         {

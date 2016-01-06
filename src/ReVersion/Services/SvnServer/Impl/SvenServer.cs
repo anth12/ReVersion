@@ -13,7 +13,7 @@ using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
-    public class SvenServer : ISvnServer
+    internal class SvenServer : ISvnServer
     {
         public SvnServerType ServerType { get; } = SvnServerType.Sven;
 

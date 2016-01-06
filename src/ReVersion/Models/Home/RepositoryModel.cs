@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Windows.Media;
 
 namespace ReVersion.Models.Home
 {
-    public class RepositoryModel : BaseModel
+    internal class RepositoryModel : BaseModel
     {
 
         private bool _checkedOut;
         private bool _isChecked;
         private bool _isEnabled;
+        private bool _checkoutEnabled;
         private bool _bulkCheckoutActive;
         private string _name;
         private Guid _svnServerId;
@@ -16,7 +18,7 @@ namespace ReVersion.Models.Home
         public bool CheckedOut
         {
             get { return _checkedOut; }
-            set { SetField(ref _checkedOut, value); }
+            set { SetField(ref _checkedOut, value); OnPropertyChanged(nameof(BackgroundBrush)); }
         }
 
         public bool IsChecked
@@ -30,7 +32,13 @@ namespace ReVersion.Models.Home
             get { return _isEnabled; }
             set { SetField(ref _isEnabled, value); }
         }
-        
+
+        public bool CheckoutEnabled
+        {
+            get { return _checkoutEnabled; }
+            set { SetField(ref _checkoutEnabled, value); }
+        }
+
         public bool BulkCheckoutActive
         {
             get { return _bulkCheckoutActive; }
@@ -55,5 +63,9 @@ namespace ReVersion.Models.Home
             get { return _url; }
             set { SetField(ref _url, value); }
         }
+
+        public SolidColorBrush BackgroundBrush => CheckedOut
+            ? new SolidColorBrush(Color.FromRgb(101, 84, 117))
+            : new SolidColorBrush(Colors.Transparent);
     }
 }

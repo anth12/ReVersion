@@ -1,6 +1,6 @@
 ﻿namespace ReVersion.Services.SvnServer.Requests
 {
-    public class ListRepositoriesRequest
+    internal class ListRepositoriesRequest
     {
         public string Url { get; set; }
         public string Username { get; set; }

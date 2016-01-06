@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReVersion.Utilities.Helpers
 {
-    public class AuthenticationHelper
+    internal class AuthenticationHelper
     {
         private static readonly byte[] Key =
         {

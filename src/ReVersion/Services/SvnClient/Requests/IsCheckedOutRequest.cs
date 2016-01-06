@@ -1,6 +1,6 @@
 ﻿namespace ReVersion.Services.SvnClient.Requests
 {
-    public class IsCheckedOutRequest
+    internal class IsCheckedOutRequest
     {
         public string ProjectName { get; set; }
     }

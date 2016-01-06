@@ -3,7 +3,7 @@ using ReVersion.ViewModels.Home;
 
 namespace ReVersion.Models.Home
 {
-    public class HomeModel : BaseModel
+    internal class HomeModel : BaseModel
     {
         public HomeModel(HomeViewModel viewModel)
         {

@@ -15,7 +15,7 @@ using ReVersion.ViewModels.Settings;
 
 namespace ReVersion.ViewModels.Home
 {
-    public class HomeViewModel : BaseViewModel<HomeModel>
+    internal class HomeViewModel : BaseViewModel<HomeModel>
     {
         public HomeViewModel()
         {
@@ -189,6 +189,7 @@ namespace ReVersion.ViewModels.Home
                 var model = new RepositoryModel
                 {
                     CheckedOut = repo.CheckedOut,
+                    CheckoutEnabled = !repo.CheckedOut,
                     Name = repo.Name,
                     SvnServerId = repo.SvnServerId,
                     Url = repo.Url,

@@ -7,7 +7,7 @@ using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
-    public class VisualSvnServerServer : ISvnServer
+    internal class VisualSvnServerServer : ISvnServer
     {
         public SvnServerType ServerType { get; } = SvnServerType.VisualSvn;
 
@@ -43,7 +43,7 @@ namespace ReVersion.Services.SvnServer.Impl
         #region XML response objects (for mapping)
 
         [XmlRoot(ElementName = "dir")]
-        public class Dir
+        internal class Dir
         {
             [XmlAttribute(AttributeName = "name")]
             public string Name { get; set; }
@@ -53,7 +53,7 @@ namespace ReVersion.Services.SvnServer.Impl
         }
 
         [XmlRoot(ElementName = "index")]
-        public class Index
+        internal class Index
         {
             [XmlElement(ElementName = "dir")]
             public List<Dir> Dir { get; set; }
@@ -66,7 +66,7 @@ namespace ReVersion.Services.SvnServer.Impl
         }
 
         [XmlRoot(ElementName = "svn")]
-        public class Response
+        internal class Response
         {
             [XmlElement(ElementName = "index")]
             public Index Index { get; set; }

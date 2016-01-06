@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReVersion.Utilities.Helpers
 {
-    public class WebClientSession : WebClient
+    internal class WebClientSession : WebClient
     {
         public WebClientSession()
         {

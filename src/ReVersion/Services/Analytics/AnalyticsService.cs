@@ -4,7 +4,7 @@ using Garlic;
 
 namespace ReVersion.Services.Analytics
 {
-    public class AnalyticsService
+    internal class AnalyticsService
     {
         static AnalyticsService()
         {

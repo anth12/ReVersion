@@ -7,7 +7,7 @@ using ReVersion.Models;
 
 namespace ReVersion.ViewModels
 {
-    public abstract class BaseViewModel<TModel> : INotifyPropertyChanged
+    internal abstract class BaseViewModel<TModel> : INotifyPropertyChanged
         where TModel : IModel
     {
         protected BaseViewModel()

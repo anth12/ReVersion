@@ -30,7 +30,7 @@
     <InstallUrl>http://reversion.azurewebsites.net/download/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -151,6 +151,7 @@
     <Compile Include="Utilities\Helpers\AppDataHelper.cs" />
     <Compile Include="Utilities\Helpers\AuthenticationHelper.cs" />
     <Compile Include="Utilities\Helpers\CommandLineHelper.cs" />
+    <Compile Include="Utilities\Helpers\DirectoryHelper.cs" />
     <Compile Include="Utilities\Helpers\NotificationHelper.cs" />
     <Compile Include="Utilities\Helpers\WebClientSession.cs">
       <SubType>Component</SubType>
