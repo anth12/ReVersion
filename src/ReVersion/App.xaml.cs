@@ -75,12 +75,12 @@ Do you want to continue?
 
         private bool HasRun()
         {
-            const string REGISTRY_KEY = @"HKEY_CURRENT_USER\ReVersion";
-            const string REGISTY_VALUE = "FirstRun";
-            if (Convert.ToInt32(Registry.GetValue(REGISTRY_KEY, REGISTY_VALUE, 0)) == 0)
+            const string registryKey = @"HKEY_CURRENT_USER\ReVersion";
+            const string registyValue = "FirstRun";
+            if (Convert.ToInt32(Registry.GetValue(registryKey, registyValue, 0)) == 0)
             {
                 //Change the value since the program has run once now
-                Microsoft.Win32.Registry.SetValue(REGISTRY_KEY, REGISTY_VALUE, 1, Microsoft.Win32.RegistryValueKind.DWord);
+                Microsoft.Win32.Registry.SetValue(registryKey, registyValue, 1, Microsoft.Win32.RegistryValueKind.DWord);
                 return true;
             }
             return false;

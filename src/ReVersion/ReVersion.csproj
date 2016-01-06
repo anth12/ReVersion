@@ -30,8 +30,8 @@
     <InstallUrl>http://reversion.azurewebsites.net/download/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>10</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,7 +60,7 @@
     <ApplicationIcon>Resources\Icon_512.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>FECA4FD62E4EB08971BBE0816F6E73AD2052CF4C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3B7BB134D95C78353A63619E61805AC4AC39C725</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>

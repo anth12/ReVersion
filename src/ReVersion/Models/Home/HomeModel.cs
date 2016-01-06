@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using ReVersion.ViewModels.Home;
-using ReVersion.ViewModels.Settings;
 
 namespace ReVersion.Models.Home
 {
@@ -8,43 +7,43 @@ namespace ReVersion.Models.Home
     {
         public HomeModel(HomeViewModel viewModel)
         {
-            search = "";
-            this.viewModel = viewModel;
+            _search = "";
+            _viewModel = viewModel;
         }
 
-        private HomeViewModel viewModel;
+        private readonly HomeViewModel _viewModel;
 
 
         #region Properties
 
-        private bool loading;
-        private string search;
-        private bool settingActive;
+        private bool _loading;
+        private string _search;
+        private bool _settingActive;
 
-        public string CountSummary => $"Showing {viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {viewModel.Repositories.Count()}";
-        public string CheckoutSummary => $"Checkout {viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
-        public int SelectedRepositories => viewModel.Repositories.Count(r=> r.Model.IsChecked);
+        public string CountSummary => $"Showing {_viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {_viewModel.Repositories.Count()}";
+        public string CheckoutSummary => $"Checkout {_viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (_viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
+        public int SelectedRepositories => _viewModel.Repositories.Count(r=> r.Model.IsChecked);
 
         public bool Loading
         {
-            get { return loading; }
-            set { SetField(ref loading, value); }
+            get { return _loading; }
+            set { SetField(ref _loading, value); }
         }
 
         public string Search
         {
-            get { return search; }
-            set { SetField(ref search, value); }
+            get { return _search; }
+            set { SetField(ref _search, value); }
         }
         
         public bool SettingsActive
         {
-            get { return settingActive; }
-            set { SetField(ref settingActive, value); }
+            get { return _settingActive; }
+            set { SetField(ref _settingActive, value); }
         }
 
-        public bool IsBulkCheckoutButtonActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);
-        public bool IsBulkCheckoutActive => viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive);
+        public bool IsBulkCheckoutButtonActive => _viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);
+        public bool IsBulkCheckoutActive => _viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive);
 
         #endregion
 

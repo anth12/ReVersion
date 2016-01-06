@@ -21,8 +21,8 @@ namespace ReVersion.ViewModels.Home
         {
             Model = new HomeModel(this);
 
-            repositories = new ObservableCollection<RepositoryViewModel>();
-            settings = new SettingsViewModel(this);
+            _repositories = new ObservableCollection<RepositoryViewModel>();
+            _settings = new SettingsViewModel(this);
 
             //Configure Commands
             OpenSettingsCommand = CommandFromFunction(x => OpenSettings());
@@ -52,7 +52,7 @@ namespace ReVersion.ViewModels.Home
             };
 
             //Configure the search filter
-            Filter = (model) => Model.Search.IsBlank()
+            _filter = (model) => Model.Search.IsBlank()
                              || model.Model.Name.ToCamelCase().ToLower().Contains(Model.Search.ToCamelCase().ToLower());
 
             //Finally, load the data
@@ -154,22 +154,22 @@ namespace ReVersion.ViewModels.Home
 
         #region Business Logic
 
-        private SettingsViewModel settings;
+        private SettingsViewModel _settings;
 
         public SettingsViewModel Settings
         {
-            get { return settings; }
-            set { SetField(ref settings, value); }
+            get { return _settings; }
+            set { SetField(ref _settings, value); }
         }
 
-        private Func<RepositoryViewModel, bool> Filter;
+        private Func<RepositoryViewModel, bool> _filter;
 
-        private ObservableCollection<RepositoryViewModel> repositories;
+        private ObservableCollection<RepositoryViewModel> _repositories;
 
         public ObservableCollection<RepositoryViewModel> Repositories
         {
-            get { return repositories; }
-            set { SetField(ref repositories, value); }
+            get { return _repositories; }
+            set { SetField(ref _repositories, value); }
         }
 
 
@@ -222,7 +222,7 @@ namespace ReVersion.ViewModels.Home
         {
             foreach (var repo in Repositories)
             {
-                var active = Filter.Invoke(repo);
+                var active = _filter.Invoke(repo);
                 repo.Model.IsEnabled = active;
             }
 

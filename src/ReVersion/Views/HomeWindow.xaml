@@ -7,17 +7,17 @@
                       xmlns:vw="clr-namespace:ReVersion.Views.Repository"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
-                      xmlns:homeVM="clr-namespace:ReVersion.ViewModels.Home"
+                      xmlns:homeVm="clr-namespace:ReVersion.ViewModels.Home"
                       xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
                       Icon="/ReVersion;component/Resources/Icon_512.ico"
                       Title="ReVersion" Height="600" Width="900" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type homeVM:RepositoryViewModel}">
+        <DataTemplate DataType="{x:Type homeVm:RepositoryViewModel}">
             <vw:Repository />
         </DataTemplate>
-        <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
+        <c:VisibilityValueConverter x:Key="VisibilityConverter"></c:VisibilityValueConverter>
     </Window.Resources>
 
 
@@ -76,7 +76,7 @@
             Style="{DynamicResource SquareButtonStyle}"
             Content="{Binding Model.CheckoutSummary}" 
             Command="{Binding BulkCheckoutCommand}" 
-            Visibility="{Binding Model.IsBulkCheckoutButtonActive, Converter={StaticResource visibilityConverter}}">
+            Visibility="{Binding Model.IsBulkCheckoutButtonActive, Converter={StaticResource VisibilityConverter}}">
         </Button>
         
         <Grid Height="40" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 0 10 0">

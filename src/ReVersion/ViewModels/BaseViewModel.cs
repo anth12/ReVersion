@@ -15,11 +15,11 @@ namespace ReVersion.ViewModels
         }
         
 
-        private TModel model;
+        private TModel _model;
         public TModel Model
         {
-            get { return model; }
-            set { SetField(ref model, value); }
+            get { return _model; }
+            set { SetField(ref _model, value); }
         }
 
         #region Property Helpers

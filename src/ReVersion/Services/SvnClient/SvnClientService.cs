@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
@@ -63,7 +64,12 @@ namespace ReVersion.Services.SvnClient
                 }
             }
 
-            NotificationHelper.Show($"{request.ProjectName} checked out");
+            NotificationHelper.Show($"{request.ProjectName} checked out",
+                onActivate: (sender, args) =>
+                {
+                    //When the toas is clicked, open the newly checked out folder
+                    Process.Start(projectFolder);
+                });
             return true;
             
         }

@@ -7,11 +7,11 @@
              xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
              d:DesignHeight="50" d:DesignWidth="350">
     <UserControl.Resources>
-        <c:VisibilityValueConverter x:Key="visibilityConverter"></c:VisibilityValueConverter>
-        <c:ReverseVisibilityValueConverter x:Key="reverseVisibilityConverter"></c:ReverseVisibilityValueConverter>
+        <c:VisibilityValueConverter x:Key="VisibilityConverter"></c:VisibilityValueConverter>
+        <c:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></c:ReverseVisibilityValueConverter>
     </UserControl.Resources>
 
-    <Border BorderBrush="Gray" BorderThickness="1" Margin="2" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.IsEnabled, Converter={StaticResource visibilityConverter}}">
+    <Border BorderBrush="Gray" BorderThickness="1" Margin="2" IsEnabled="{Binding Model.IsEnabled}" Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}">
 
         <Grid Margin="3">
             <Grid.ColumnDefinitions>
@@ -27,16 +27,16 @@
                      TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
             </StackPanel>
 
-            <Grid Grid.Column="2" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource reverseVisibilityConverter}}">
+            <Grid Grid.Column="2" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource ReverseVisibilityConverter}}">
 
                 <Button Width="76" Content="Checkout" Command="{Binding CheckoutCommand}" 
-                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource reverseVisibilityConverter}}"/>
+                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource ReverseVisibilityConverter}}"/>
 
                 <Button Width="76" Content="Checked out" IsEnabled="False"
-                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource visibilityConverter}}"/>
+                    Style="{DynamicResource SquareButtonStyle}" Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}}"/>
 
             </Grid>
-            <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource visibilityConverter}}"/>
+            <CheckBox Grid.Column="2" IsChecked="{Binding Model.IsChecked}" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource VisibilityConverter}}"/>
         </Grid>
 
     </Border>

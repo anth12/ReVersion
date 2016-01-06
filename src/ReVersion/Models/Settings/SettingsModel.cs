@@ -9,21 +9,21 @@ namespace ReVersion.Models.Settings
     {
         public SettingsModel()
         {
-            defaultSvnPath = "trunk";
+            _defaultSvnPath = "trunk";
             Servers = new ObservableCollection<SvnServerModel>();
         }
 
         #region Properties
-        private string checkoutFolder;
-        private string defaultSvnPath;
-        private SvnNamingConvention namingConvention;
-        private ObservableCollection<SvnServerModel> servers;
+        private string _checkoutFolder;
+        private string _defaultSvnPath;
+        private SvnNamingConvention _namingConvention;
+        private ObservableCollection<SvnServerModel> _servers;
 
 
         public ObservableCollection<SvnServerModel> Servers
         {
-            get { return servers; }
-            set { SetField(ref servers, value); }
+            get { return _servers; }
+            set { SetField(ref _servers, value); }
         }
 
         [JsonIgnore]
@@ -31,20 +31,20 @@ namespace ReVersion.Models.Settings
 
         public string CheckoutFolder
         {
-            get { return checkoutFolder; }
-            set { SetField(ref checkoutFolder, value); }
+            get { return _checkoutFolder; }
+            set { SetField(ref _checkoutFolder, value); }
         }
 
         public string DefaultSvnPath
         {
-            get { return defaultSvnPath; }
-            set { SetField(ref defaultSvnPath, value); }
+            get { return _defaultSvnPath; }
+            set { SetField(ref _defaultSvnPath, value); }
         }
 
         public SvnNamingConvention NamingConvention
         {
-            get { return namingConvention; }
-            set { SetField(ref namingConvention, value); OnPropertyChanged(nameof(NamingConventionDescription)); }
+            get { return _namingConvention; }
+            set { SetField(ref _namingConvention, value); OnPropertyChanged(nameof(NamingConventionDescription)); }
         }
         
         #endregion

@@ -40,15 +40,15 @@ namespace ReVersion.Utilities.Helpers
             StringDelegate outputStreamAsyncReader = cmdLineProcess.StandardOutput.ReadToEnd;
             StringDelegate errorStreamAsyncReader = cmdLineProcess.StandardError.ReadToEnd;
 
-            var outAR = outputStreamAsyncReader.BeginInvoke(null, null);
-            var errAR = errorStreamAsyncReader.BeginInvoke(null, null);
+            var outAr = outputStreamAsyncReader.BeginInvoke(null, null);
+            var errAr = errorStreamAsyncReader.BeginInvoke(null, null);
 
             if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
             {
                 /* WaitHandle.WaitAll fails on single-threaded 
                  * apartments. Poll for completion instead:
                  */
-                while (!(outAR.IsCompleted && errAR.IsCompleted))
+                while (!(outAr.IsCompleted && errAr.IsCompleted))
                 {
                     /* Check again every 10 milliseconds: */
                     Thread.Sleep(10);
@@ -57,8 +57,8 @@ namespace ReVersion.Utilities.Helpers
             else
             {
                 var arWaitHandles = new WaitHandle[2];
-                arWaitHandles[0] = outAR.AsyncWaitHandle;
-                arWaitHandles[1] = errAR.AsyncWaitHandle;
+                arWaitHandles[0] = outAr.AsyncWaitHandle;
+                arWaitHandles[1] = errAr.AsyncWaitHandle;
 
                 if (!WaitHandle.WaitAll(arWaitHandles))
                 {
@@ -70,8 +70,8 @@ namespace ReVersion.Utilities.Helpers
                 }
             }
 
-            var results = outputStreamAsyncReader.EndInvoke(outAR);
-            errorMessage = errorStreamAsyncReader.EndInvoke(errAR);
+            var results = outputStreamAsyncReader.EndInvoke(outAr);
+            errorMessage = errorStreamAsyncReader.EndInvoke(errAr);
 
             /* At this point the process should surely have exited,
              * since both the error and output streams have been fully read.

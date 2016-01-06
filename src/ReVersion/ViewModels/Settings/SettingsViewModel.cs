@@ -15,7 +15,7 @@ namespace ReVersion.ViewModels.Settings
     {
         public SettingsViewModel(HomeViewModel home)
         {
-            this.home = home;
+            this._home = home;
             
             Servers = new ObservableCollection<SvnServerViewModel>();
             
@@ -30,13 +30,13 @@ namespace ReVersion.ViewModels.Settings
             ExportCommand = CommandFromFunction(x => Export());
         }
 
-        private HomeViewModel home;
+        private HomeViewModel _home;
 
-        private ObservableCollection<SvnServerViewModel> servers;
+        private ObservableCollection<SvnServerViewModel> _servers;
         public ObservableCollection<SvnServerViewModel> Servers
         {
-            get { return servers; }
-            set { SetField(ref servers, value); }
+            get { return _servers; }
+            set { SetField(ref _servers, value); }
         }
 
         #region Commands
@@ -56,7 +56,7 @@ namespace ReVersion.ViewModels.Settings
         {
             Model = SettingsService.Current;
 
-            servers.Clear();
+            _servers.Clear();
 
             foreach (var server in SettingsService.Current.Servers)
             {
@@ -88,7 +88,7 @@ namespace ReVersion.ViewModels.Settings
                     Load();
 
                     //When settings are imported, trigger an update
-                    home.SvnRefreshCommand.Execute(null);
+                    _home.SvnRefreshCommand.Execute(null);
                 }
             }
         }
@@ -118,7 +118,7 @@ namespace ReVersion.ViewModels.Settings
             SettingsService.Save();
             NotificationHelper.Show("Settings Updated");
 
-            home.OpenSettingsCommand.Execute(null);
+            _home.OpenSettingsCommand.Execute(null);
         }
 
         private void AddServer()

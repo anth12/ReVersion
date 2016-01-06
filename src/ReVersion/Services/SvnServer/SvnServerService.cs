@@ -14,13 +14,13 @@ namespace ReVersion.Services.SvnServer
 {
     public class SvnServerService
     {
-        private readonly List<ISvnServer> subversionServers;
+        private readonly List<ISvnServer> _subversionServers;
 
         public SvnServerService()
         {
             var iSvnServerType = typeof (ISvnServer);
 
-            subversionServers = AppDomain.CurrentDomain.GetAssemblies()
+            _subversionServers = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => a.FullName.StartsWith("ReVersion"))
                 .SelectMany(a => a.GetTypes())
                 .Where(t => iSvnServerType.IsAssignableFrom(t) && !t.IsAbstract)
@@ -57,7 +57,7 @@ namespace ReVersion.Services.SvnServer
                     }
                 }
 
-                var subversionServer = subversionServers.FirstOrDefault(s => s.ServerType == svnServerSettings.Type);
+                var subversionServer = _subversionServers.FirstOrDefault(s => s.ServerType == svnServerSettings.Type);
                 
                 try
                 {

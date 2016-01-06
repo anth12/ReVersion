@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Windows.Foundation;
 using Windows.UI.Notifications;
 using ReVersion.Services;
 
@@ -6,42 +7,46 @@ namespace ReVersion.Utilities.Helpers
 {
     public class NotificationHelper
     {
-        private const string APP_ID = "ReVersion";
+        private const string AppId = "ReVersion";
 
         public static void ShowResult(Result result)
         {
             foreach (var message in result.Messages)
             {
-                ShowToast(message);
+                Show(message);
             }
         }
 
-        public static void Show(string title)
+        public static void Show(
+            string title, 
+            string message = null,
+            string furtherMessage = null,
+            TypedEventHandler<ToastNotification, object> onActivate = null,
+            TypedEventHandler<ToastNotification, ToastDismissedEventArgs> onDismiss = null)
         {
-            ShowToast(title);
-        }
 
-        public static void Show(string title, string message)
-        {
-            ShowToast(title, message);
-        }
-
-        public static void Show(string title, string message1, string message2)
-        {
-            ShowToast(title, message1, message2);
-        }
-
-        private static void ShowToast(params string[] messages)
-        {
             // Get a toast XML template
             var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText01);
 
             // Fill in the text elements
             var stringElements = toastXml.GetElementsByTagName("text");
 
-            for (var index = 0; index < messages.Length; index++)
+            var textIndex = 0;
+            //Add the title
+            stringElements[textIndex].AppendChild(toastXml.CreateTextNode(title));
+            textIndex++;
+
+            //Add the message
+            if (!string.IsNullOrEmpty(message))
             {
-                stringElements[index].AppendChild(toastXml.CreateTextNode(messages[index]));
+                stringElements[textIndex].AppendChild(toastXml.CreateTextNode(message));
+                textIndex++;
+            }
+
+            //Add the further message
+            if (!string.IsNullOrEmpty(furtherMessage))
+            {
+                stringElements[textIndex].AppendChild(toastXml.CreateTextNode(furtherMessage));
             }
 
             // Specify the absolute path to an image
@@ -55,10 +60,18 @@ namespace ReVersion.Utilities.Helpers
 
             var toast = new ToastNotification(toastXml);
 
-            //toast.Activated += ToastActivated;
-            //toast.Dismissed += ToastDismissed;
+            if (onActivate != null)
+            {
+                toast.Activated += onActivate;
+            }
 
-            ToastNotificationManager.CreateToastNotifier(APP_ID).Show(toast);
+            if (onDismiss != null)
+            {
+                toast.Dismissed += onDismiss;
+            }
+
+            ToastNotificationManager.CreateToastNotifier(AppId).Show(toast);
         }
+        
     }
 }
