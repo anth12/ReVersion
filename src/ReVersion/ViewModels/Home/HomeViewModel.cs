@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
@@ -218,18 +220,30 @@ namespace ReVersion.ViewModels.Home
                 NotificationHelper.ShowResult(result);
             }
         }
-
+        
         public void FilterUpdated()
         {
+            cancelFiltering = true;
+            Task.Run(() => Applyfilter());
+        }
+
+        private bool cancelFiltering;
+
+        private async void Applyfilter()
+        {
+            cancelFiltering = false;
+
             foreach (var repo in Repositories)
             {
+                if (cancelFiltering)
+                    break;
+
                 var active = _filter.Invoke(repo);
                 repo.Model.IsEnabled = active;
             }
 
             Model.FilterUpdated();
         }
-
 
         #endregion
     }

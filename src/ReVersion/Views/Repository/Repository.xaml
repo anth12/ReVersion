@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="50" d:DesignWidth="350">
+             d:DesignHeight="80" 
+             Width="420">
     <UserControl.Resources>
         <converters:VisibilityValueConverter x:Key="VisibilityConverter"></converters:VisibilityValueConverter>
         <converters:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></converters:ReverseVisibilityValueConverter>
