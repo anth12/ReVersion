@@ -60,7 +60,7 @@
     <ApplicationIcon>Resources\Icon_512.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3B7BB134D95C78353A63619E61805AC4AC39C725</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BC655E410188565B12D0AC2D5F281E291C657B83</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
@@ -102,6 +102,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />

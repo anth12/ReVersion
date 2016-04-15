@@ -87,7 +87,7 @@ namespace ReVersion.Services.SvnServer
                     result.Messages.Add(ex.Message);
 
 #if DEBUG
-                    //throw ex;
+                    throw ex;
 #endif
                 }
                 

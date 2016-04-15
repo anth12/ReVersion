@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
-using ReVersion.Models;
 using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;

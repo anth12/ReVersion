@@ -6,7 +6,7 @@ using ReVersion.Utilities.Extensions;
 
 namespace ReVersion.Models.Settings
 {
-    internal class SvnServerModel : BaseModel
+    public class SvnServerModel : BaseModel
     {
         public SvnServerModel()
         {
