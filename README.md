@@ -19,6 +19,10 @@ Logo design by:
 	<img src="http://www.l-saurusdesign.host-ed.me/Images/Index/l-saurus.gif" width="150"/>
 </a>
 
+Random Data by:
+[foswig.js](https://github.com/mrsharpoblunto/foswig.js/)
+
+
 Screenshots:
 ![ReVersion Home screen](https://raw.githubusercontent.com/anth12/ReVersion/master/Docs/Images/Home-Example.png)
 
