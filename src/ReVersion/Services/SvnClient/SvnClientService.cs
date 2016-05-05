@@ -11,6 +11,8 @@ namespace ReVersion.Services.SvnClient
 {
     internal class SvnClientService
     {
+        public event EventHandler<SvnProgressEventArgs> ClientProgress;
+
         public bool IsCheckedOut(IsCheckedOutRequest request)
         {
             var projectFolder = DirectoryHelper.GetRepositoryFolder(request.ProjectName);
@@ -41,6 +43,9 @@ namespace ReVersion.Services.SvnClient
 
                 try
                 {
+                    if(ClientProgress != null)
+                        client.Progress += ClientProgress;
+                    
                     var result =
                         client.CheckOut(
                             new SvnUriTarget($"{request.SvnServerUrl}/{SettingsService.Current.DefaultSvnPath}"),
@@ -73,7 +78,6 @@ namespace ReVersion.Services.SvnClient
             return true;
             
         }
-
         
     }
 }

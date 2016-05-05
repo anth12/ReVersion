@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
              mc:Ignorable="d"
              d:DesignHeight="80" 
-             Width="420">
+             d:DesignWidth="420">
     <UserControl.Resources>
         <converters:VisibilityValueConverter x:Key="VisibilityConverter"></converters:VisibilityValueConverter>
         <converters:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></converters:ReverseVisibilityValueConverter>
@@ -45,6 +45,13 @@
                         Background="{Binding Model.BackgroundBrush}"
                         Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}}"/>
 
+                <TextBlock Width="76" 
+                        VerticalAlignment="Bottom"
+                        TextAlignment="Center"
+                        Margin="0 0 0 5"
+                        Visibility="{Binding Model.ShowProgress, Converter={StaticResource VisibilityConverter}}"
+                        Text="{Binding Model.ProgressText}"/>
+                
             </Grid>
 
             <CheckBox Grid.Column="2" 
