@@ -1,0 +1,5 @@
+{"Servers":[
+{"Id":"bdbf4939-4052-46cc-9bdc-1dd4c4591bfb","BaseUrl":"http://10.0.0.123:5000","Type":3,"Username":"ReVersion","Password":"","RepoUpdateDate":"2016-04-25T15:12:14.6398686+01:00"},
+{"Id":"269399d5-217f-4d2f-a238-8a7f3ed8f2f3","BaseUrl":"http://svn.example.com","Type":1,"Username":"ReVersion","Password":"","RepoUpdateDate":"2016-04-25T15:12:24.8787582+01:00"},
+{"Id":"f6d97795-bd92-42b7-bcd4-1c41c4d45d41","BaseUrl":"https://subversion.local","Type":2,"Username":"ReVersion","Password":"","RepoUpdateDate":"2016-04-25T15:42:43.8804315+01:00"}
+],"CheckoutFolder":"C:\\Projects\\","DefaultSvnPath":"trunk","NamingConvention":3}

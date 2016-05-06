@@ -17,7 +17,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>..\..\..\anth12.github.io\downloads\ReVersion\</PublishUrl>
+    <PublishUrl>ftp://waws-prod-db3-029.ftp.azurewebsites.windows.net/site/wwwroot/download/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -27,11 +27,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.thepixelforge.co.uk/downloads/ReVersion/</InstallUrl>
+    <InstallUrl>http://reversion.azurewebsites.net/download/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>7</ApplicationRevision>
-    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -146,6 +146,8 @@
     </Compile>
     <Compile Include="Services\Analytics\AnalyticsService.cs" />
     <Compile Include="Services\ErrorLogging\ErrorLog.cs" />
+    <Compile Include="Services\SvnClient\Requests\GetRepositorySizeRequest.cs" />
+    <Compile Include="Services\SvnClient\Requests\GetReadMeFileRepositoryRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\IsCheckedOutRequest.cs" />
     <Compile Include="Services\SvnClient\SvnErrorHandling.cs" />
     <Compile Include="Services\SvnServer\Impl\WebSvnServer.cs" />
@@ -279,6 +281,9 @@
     <Content Include="Resources\Logo_512.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,7 +11,7 @@
                       xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
                       Icon="/ReVersion;component/Resources/Icon_512.ico"
-                      Title="ReVersion" Height="600" Width="900" Closed="HomeWindow_OnClosed"
+                      Title="ReVersion" Height="600" Width="1180" Closed="HomeWindow_OnClosed"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
         <DataTemplate DataType="{x:Type homeVm:RepositoryViewModel}">

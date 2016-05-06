@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="80" 
              d:DesignWidth="420">
@@ -25,10 +26,17 @@
 
             <StackPanel Grid.Column="1">
 
-                <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name}" IsReadOnly="True"
+                <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name, FallbackValue=ProjectName}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="18" MaxWidth="300" />
-                <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url}" IsReadOnly="True"
+                <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Url, FallbackValue=http://svn.exmaple.com/ProjectName}" IsReadOnly="True"
                      TextWrapping="Wrap" FontSize="8" MaxWidth="300" Foreground="DarkGray" />
+
+                <controls:MetroProgressBar 
+                    VerticalAlignment="Bottom"
+                    Visibility="{Binding Model.ProgressEnabled, Converter={StaticResource VisibilityConverter}}"
+                    Value="{Binding Model.ProgressPercentage}"
+                    Margin="0"
+                    />
             </StackPanel>
 
             <Grid Grid.Column="2" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource ReverseVisibilityConverter}}">
@@ -43,20 +51,21 @@
                         Command="{Binding BrowseCommand}"
                         Style="{DynamicResource SquareButtonStyle}" 
                         Background="{Binding Model.BackgroundBrush}"
-                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}}"/>
+                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"/>
 
                 <TextBlock Width="76" 
                         VerticalAlignment="Bottom"
                         TextAlignment="Center"
                         Margin="0 0 0 5"
+                        FontSize="7"
                         Visibility="{Binding Model.ShowProgress, Converter={StaticResource VisibilityConverter}}"
-                        Text="{Binding Model.ProgressText}"/>
+                        Text="{Binding Model.ProgressText, FallbackValue=0 bytes}"/>
                 
             </Grid>
 
             <CheckBox Grid.Column="2" 
                       IsChecked="{Binding Model.IsChecked}" 
-                      Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource VisibilityConverter}}"/>
+                      Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"/>
         </Grid>
 
     </Border>

@@ -94,8 +94,19 @@ namespace ReVersion.ViewModels.Home
             Model.ShowProgress = true;
             Model.CheckoutEnabled = false;
 
+#pragma warning disable 4014
+            Task.Run(() => svnClientService.RepositorySize(new GetRepositorySizeRequest
+#pragma warning restore 4014
+            {
+                SvnServerUrl = request.SvnServerUrl,
+                RepositorySize = (size) => Model.RepositorySize = size
+            }));
+
+
             var result = await Task.Run(() => svnClientService.CheckoutRepository(request));
 
+
+            Model.Progress = Model.RepositorySize;
             Model.CheckoutEnabled = true;
             Model.ShowProgress = false;
 

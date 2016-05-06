@@ -18,6 +18,7 @@ namespace ReVersion.Models.Home
         private Guid _svnServerId;
         private string _url;
         private long _progress;
+        private long _repositorySize;
 
         public bool CheckedOut
         {
@@ -81,6 +82,20 @@ namespace ReVersion.Models.Home
             {
                 SetField(ref _progress, value);
                 OnPropertyChanged(nameof(ProgressText));
+                OnPropertyChanged(nameof(ProgressEnabled));
+                OnPropertyChanged(nameof(ProgressPercentage));
+            }
+        }
+
+        public long RepositorySize
+        {
+            get { return _repositorySize; }
+            set
+            {
+                SetField(ref _repositorySize, value);
+                OnPropertyChanged(nameof(ProgressText));
+                OnPropertyChanged(nameof(ProgressEnabled));
+                OnPropertyChanged(nameof(ProgressPercentage));
             }
         }
 
@@ -90,10 +105,32 @@ namespace ReVersion.Models.Home
         {
             get
             {
-                var mag = (int)Math.Max(0, Math.Log(_progress, 1024));
-                var adjustedSize = Math.Round(_progress / Math.Pow(1024, mag), 0);
-                return $"{adjustedSize} {SizeSuffixes[mag]}";
+                var currentSuffix = (int)Math.Max(0, Math.Log(_progress, 1024));
+                var currentDownload = Math.Round(_progress / Math.Pow(1024, currentSuffix), 0);
+                var result = $"{currentDownload} {SizeSuffixes[currentSuffix]}";
+
+                if (RepositorySize > 0)
+                {
+                    var totalSuffix = (int)Math.Max(0, Math.Log(RepositorySize, 1024));
+                    var totalDownload = Math.Round(RepositorySize / Math.Pow(1024, totalSuffix), 0);
+
+                    result += $" of {totalDownload} {SizeSuffixes[totalSuffix]}";
+                }
+
+                return result;
             }
+        }
+
+        public bool ProgressEnabled
+        {
+            get { return !CheckoutEnabled && ProgressPercentage > 0 && ProgressPercentage < 100; }
+            set { }
+        }
+
+        public double ProgressPercentage
+        {
+            get { return RepositorySize > 0 ? (((double)Progress/(double)RepositorySize)*100) : 0; }
+            set { }
         }
 
         public SolidColorBrush BackgroundBrush => CheckedOut

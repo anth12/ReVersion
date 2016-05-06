@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using SharpSvn;
+
 
 namespace ReVersion.Services.SvnClient
 {
@@ -77,6 +80,65 @@ namespace ReVersion.Services.SvnClient
                 });
             return true;
             
+        }
+
+        public void RepositorySize(GetRepositorySizeRequest request)
+        {
+            /*  --- Output:
+                Count    : 2686
+                Average  :
+                Sum      : 131446674
+                Maximum  :
+                Minimum  :
+                Property : size
+
+            */
+
+            var command = $"powershell \"([xml](svn list --xml --recursive {request.SvnServerUrl}/{SettingsService.Current.DefaultSvnPath})).lists.list.entry | measure -sum size\"";
+            
+            var processInfo = new ProcessStartInfo("cmd.exe", "/c " + command)
+            {
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true
+            };
+
+            var process = Process.Start(processInfo);
+
+            process.OutputDataReceived += (object sender, DataReceivedEventArgs e) =>
+            {
+
+                if (e != null && e.Data.IsNotBlank() && e.Data.Contains("Sum"))
+                {
+                    var size = long.Parse(e.Data.Split(':').Last());
+                    request.RepositorySize.Invoke(size);
+                }
+            };
+
+            process.BeginOutputReadLine();
+            
+            process.BeginErrorReadLine();
+
+            process.WaitForExit();
+            
+            process.Close();
+        }
+
+        public MemoryStream GetReadMeFile(GetReadMeFileRepositoryRequest request)
+        {
+            var readMeFilePath = (SettingsService.Current.DefaultSvnPath.IsBlank()
+                ? "trunk"
+                : SettingsService.Current.DefaultSvnPath)
+                + "/ReadMe.md";
+
+            var readMeUri = new Uri($"{request.SvnServerUrl}/{readMeFilePath}");
+            var stream = new MemoryStream();
+            using (var client = new SharpSvn.SvnClient())
+            {
+                client.Write(SvnTarget.FromUri(readMeUri), stream);
+            }
+            return stream;
         }
         
     }
