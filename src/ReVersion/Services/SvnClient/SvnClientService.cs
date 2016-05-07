@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
@@ -125,20 +128,57 @@ namespace ReVersion.Services.SvnClient
             process.Close();
         }
 
-        public MemoryStream GetReadMeFile(GetReadMeFileRepositoryRequest request)
+        public string GetReadMeFile(GetReadMeFileRepositoryRequest request)
         {
-            var readMeFilePath = (SettingsService.Current.DefaultSvnPath.IsBlank()
+            var projectPath = request.SvnServerUrl + "/" + (SettingsService.Current.DefaultSvnPath.IsBlank()
                 ? "trunk"
-                : SettingsService.Current.DefaultSvnPath)
-                + "/ReadMe.md";
+                : SettingsService.Current.DefaultSvnPath);
+            
+            var rootFiles = new List<string>();
 
-            var readMeUri = new Uri($"{request.SvnServerUrl}/{readMeFilePath}");
+            using (var client = new SharpSvn.SvnClient())
+            {
+                client.Authentication.SslServerTrustHandlers += (b, e) =>
+                {
+                    e.AcceptedFailures = e.Failures;
+                    e.Save = true; // Save acceptance to authentication store
+                };
+                client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
+
+                Collection<SvnListEventArgs> list;
+                
+                if (client.GetList(projectPath, out list))
+                {
+                    rootFiles.AddRange(list.Select(item => item.Name));
+                }
+            }
+
+            var readmeFileName = rootFiles.FirstOrDefault(file => file.ToLower().Contains("read"));
+
+            if(readmeFileName.IsBlank())
+                return null;
+
+            var readMeFilePath = $"{projectPath}/{readmeFileName}";
+
+            var readMeUri = new Uri(readMeFilePath);
             var stream = new MemoryStream();
             using (var client = new SharpSvn.SvnClient())
             {
-                client.Write(SvnTarget.FromUri(readMeUri), stream);
+                client.Authentication.SslServerTrustHandlers += (b, e) =>
+                {
+                    e.AcceptedFailures = e.Failures;
+                    e.Save = true; // Save acceptance to authentication store
+                };
+
+                client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
+                var target = SvnTarget.FromUri(readMeUri);
+                client.Write(target, stream);
             }
-            return stream;
+            
+            byte[] bytes = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(bytes, 0, (int)stream.Length);
+            return Encoding.ASCII.GetString(bytes);
         }
         
     }

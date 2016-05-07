@@ -7,10 +7,17 @@ namespace ReVersion.Utilities.Helpers
 {
     internal class AppDataHelper
     {
-        public static void WriteFile(string fileName, string fileType, string contents, string directory = "")
+        public static string WriteFile(string fileName, string fileType, string contents, string directory = "")
         {
             var filePath = FilePath(fileName, fileType, directory);
             File.WriteAllText(filePath, contents);
+            return filePath;
+        }
+
+        public static void RemoveFile(string fileName, string fileType, string directory = "")
+        {
+            var filePath = FilePath(fileName, fileType, directory);
+            File.Delete(filePath);
         }
 
         public static void SaveJson<TType>(string fileName, TType data, string directory = "") where TType : class

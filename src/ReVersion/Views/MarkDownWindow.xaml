@@ -1,0 +1,16 @@
+﻿<controls:MetroWindow x:Class="ReVersion.Views.MarkDownWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReVersion.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:utilities="clr-namespace:ReVersion.Utilities"
+        mc:Ignorable="d"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="MarkDownWindow" Height="900" Width="1180">
+
+    <Grid>
+        <WebBrowser utilities:WebBrowserUtility.BindableSource="{Binding Model.BrowserSource}"></WebBrowser>
+    </Grid>
+</controls:MetroWindow>

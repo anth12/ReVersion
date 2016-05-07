@@ -13,6 +13,14 @@
         <converters:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></converters:ReverseVisibilityValueConverter>
     </UserControl.Resources>
 
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Command="{Binding ReadMeCommand}" Header="View ReadMe" />
+            <MenuItem Command="{Binding ViewLogCommand}" Header="View Log" />
+            <MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
     <Border BorderBrush="Gray" BorderThickness="1" Margin="2" 
             IsEnabled="{Binding Model.IsEnabled}" 
             Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}">
@@ -24,6 +32,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            
             <StackPanel Grid.Column="1">
 
                 <TextBox Background="Transparent" BorderThickness="0" Text="{Binding Model.Name, FallbackValue=ProjectName}" IsReadOnly="True"

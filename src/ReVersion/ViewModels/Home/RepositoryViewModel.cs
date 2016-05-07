@@ -1,14 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using ReVersion.Models.Home;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
 using ReVersion.Services.SvnClient.Requests;
+using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
+using ReVersion.ViewModels.MarkDown;
+using ReVersion.Views;
 using SharpSvn;
 
 namespace ReVersion.ViewModels.Home
@@ -19,36 +25,23 @@ namespace ReVersion.ViewModels.Home
         {
             CheckoutCommand = CommandFromFunction(c=> Checkout());
             BrowseCommand = CommandFromFunction(c=> Browse());
+
+            ReadMeCommand = CommandFromFunction(c=> ReadMe());
             ViewLogCommand = CommandFromFunction(c=> ViewLog());
             RepoBrowserCommand = CommandFromFunction(c=> RepoBrowser());
 
-            ButtonOptions = new ObservableCollection<RepositoryAction>
-            {
-                new RepositoryAction {Title = "Browse", Command = BrowseCommand},
-                new RepositoryAction {Title = "Checkout", Command = CheckoutCommand},
-                new RepositoryAction {Title = "View Log", Command = ViewLogCommand},
-                new RepositoryAction {Title = "Repo Browser", Command = RepoBrowserCommand}
-            };
-
         }
 
-
-        private ObservableCollection<RepositoryAction> _buttonOptions;
-
+        
         #region Commands
         public ICommand CheckoutCommand { get; set; }
         public ICommand BrowseCommand { get; set; }
+
+        public ICommand ReadMeCommand { get; set; }
         public ICommand ViewLogCommand { get; set; }
         public ICommand RepoBrowserCommand { get; set; }
         #endregion
-
-
-        public ObservableCollection<RepositoryAction> ButtonOptions
-        {
-            get { return _buttonOptions; }
-            set { SetField(ref _buttonOptions, value); }
-        }
-
+        
         #region Events
         private void Checkout()
         {
@@ -69,6 +62,41 @@ namespace ReVersion.ViewModels.Home
             Process.Start(DirectoryHelper.GetRepositoryFolder(Model.Name));
         }
 
+
+        private void ReadMe()
+        {
+            var svnServer = SettingsService.Current.Servers.First(s => s.Id == Model.SvnServerId);
+
+            var svnClient = new SvnClientService();
+
+            var readmeFile = svnClient.GetReadMeFile(new GetReadMeFileRepositoryRequest
+            {
+                SvnUsername = svnServer.Username,
+                SvnPassword = svnServer.RawPassword,
+                SvnServerUrl = Model.Url,
+                ProjectName = Model.Name
+            });
+
+            if (readmeFile.IsNotBlank())
+            {
+                var window = new MarkDownWindow(
+                    new MarkDownViewModel(readmeFile)
+                    );
+
+                window.Title = $"{Model.Name} - Read Me";
+                window.Show();
+            }
+            else
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+
+                ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync(
+                    $"Unable to locate ReadMe file for {Model.Name}", "test"
+                );
+
+            }
+        }
+
         private void ViewLog()
         {
             MessageBox.Show("Show log for: " + Model.Name);
@@ -83,9 +111,9 @@ namespace ReVersion.ViewModels.Home
 
         private async void checkout(CheckoutRepositoryRequest request)
         {
-            var svnClientService = new SvnClientService();
+            var svnClient = new SvnClientService();
 
-            svnClientService.ClientProgress += (sender, status) =>
+            svnClient.ClientProgress += (sender, status) =>
             {
                 // var client = (SvnClient) sender; If required...
                 Model.Progress = status.Progress;
@@ -94,16 +122,14 @@ namespace ReVersion.ViewModels.Home
             Model.ShowProgress = true;
             Model.CheckoutEnabled = false;
 
-#pragma warning disable 4014
-            Task.Run(() => svnClientService.RepositorySize(new GetRepositorySizeRequest
-#pragma warning restore 4014
+            svnClient.RepositorySize(new GetRepositorySizeRequest
             {
                 SvnServerUrl = request.SvnServerUrl,
                 RepositorySize = (size) => Model.RepositorySize = size
-            }));
+            });
 
 
-            var result = await Task.Run(() => svnClientService.CheckoutRepository(request));
+            var result = await Task.Run(() => svnClient.CheckoutRepository(request));
 
 
             Model.Progress = Model.RepositorySize;

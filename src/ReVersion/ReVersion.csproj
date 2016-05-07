@@ -60,7 +60,7 @@
     <ApplicationIcon>Resources\Icon_512.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>BC655E410188565B12D0AC2D5F281E291C657B83</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>4F5A38C6EE120B8F466975C66D90233157E23B05</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
@@ -88,6 +88,10 @@
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MarkdownSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Markdown.1.14.4\lib\net45\MarkdownSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -139,6 +143,7 @@
     <Compile Include="Models\IModel.cs" />
     <Compile Include="Models\Settings\SvnNamingConvention.cs" />
     <Compile Include="Models\Settings\SvnServerModel.cs" />
+    <Compile Include="Models\MarkDown\MarkDownModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -177,11 +182,13 @@
     <Compile Include="Services\SvnServer\Impl\SvenServer.cs" />
     <Compile Include="Models\Settings\SettingsModel.cs" />
     <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
+    <Compile Include="Utilities\WebBrowserUtility.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Home\RepositoryViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Settings\SvnServerViewModel.cs" />
+    <Compile Include="ViewModels\MarkDown\MarkDownViewModel.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
     </Compile>
@@ -198,6 +205,9 @@
     <Compile Include="Views\Settings\SvnServer.xaml.cs">
       <DependentUpon>SvnServer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MarkDownWindow.xaml.cs">
+      <DependentUpon>MarkDownWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\HomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -211,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Settings\SvnServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MarkDownWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -274,6 +288,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Icon_512.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Markdown.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
