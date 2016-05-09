@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,14 +7,16 @@ using System.Windows.Input;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using ReVersion.Models.Home;
+using ReVersion.Models.Settings;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.MarkDown;
+using ReVersion.ViewModels.Shared;
 using ReVersion.Views;
-using SharpSvn;
+using ReVersion.Views.Shared;
 
 namespace ReVersion.ViewModels.Home
 {
@@ -29,6 +30,7 @@ namespace ReVersion.ViewModels.Home
             ReadMeCommand = CommandFromFunction(c=> ReadMe());
             ViewLogCommand = CommandFromFunction(c=> ViewLog());
             RepoBrowserCommand = CommandFromFunction(c=> RepoBrowser());
+            CheckoutBranchCommand = CommandFromFunction(c=> CheckoutBranch());
 
         }
 
@@ -38,21 +40,21 @@ namespace ReVersion.ViewModels.Home
         public ICommand BrowseCommand { get; set; }
 
         public ICommand ReadMeCommand { get; set; }
+        public ICommand CheckoutBranchCommand { get; set; }
         public ICommand ViewLogCommand { get; set; }
         public ICommand RepoBrowserCommand { get; set; }
         #endregion
         
         #region Events
-        private void Checkout()
+        private void Checkout(string branch = null)
         {
-            var svnServer = SettingsService.Current.Servers.First(s => s.Id == Model.SvnServerId);
-
-            checkout(new CheckoutRepositoryRequest
+            CheckoutAsync(new CheckoutRepositoryRequest
             {
                 SvnUsername = svnServer.Username,
                 SvnPassword = svnServer.RawPassword,
                 ProjectName = Model.Name,
-                SvnServerUrl = Model.Url
+                SvnServerUrl = Model.Url,
+                Branch = branch
             });
 
         }
@@ -65,8 +67,6 @@ namespace ReVersion.ViewModels.Home
 
         private void ReadMe()
         {
-            var svnServer = SettingsService.Current.Servers.First(s => s.Id == Model.SvnServerId);
-
             var svnClient = new SvnClientService();
 
             var readmeFile = svnClient.GetReadMeFile(new GetReadMeFileRepositoryRequest
@@ -81,15 +81,15 @@ namespace ReVersion.ViewModels.Home
             {
                 var window = new MarkDownWindow(
                     new MarkDownViewModel(readmeFile)
-                    );
+                )
+                {
+                    Title = $"{Model.Name} - Read Me"
+                };
 
-                window.Title = $"{Model.Name} - Read Me";
                 window.Show();
             }
             else
             {
-                var assembly = Assembly.GetExecutingAssembly();
-
                 ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync(
                     $"Unable to locate ReadMe file for {Model.Name}", "test"
                 );
@@ -107,9 +107,33 @@ namespace ReVersion.ViewModels.Home
             MessageBox.Show("Repo browser for: " + Model.Name);
         }
 
+        private void CheckoutBranch()
+        {
+            var svnClient = new SvnClientService();
+
+            var branches = svnClient.ListBranches(new ListBranchesRequest
+            {
+                SvnUsername = svnServer.Username,
+                SvnPassword = svnServer.RawPassword,
+                SvnServerUrl = Model.Url,
+                ProjectName = Model.Name
+            });
+
+            var branchPicker = new BranchPicker();
+            var viewModel = new BranchPickerViewModel(branchPicker, branches, Checkout);
+
+            branchPicker.DataContext = viewModel;
+
+            ((MetroWindow)Application.Current.MainWindow).ShowMetroDialogAsync(
+                    branchPicker
+                );
+        }
+
         #endregion
 
-        private async void checkout(CheckoutRepositoryRequest request)
+        private SvnServerModel svnServer => SettingsService.Current.Servers.First(s => s.Id == Model.SvnServerId);
+
+        private async void CheckoutAsync(CheckoutRepositoryRequest request)
         {
             var svnClient = new SvnClientService();
 
@@ -122,12 +146,13 @@ namespace ReVersion.ViewModels.Home
             Model.ShowProgress = true;
             Model.CheckoutEnabled = false;
 
-            svnClient.RepositorySize(new GetRepositorySizeRequest
+#pragma warning disable 4014
+            Task.Run(() => svnClient.RepositorySize(new GetRepositorySizeRequest
             {
                 SvnServerUrl = request.SvnServerUrl,
                 RepositorySize = (size) => Model.RepositorySize = size
-            });
-
+            }));
+#pragma warning restore 4014
 
             var result = await Task.Run(() => svnClient.CheckoutRepository(request));
 

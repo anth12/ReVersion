@@ -30,7 +30,7 @@ namespace ReVersion.Services.SvnClient
 
         public bool CheckoutRepository(CheckoutRepositoryRequest request)
         {
-            var projectFolder = DirectoryHelper.GetRepositoryFolder(request.ProjectName);
+            var projectFolder = DirectoryHelper.GetRepositoryFolder(request.ProjectName, request.Branch);
 
             if (!Directory.Exists(projectFolder))
             {
@@ -39,22 +39,25 @@ namespace ReVersion.Services.SvnClient
 
             request.SvnServerUrl = request.SvnServerUrl.RemoveTrailing('/');
 
-            using (var client = new SharpSvn.SvnClient())
+            using (var client = createClient())
             {
-                client.Authentication.SslServerTrustHandlers += (b, e) =>
-                {
-                    e.AcceptedFailures = e.Failures;
-                    e.Save = true; // Save acceptance to authentication store
-                };
 
                 try
                 {
                     if(ClientProgress != null)
                         client.Progress += ClientProgress;
-                    
+
+                    var repositoryUri =
+                        $"{request.SvnServerUrl}/";
+
+                    // TODO support alternate branch dir name e.g. branch, branches...
+                    repositoryUri += request.Branch.IsNotBlank()
+                        ? "branches/" + request.Branch 
+                        : SettingsService.Current.DefaultSvnPath;
+
                     var result =
                         client.CheckOut(
-                            new SvnUriTarget($"{request.SvnServerUrl}/{SettingsService.Current.DefaultSvnPath}"),
+                            new SvnUriTarget(repositoryUri),
                             projectFolder);
                 }
                 catch (SvnRepositoryIOException ex)
@@ -78,7 +81,7 @@ namespace ReVersion.Services.SvnClient
             NotificationHelper.Show($"{request.ProjectName} checked out",
                 onActivate: (sender, args) =>
                 {
-                    //When the toas is clicked, open the newly checked out folder
+                    //When the toast is clicked, open the newly checked out folder
                     Process.Start(projectFolder);
                 });
             return true;
@@ -128,6 +131,27 @@ namespace ReVersion.Services.SvnClient
             process.Close();
         }
 
+        public List<string> ListBranches(ListBranchesRequest request)
+        {
+            var projectPath = request.SvnServerUrl + "/branches";
+
+            var rootFiles = new List<string>();
+
+            using (var client = createClient(request.SvnUsername, request.SvnPassword))
+            {
+                Collection<SvnListEventArgs> list;
+
+                if (client.GetList(projectPath, out list))
+                {
+                    rootFiles.AddRange(
+                        list.Skip(1).Select(item => item.Name)
+                    );
+                }
+            }
+
+            return rootFiles;
+        }
+
         public string GetReadMeFile(GetReadMeFileRepositoryRequest request)
         {
             var projectPath = request.SvnServerUrl + "/" + (SettingsService.Current.DefaultSvnPath.IsBlank()
@@ -136,15 +160,8 @@ namespace ReVersion.Services.SvnClient
             
             var rootFiles = new List<string>();
 
-            using (var client = new SharpSvn.SvnClient())
+            using (var client = createClient(request.SvnUsername, request.SvnPassword))
             {
-                client.Authentication.SslServerTrustHandlers += (b, e) =>
-                {
-                    e.AcceptedFailures = e.Failures;
-                    e.Save = true; // Save acceptance to authentication store
-                };
-                client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
-
                 Collection<SvnListEventArgs> list;
                 
                 if (client.GetList(projectPath, out list))
@@ -162,15 +179,9 @@ namespace ReVersion.Services.SvnClient
 
             var readMeUri = new Uri(readMeFilePath);
             var stream = new MemoryStream();
-            using (var client = new SharpSvn.SvnClient())
-            {
-                client.Authentication.SslServerTrustHandlers += (b, e) =>
-                {
-                    e.AcceptedFailures = e.Failures;
-                    e.Save = true; // Save acceptance to authentication store
-                };
 
-                client.Authentication.ForceCredentials(request.SvnUsername, request.SvnPassword);
+            using (var client = createClient(request.SvnUsername, request.SvnPassword))
+            {
                 var target = SvnTarget.FromUri(readMeUri);
                 client.Write(target, stream);
             }
@@ -180,6 +191,27 @@ namespace ReVersion.Services.SvnClient
             stream.Read(bytes, 0, (int)stream.Length);
             return Encoding.ASCII.GetString(bytes);
         }
-        
+
+        private SharpSvn.SvnClient createClient()
+        {
+            var client = new SharpSvn.SvnClient();
+
+            client.Authentication.SslServerTrustHandlers += (b, e) =>
+            {
+                e.AcceptedFailures = e.Failures;
+                e.Save = true; // Save acceptance to authentication store
+            };
+
+            return client;
+        }
+
+        private SharpSvn.SvnClient createClient(string userName, string password)
+        {
+            var client = createClient();
+
+            client.Authentication.ForceCredentials(userName, password);
+
+            return client;
+        }
     }
 }

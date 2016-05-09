@@ -13,6 +13,7 @@
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Command="{Binding ReadMeCommand}" Header="View ReadMe" />
+            <MenuItem Command="{Binding CheckoutBranchCommand}" Header="Checkout Branch" />
             <!--<MenuItem Command="{Binding ViewLogCommand}" Header="View Log" />
             <MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />-->
         </ContextMenu>

@@ -144,6 +144,7 @@
     <Compile Include="Models\Settings\SvnNamingConvention.cs" />
     <Compile Include="Models\Settings\SvnServerModel.cs" />
     <Compile Include="Models\MarkDown\MarkDownModel.cs" />
+    <Compile Include="Models\Shared\BranchPickerModel.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -151,6 +152,7 @@
     </Compile>
     <Compile Include="Services\Analytics\AnalyticsService.cs" />
     <Compile Include="Services\ErrorLogging\ErrorLog.cs" />
+    <Compile Include="Services\SvnClient\Requests\ListBranchesRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\GetRepositorySizeRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\GetReadMeFileRepositoryRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\IsCheckedOutRequest.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Settings\SvnServerViewModel.cs" />
     <Compile Include="ViewModels\MarkDown\MarkDownViewModel.cs" />
+    <Compile Include="ViewModels\Shared\BranchPickerViewModel.cs" />
     <Compile Include="Views\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
     </Compile>
@@ -208,6 +211,9 @@
     <Compile Include="Views\MarkDownWindow.xaml.cs">
       <DependentUpon>MarkDownWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\BranchPicker.xaml.cs">
+      <DependentUpon>BranchPicker.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\HomeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -225,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MarkDownWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\BranchPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -259,9 +269,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Shared\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
       <Visible>False</Visible>

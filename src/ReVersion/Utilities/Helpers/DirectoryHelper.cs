@@ -5,7 +5,7 @@ namespace ReVersion.Utilities.Helpers
 {
     internal static class DirectoryHelper
     {
-        public static string GetRepositoryFolder(string repositoryName)
+        public static string GetRepositoryFolder(string repositoryName, string branch = null)
         {
             var repositoryFolder = SettingsService.Current.CheckoutFolder;
 
@@ -13,7 +13,7 @@ namespace ReVersion.Utilities.Helpers
                 repositoryFolder += "\\";
 
             repositoryFolder += repositoryName.ToConventionCase(SettingsService.Current.NamingConvention) +
-                                $"\\{SettingsService.Current.DefaultSvnPath}";
+                                $"\\{branch ?? SettingsService.Current.DefaultSvnPath}";
             return repositoryFolder;
         }
     }
