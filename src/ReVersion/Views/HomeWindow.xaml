@@ -3,12 +3,10 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:m="clr-namespace:ReVersion.Services.SvnServer.Response"
                       xmlns:vw="clr-namespace:ReVersion.Views.Repository"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:settings="clr-namespace:ReVersion.Views.Settings"
                       xmlns:homeVm="clr-namespace:ReVersion.ViewModels.Home"
-                      xmlns:c="clr-namespace:ReVersion.Utilities.Converters"
                       mc:Ignorable="d"
                       Icon="/ReVersion;component/Resources/Icon_512.ico"
                       Title="ReVersion" Height="600" Width="1180" Closed="HomeWindow_OnClosed"
@@ -17,7 +15,6 @@
         <DataTemplate DataType="{x:Type homeVm:RepositoryViewModel}">
             <vw:Repository />
         </DataTemplate>
-        <c:VisibilityValueConverter x:Key="VisibilityConverter"></c:VisibilityValueConverter>
     </Window.Resources>
 
 
@@ -90,8 +87,9 @@
 
         
     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-        <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
-            <ItemsControl ItemsSource="{Binding Repositories}">
+        <StackPanel Orientation="Vertical">
+            <ItemsControl VirtualizingStackPanel.IsVirtualizing="True"
+              ScrollViewer.CanContentScroll="True" ItemsSource="{Binding Repositories}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" />

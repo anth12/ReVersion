@@ -1,5 +1,5 @@
 # ReVersion
-![ReVersion Logo](https://raw.githubusercontent.com/anth12/ReVersion/master/Docs/Images/logo.png =500x)
+<img src="https://raw.githubusercontent.com/anth12/ReVersion/master/Docs/Images/logo.png" alt="ReVersion Logo" width="500"/>
 
 A WPF desktop application to assist managing working copies of SVN repositories spread out over multiple SVN servers. 
 

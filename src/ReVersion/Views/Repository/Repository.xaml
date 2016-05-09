@@ -6,24 +6,20 @@
              xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
-             d:DesignHeight="80" 
-             d:DesignWidth="420">
-    <UserControl.Resources>
-        <converters:VisibilityValueConverter x:Key="VisibilityConverter"></converters:VisibilityValueConverter>
-        <converters:ReverseVisibilityValueConverter x:Key="ReverseVisibilityConverter"></converters:ReverseVisibilityValueConverter>
-    </UserControl.Resources>
+             Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}"
+             Height="85"
+             Width="380">
 
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Command="{Binding ReadMeCommand}" Header="View ReadMe" />
-            <MenuItem Command="{Binding ViewLogCommand}" Header="View Log" />
-            <MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />
+            <!--<MenuItem Command="{Binding ViewLogCommand}" Header="View Log" />
+            <MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />-->
         </ContextMenu>
     </UserControl.ContextMenu>
 
     <Border BorderBrush="Gray" BorderThickness="1" Margin="2" 
-            IsEnabled="{Binding Model.IsEnabled}" 
-            Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}">
+            >
 
         <Grid Margin="3">
             <Grid.ColumnDefinitions>
@@ -42,9 +38,9 @@
 
                 <controls:MetroProgressBar 
                     VerticalAlignment="Bottom"
-                    Visibility="{Binding Model.ProgressEnabled, Converter={StaticResource VisibilityConverter}}"
+                    Visibility="{Binding Model.ProgressEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"
                     Value="{Binding Model.ProgressPercentage}"
-                    Margin="0"
+                    Margin="1"
                     />
             </StackPanel>
 
