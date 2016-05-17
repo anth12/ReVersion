@@ -14,8 +14,8 @@
         <ContextMenu>
             <MenuItem Command="{Binding ReadMeCommand}" Header="View ReadMe" />
             <MenuItem Command="{Binding CheckoutBranchCommand}" Header="Checkout Branch" />
-            <!--<MenuItem Command="{Binding ViewLogCommand}" Header="View Log" />
-            <MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />-->
+            <MenuItem Command="{Binding ViewInfoCommand}" Header="View Info" />
+            <!--<MenuItem Command="{Binding RepoBrowserCommand}" Header="Repo Browser" />-->
         </ContextMenu>
     </UserControl.ContextMenu>
 
@@ -41,7 +41,7 @@
                     VerticalAlignment="Bottom"
                     Visibility="{Binding Model.ProgressEnabled, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"
                     Value="{Binding Model.ProgressPercentage}"
-                    Margin="1"
+                    Margin="5 0"
                     />
             </StackPanel>
 

@@ -11,6 +11,7 @@ namespace ReVersion.Models.Settings
         public SvnServerModel()
         {
             _id = Guid.NewGuid();
+            _masterAccount = true;
         }
 
         #region Properties
@@ -19,6 +20,7 @@ namespace ReVersion.Models.Settings
         private DateTime _repoUpdateDate;
         private SvnServerType _type;
         private string _username;
+        private bool _masterAccount;
 
         public Guid Id
         {
@@ -58,6 +60,12 @@ namespace ReVersion.Models.Settings
         {
             get { return Password.IsNotBlank() ? new AuthenticationHelper().Decrypt(Password) : ""; }
             set { Password = value.IsNotBlank() ? new AuthenticationHelper().Encrypt(value) : ""; }
+        }
+
+        public bool MasterAccount
+        {
+            get { return _masterAccount; }
+            set { SetField(ref _masterAccount, value); }
         }
 
         #endregion

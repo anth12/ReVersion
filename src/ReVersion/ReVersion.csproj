@@ -30,8 +30,8 @@
     <InstallUrl>http://reversion.azurewebsites.net/download/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
-    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationVersion>1.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,7 +60,7 @@
     <ApplicationIcon>Resources\Icon_512.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4F5A38C6EE120B8F466975C66D90233157E23B05</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BC655E410188565B12D0AC2D5F281E291C657B83</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
@@ -152,6 +152,8 @@
     </Compile>
     <Compile Include="Services\Analytics\AnalyticsService.cs" />
     <Compile Include="Services\ErrorLogging\ErrorLog.cs" />
+    <Compile Include="Services\SvnClient\Requests\GetRepositoryInfoResponse.cs" />
+    <Compile Include="Services\SvnClient\Requests\GetRepositoryInfoRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\ListBranchesRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\GetRepositorySizeRequest.cs" />
     <Compile Include="Services\SvnClient\Requests\GetReadMeFileRepositoryRequest.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Utilities\Helpers\AppDataHelper.cs" />
     <Compile Include="Utilities\Helpers\AuthenticationHelper.cs" />
     <Compile Include="Utilities\Helpers\CommandLineHelper.cs" />
+    <Compile Include="Utilities\Helpers\CredentialHelper.cs" />
     <Compile Include="Utilities\Helpers\DirectoryHelper.cs" />
     <Compile Include="Utilities\Helpers\NotificationHelper.cs" />
     <Compile Include="Utilities\Helpers\WebClientSession.cs">

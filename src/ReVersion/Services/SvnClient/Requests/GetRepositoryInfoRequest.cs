@@ -2,7 +2,7 @@
 
 namespace ReVersion.Services.SvnClient.Requests
 {
-    internal class GetReadMeFileRepositoryRequest
+    internal class GetRepositoryInfoRequest
     {
         public string ProjectName { get; set; }
         public string SvnServerUrl { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace ReVersion.Services.SvnClient.Requests
 {
@@ -6,6 +7,8 @@ namespace ReVersion.Services.SvnClient.Requests
     {
         public string ProjectName { get; set; }
         public string SvnServerUrl { get; set; }
+
+        public NetworkCredential Credentials { get; set; }
 
         public Action<long> RepositorySize { get; set; }
     }

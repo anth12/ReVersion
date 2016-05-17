@@ -13,6 +13,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -32,6 +33,10 @@
         <Label Grid.Row="3" Content="Password" />
         <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="Password_Textbox" PasswordChanged="Password_Textbox_OnPasswordChanged" />
 
+
+        <Label Grid.Row="4" Content="Master Account" />
+        <CheckBox Grid.Row="4" Grid.Column="1" IsChecked="{Binding Model.MasterAccount}"/>
+        
         <Button Content="X" Grid.Column="2" Command="{Binding RemoveCommand}" Style="{DynamicResource SquareButtonStyle}"/>
     </Grid>
 </UserControl>

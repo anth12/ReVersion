@@ -98,16 +98,18 @@ namespace ReVersion.Services.SvnServer
             //Order the repo's
             result.Repositories = result.Repositories.OrderBy(x => x.Name).ToList();
 
-            var svnClient = new SvnClientService();
-            foreach (var repository in result.Repositories)
+            using (var svnClient = new SvnClientService())
             {
-                repository.CheckedOut = svnClient.IsCheckedOut(new IsCheckedOutRequest
+                foreach (var repository in result.Repositories)
                 {
-                    ProjectName = repository.Name
-                });
-            }
+                    repository.CheckedOut = svnClient.IsCheckedOut(new IsCheckedOutRequest
+                    {
+                        ProjectName = repository.Name
+                    });
+                }
 
-            return result;
+                return result;
+            }
         }
     }
 }

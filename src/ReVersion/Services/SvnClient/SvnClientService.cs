@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using SharpSvn;
-
+using System.Diagnostics;
+using System.Net;
+using ReVersion.Services.ErrorLogging;
 
 namespace ReVersion.Services.SvnClient
 {
-    internal class SvnClientService
+    internal class SvnClientService : IDisposable
     {
         public event EventHandler<SvnProgressEventArgs> ClientProgress;
 
@@ -50,10 +50,22 @@ namespace ReVersion.Services.SvnClient
                     var repositoryUri =
                         $"{request.SvnServerUrl}/";
 
-                    // TODO support alternate branch dir name e.g. branch, branches...
-                    repositoryUri += request.Branch.IsNotBlank()
-                        ? "branches/" + request.Branch 
-                        : SettingsService.Current.DefaultSvnPath;
+                    if (request.Branch.IsNotBlank())
+                    {
+                        Collection<SvnListEventArgs> rootList;
+
+                        if (!client.GetList(request.SvnServerUrl, out rootList))
+                            return false;
+                        
+                        repositoryUri = request.SvnServerUrl + "/" +
+                                          rootList.First(f => f.Name.ToLower().StartsWith("branch"))
+                                          .Name + "/" + request.Branch;
+                    }
+                    else
+                    {
+
+                        repositoryUri += SettingsService.Current.DefaultSvnPath;
+                    }
 
                     var result =
                         client.CheckOut(
@@ -69,7 +81,21 @@ namespace ReVersion.Services.SvnClient
                         client.CheckOut(
                             new SvnUriTarget($"{request.SvnServerUrl}"),
                             projectFolder);
+                        return result;
                     }
+
+                    if (ex.SvnErrorCode == SvnErrorCode.SVN_ERR_RA_CANNOT_CREATE_SESSION)
+                    {
+                        request.Credentials = RequestCredentials(request.SvnServerUrl);
+
+                        if (request.Credentials != null)
+                        {
+                            return CheckoutRepository(request);
+                        }
+                    }
+
+                    NotificationHelper.Show(SvnErrorHandling.FormatError(ex.Message));
+                    return false;
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +114,7 @@ namespace ReVersion.Services.SvnClient
             
         }
 
-        public void RepositorySize(GetRepositorySizeRequest request)
+        internal void RepositorySize(GetRepositorySizeRequest request)
         {
             /*  --- Output:
                 Count    : 2686
@@ -133,23 +159,52 @@ namespace ReVersion.Services.SvnClient
 
         public List<string> ListBranches(ListBranchesRequest request)
         {
-            var projectPath = request.SvnServerUrl + "/branches";
-
-            var rootFiles = new List<string>();
-
-            using (var client = createClient(request.SvnUsername, request.SvnPassword))
+            try
             {
-                Collection<SvnListEventArgs> list;
+                var rootFiles = new List<string>();
 
-                if (client.GetList(projectPath, out list))
+                using (var client = createClient())
                 {
-                    rootFiles.AddRange(
-                        list.Skip(1).Select(item => item.Name)
-                    );
+                    Collection<SvnListEventArgs> rootList;
+
+                    if (!client.GetList(request.SvnServerUrl, out rootList))
+                        return new List<string>();
+
+                    var projectPath = request.SvnServerUrl + "/" +
+                                      rootList.First(f => f.Name.ToLower().StartsWith("branch"))
+                                      .Name;
+
+                    Collection<SvnListEventArgs> list;
+
+                    if (client.GetList(projectPath, out list))
+                    {
+                        rootFiles.AddRange(
+                            list.Skip(1).Select(item => item.Name)
+                            );
+                    }
                 }
+
+                return rootFiles;
+            }
+            catch (SvnRepositoryIOException ex)
+            {
+                if (ex.SvnErrorCode == SvnErrorCode.SVN_ERR_RA_CANNOT_CREATE_SESSION)
+                {
+                    request.Credentials = RequestCredentials(request.SvnServerUrl);
+
+                    if (request.Credentials != null)
+                    {
+                        return ListBranches(request);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log("ListBranches:", ex);
             }
 
-            return rootFiles;
+            return new List<string>();
         }
 
         public string GetReadMeFile(GetReadMeFileRepositoryRequest request)
@@ -160,13 +215,33 @@ namespace ReVersion.Services.SvnClient
             
             var rootFiles = new List<string>();
 
-            using (var client = createClient(request.SvnUsername, request.SvnPassword))
+            using (var client = createClient())
             {
                 Collection<SvnListEventArgs> list;
-                
-                if (client.GetList(projectPath, out list))
+
+                try
                 {
-                    rootFiles.AddRange(list.Select(item => item.Name));
+                    if (client.GetList(projectPath, out list))
+                    {
+                        rootFiles.AddRange(list.Select(item => item.Name));
+                    }
+                }
+                catch (SvnRepositoryIOException ex)
+                {
+                    if (ex.SvnErrorCode == SvnErrorCode.SVN_ERR_RA_CANNOT_CREATE_SESSION)
+                    {
+                        request.Credentials = RequestCredentials(request.SvnServerUrl);
+
+                        if (request.Credentials != null)
+                        {
+                            return GetReadMeFile(request);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log("Get Readme", ex);
                 }
             }
 
@@ -180,7 +255,7 @@ namespace ReVersion.Services.SvnClient
             var readMeUri = new Uri(readMeFilePath);
             var stream = new MemoryStream();
 
-            using (var client = createClient(request.SvnUsername, request.SvnPassword))
+            using (var client = createClient())
             {
                 var target = SvnTarget.FromUri(readMeUri);
                 client.Write(target, stream);
@@ -192,7 +267,61 @@ namespace ReVersion.Services.SvnClient
             return Encoding.ASCII.GetString(bytes);
         }
 
-        private SharpSvn.SvnClient createClient()
+        public GetRepositoryInfoResponse GetInfo(GetRepositoryInfoRequest request)
+        {
+            var projectPath = request.SvnServerUrl + "/" + (SettingsService.Current.DefaultSvnPath.IsBlank()
+                ? "trunk"
+                : SettingsService.Current.DefaultSvnPath);
+
+            using (var client = createClient(request.Credentials))
+            {
+                try
+                {
+                    Collection<SvnInfoEventArgs> info;
+                    client.GetInfo(
+                        new SvnUriTarget(projectPath),
+                        new SvnInfoArgs
+                        {
+
+                        }, out info);
+
+
+                    if (info != null && info.Any())
+                    {
+                        return new GetRepositoryInfoResponse
+                        {
+                            LastChangeAuthor = info.First().LastChangeAuthor,
+                            LastChangeRevision = info.First().LastChangeRevision,
+                            LastChangeTime = info.First().LastChangeTime,
+                        };
+                    }
+
+                }
+                catch (SvnRepositoryIOException ex)
+                {
+                    if (ex.SvnErrorCode == SvnErrorCode.SVN_ERR_RA_CANNOT_CREATE_SESSION)
+                    {
+                        request.Credentials = RequestCredentials(request.SvnServerUrl);
+
+                        if (request.Credentials != null)
+                        {
+                            return GetInfo(request);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log("Project Info", ex);
+                    return null;
+                }
+
+
+            }
+            return null;
+        }
+
+        private SharpSvn.SvnClient createClient(NetworkCredential credentials = null)
         {
             var client = new SharpSvn.SvnClient();
 
@@ -202,16 +331,45 @@ namespace ReVersion.Services.SvnClient
                 e.Save = true; // Save acceptance to authentication store
             };
 
+            if (credentials != null)
+            {
+                client.Authentication.ForceCredentials(credentials.UserName, credentials.Password);
+            }
+
             return client;
         }
 
-        private SharpSvn.SvnClient createClient(string userName, string password)
+        private NetworkCredential RequestCredentials(string serverHostName)
         {
-            var client = createClient();
+            var serverUri = new Uri(serverHostName);
+            NetworkCredential credentials;
+            CredentialHelper.GetCredentialsVistaAndUp(serverUri.Host, out credentials);
 
-            client.Authentication.ForceCredentials(userName, password);
+            return credentials;
+        }
+        
+        public void RemoveMasterCredentials()
+        {
+            var svnPath = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData), "Subversion\\auth\\svn.simple\\");
 
-            return client;
+            var files = Directory.GetFiles(svnPath);
+
+            files.Where(fileName =>
+            {
+                var file = File.ReadAllText(fileName);
+
+                return SettingsService.Current.Servers
+                    .Where(s=> s.MasterAccount)
+                    .Any(s=> file.Contains(s.Username));
+            })
+            .ToList()
+            .ForEach(File.Delete);
+        }
+
+        public void Dispose()
+        {
+            RemoveMasterCredentials();
         }
     }
 }

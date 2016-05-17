@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using MahApps.Metro.Controls;
 using ReVersion.Services.Analytics;
+using ReVersion.Services.SvnClient;
 
 namespace ReVersion.Views
 {
@@ -23,6 +26,12 @@ namespace ReVersion.Views
             catch (Exception)
             {
                 //Fail silently
+            }
+
+            using (var svnClient = new SvnClientService())
+            {
+                // Create a new client to fore clear credentials
+                // TODO remove
             }
         }
         

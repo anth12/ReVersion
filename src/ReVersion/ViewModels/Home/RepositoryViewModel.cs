@@ -28,7 +28,7 @@ namespace ReVersion.ViewModels.Home
             BrowseCommand = CommandFromFunction(c=> Browse());
 
             ReadMeCommand = CommandFromFunction(c=> ReadMe());
-            ViewLogCommand = CommandFromFunction(c=> ViewLog());
+            ViewInfoCommand = CommandFromFunction(c=> ViewInfo());
             RepoBrowserCommand = CommandFromFunction(c=> RepoBrowser());
             CheckoutBranchCommand = CommandFromFunction(c=> CheckoutBranch());
 
@@ -41,7 +41,7 @@ namespace ReVersion.ViewModels.Home
 
         public ICommand ReadMeCommand { get; set; }
         public ICommand CheckoutBranchCommand { get; set; }
-        public ICommand ViewLogCommand { get; set; }
+        public ICommand ViewInfoCommand { get; set; }
         public ICommand RepoBrowserCommand { get; set; }
         #endregion
         
@@ -50,8 +50,6 @@ namespace ReVersion.ViewModels.Home
         {
             CheckoutAsync(new CheckoutRepositoryRequest
             {
-                SvnUsername = svnServer.Username,
-                SvnPassword = svnServer.RawPassword,
                 ProjectName = Model.Name,
                 SvnServerUrl = Model.Url,
                 Branch = branch
@@ -67,39 +65,63 @@ namespace ReVersion.ViewModels.Home
 
         private void ReadMe()
         {
-            var svnClient = new SvnClientService();
-
-            var readmeFile = svnClient.GetReadMeFile(new GetReadMeFileRepositoryRequest
+            using (var svnClient = new SvnClientService())
             {
-                SvnUsername = svnServer.Username,
-                SvnPassword = svnServer.RawPassword,
-                SvnServerUrl = Model.Url,
-                ProjectName = Model.Name
-            });
 
-            if (readmeFile.IsNotBlank())
-            {
-                var window = new MarkDownWindow(
-                    new MarkDownViewModel(readmeFile)
-                )
+                var readmeFile = svnClient.GetReadMeFile(new GetReadMeFileRepositoryRequest
                 {
-                    Title = $"{Model.Name} - Read Me"
-                };
+                    SvnServerUrl = Model.Url,
+                    ProjectName = Model.Name
+                });
+                
 
-                window.Show();
-            }
-            else
-            {
-                ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync(
-                    $"Unable to locate ReadMe file for {Model.Name}", "test"
-                );
+                if (readmeFile.IsNotBlank())
+                {
+                    var window = new MarkDownWindow(
+                        new MarkDownViewModel(readmeFile)
+                        )
+                    {
+                        Title = $"{Model.Name} - Read Me"
+                    };
 
+                    window.Show();
+                }
+                else
+                {
+                    ((MetroWindow) Application.Current.MainWindow).ShowMessageAsync(
+                        $"Unable to locate ReadMe file for {Model.Name}", ""
+                        );
+
+                }
             }
         }
 
-        private void ViewLog()
+        private void ViewInfo()
         {
-            MessageBox.Show("Show log for: " + Model.Name);
+            using (var svnClient = new SvnClientService())
+            {
+                var info = svnClient.GetInfo(new GetRepositoryInfoRequest
+                {
+                    SvnServerUrl = Model.Url,
+                    ProjectName = Model.Name
+                });
+
+                if (info != null)
+                {
+                    ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync(
+                        $"{Model.Name} info:", 
+$@"Latest Revision:
+Author: {info.LastChangeAuthor}
+Revision: {info.LastChangeRevision}
+Date: {info.LastChangeTime.ToString("dd/MMM/yyyy HH:mm")}
+"
+                        );
+                }
+                else
+                {
+                    NotificationHelper.Show("Unable to obtain repo info");
+                }
+            }
         }
 
         private void RepoBrowser()
@@ -109,24 +131,33 @@ namespace ReVersion.ViewModels.Home
 
         private void CheckoutBranch()
         {
-            var svnClient = new SvnClientService();
-
-            var branches = svnClient.ListBranches(new ListBranchesRequest
+            using (var svnClient = new SvnClientService())
             {
-                SvnUsername = svnServer.Username,
-                SvnPassword = svnServer.RawPassword,
-                SvnServerUrl = Model.Url,
-                ProjectName = Model.Name
-            });
 
-            var branchPicker = new BranchPicker();
-            var viewModel = new BranchPickerViewModel(branchPicker, branches, Checkout);
+                var branches = svnClient.ListBranches(new ListBranchesRequest
+                {
+                    SvnServerUrl = Model.Url,
+                    ProjectName = Model.Name
+                });
+                
 
-            branchPicker.DataContext = viewModel;
+                if (!branches.Any())
+                {
+                    ((MetroWindow) Application.Current.MainWindow).ShowMessageAsync(
+                        $"Unable to locate any branches for {Model.Name}", ""
+                        );
+                    return;
+                }
 
-            ((MetroWindow)Application.Current.MainWindow).ShowMetroDialogAsync(
+                var branchPicker = new BranchPicker();
+                var viewModel = new BranchPickerViewModel(branchPicker, branches, Checkout);
+
+                branchPicker.DataContext = viewModel;
+
+                ((MetroWindow) Application.Current.MainWindow).ShowMetroDialogAsync(
                     branchPicker
-                );
+                    );
+            }
         }
 
         #endregion
@@ -135,35 +166,36 @@ namespace ReVersion.ViewModels.Home
 
         private async void CheckoutAsync(CheckoutRepositoryRequest request)
         {
-            var svnClient = new SvnClientService();
-
-            svnClient.ClientProgress += (sender, status) =>
+            using (var svnClient = new SvnClientService())
             {
-                // var client = (SvnClient) sender; If required...
-                Model.Progress = status.Progress;
-            };
 
-            Model.ShowProgress = true;
-            Model.CheckoutEnabled = false;
+                svnClient.ClientProgress += (sender, status) =>
+                {
+                    // var client = (SvnClient) sender; If required...
+                    Model.Progress = status.Progress;
+                };
+
+                Model.ShowProgress = true;
+                Model.CheckoutEnabled = false;
 
 #pragma warning disable 4014
-            Task.Run(() => svnClient.RepositorySize(new GetRepositorySizeRequest
-            {
-                SvnServerUrl = request.SvnServerUrl,
-                RepositorySize = (size) => Model.RepositorySize = size
-            }));
+                Task.Run(() => svnClient.RepositorySize(new GetRepositorySizeRequest
+                {
+                    SvnServerUrl = request.SvnServerUrl,
+                    RepositorySize = (size) => Model.RepositorySize = size
+                }));
 #pragma warning restore 4014
 
-            var result = await Task.Run(() => svnClient.CheckoutRepository(request));
+                var result = await Task.Run(() => svnClient.CheckoutRepository(request));
+                
+                Model.Progress = Model.RepositorySize;
+                Model.CheckoutEnabled = true;
+                Model.ShowProgress = false;
 
-
-            Model.Progress = Model.RepositorySize;
-            Model.CheckoutEnabled = true;
-            Model.ShowProgress = false;
-
-            if (result)
-            {
-                Model.CheckedOut = true;
+                if (result)
+                {
+                    Model.CheckedOut = true;
+                }
             }
         }
     }
