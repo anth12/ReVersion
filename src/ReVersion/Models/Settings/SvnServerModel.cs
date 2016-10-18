@@ -58,8 +58,8 @@ namespace ReVersion.Models.Settings
         [JsonIgnore]
         public string RawPassword
         {
-            get { return Password.IsNotBlank() ? new AuthenticationHelper().Decrypt(Password) : ""; }
-            set { Password = value.IsNotBlank() ? new AuthenticationHelper().Encrypt(value) : ""; }
+            get { return Password.IsNotBlank() ? new EncryptionHelper().Decrypt(Password) : ""; }
+            set { Password = value.IsNotBlank() ? new EncryptionHelper().Encrypt(value) : ""; }
         }
 
         public bool MasterAccount

@@ -60,7 +60,7 @@
     <ApplicationIcon>Resources\Icon_512.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>BC655E410188565B12D0AC2D5F281E291C657B83</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7DE49AAB5D6110B36AD3EEE5F6FBE02D47BB8FAE</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>ReVersion_TemporaryKey.pfx</ManifestKeyFile>
@@ -164,7 +164,7 @@
     <Compile Include="Utilities\Converters\VisibilityValueConverter.cs" />
     <Compile Include="Utilities\Extensions\StringExtensions.cs" />
     <Compile Include="Utilities\Helpers\AppDataHelper.cs" />
-    <Compile Include="Utilities\Helpers\AuthenticationHelper.cs" />
+    <Compile Include="Utilities\Helpers\EncryptionHelper.cs" />
     <Compile Include="Utilities\Helpers\CommandLineHelper.cs" />
     <Compile Include="Utilities\Helpers\CredentialHelper.cs" />
     <Compile Include="Utilities\Helpers\DirectoryHelper.cs" />

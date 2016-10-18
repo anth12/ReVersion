@@ -80,7 +80,7 @@ Do you want to continue?
             if (Convert.ToInt32(Registry.GetValue(registryKey, registyValue, 0)) == 0)
             {
                 //Change the value since the program has run once now
-                Microsoft.Win32.Registry.SetValue(registryKey, registyValue, 1, Microsoft.Win32.RegistryValueKind.DWord);
+                Registry.SetValue(registryKey, registyValue, 1, RegistryValueKind.DWord);
                 return true;
             }
             return false;
