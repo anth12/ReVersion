@@ -333,7 +333,7 @@ namespace ReVersion.Utilities.Extensions
             //ignore apostrophes
             source = source.Replace("'", "");
 
-            //Matches any none alphabetical charactor before a alphabetical charactor and lowercase before an uppercase
+            //Matches any none alphabetical character before a alphabetical character and lowercase before an uppercase
             var splitRegex = new Regex("((?<=[a-z])([A-Z]))|((?<=\\W)([a-z]|[A-Z]))|((?<=_)([a-z]|[A-Z]))");
             var replaceRegex = new Regex("\\W|_");
 
