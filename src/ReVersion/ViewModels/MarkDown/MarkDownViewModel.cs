@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using ReVersion.Models.MarkDown;
 using ReVersion.Utilities.Helpers;
-using System.Reflection;
+using HeyRed.MarkdownSharp;
 
 namespace ReVersion.ViewModels.MarkDown
 {
@@ -18,7 +17,7 @@ namespace ReVersion.ViewModels.MarkDown
         
         public void SetMarkDown(string markdownText)
         {
-            var markdownParser = new MarkdownSharp.Markdown();
+            var markdownParser = new Markdown();
             var html = markdownParser.Transform(markdownText);
 
             // Add a reference to the Stylesheet
