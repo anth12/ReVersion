@@ -213,6 +213,7 @@ namespace ReVersion.ViewModels.Home
 
             Model.Loading = false;
 
+            
             if (result.Messages.Any())
             {
                 NotificationHelper.ShowResult(result);

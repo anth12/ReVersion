@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using ReVersion.ViewModels.Home;
+﻿using ReVersion.ViewModels.Home;
+using System.Linq;
 
 namespace ReVersion.Models.Home
 {
@@ -24,10 +24,12 @@ namespace ReVersion.Models.Home
         public string CheckoutSummary => $"Checkout {_viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (_viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
         public int SelectedRepositories => _viewModel.Repositories.Count(r=> r.Model.IsChecked);
 
+        public bool MissingData => !_loading && _viewModel.Repositories.Any();
+
         public bool Loading
         {
             get { return _loading; }
-            set { SetField(ref _loading, value); }
+            set { SetField(ref _loading, value); OnPropertyChanged(nameof(MissingData)); }
         }
 
         public string Search

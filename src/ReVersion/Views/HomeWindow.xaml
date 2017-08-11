@@ -85,6 +85,7 @@
 
     <controls:ProgressRing Grid.Row="1" IsActive="{Binding Model.Loading}" />
 
+        <Image Source="../Resources/missing-data.png" Stretch="None" Grid.Row="1" Visibility="{Binding Model.MissingData, Converter={StaticResource VisibilityConverter}}"/>
         
     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
