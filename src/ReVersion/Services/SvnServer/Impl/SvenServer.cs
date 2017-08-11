@@ -1,14 +1,15 @@
-﻿using System.Collections.Specialized;
+﻿using HtmlAgilityPack;
+using ReVersion.Models.Settings;
+using ReVersion.Services.SvnServer.Response;
+using ReVersion.Utilities.Helpers;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
-using HtmlAgilityPack;
-using ReVersion.Models.Settings;
-using ReVersion.Services.SvnServer.Response;
-using ReVersion.Utilities.Helpers;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
@@ -16,7 +17,7 @@ namespace ReVersion.Services.SvnServer.Impl
     {
         public SvnServerType ServerType { get; } = SvnServerType.Sven;
 
-        public ListRepositoriesResponse ListRepositories(SvnServerModel request)
+        public async Task<ListRepositoriesResponse> ListRepositories(SvnServerModel request)
         {
             var result = new ListRepositoriesResponse {Status = true};
 
@@ -25,7 +26,7 @@ namespace ReVersion.Services.SvnServer.Impl
             using (var wb = new WebClientSession())
             {
                 //Load the login page to grab a viewstate
-                var loginGetResponse = wb.Get(request.BaseUrl + "/ubersvn/views/platform/shared/welcome.jsf");
+                var loginGetResponse = await wb.GetAsync(request.BaseUrl + "/ubersvn/views/platform/shared/welcome.jsf");
                 var viewState = GetResponseViewState(loginGetResponse);
 
                 var loginData = new NameValueCollection
@@ -38,11 +39,10 @@ namespace ReVersion.Services.SvnServer.Impl
                 };
 
                 //Do the login
-                wb.Post(request.BaseUrl + "/ubersvn/views/platform/shared/welcome.jsf", loginData);
+                await wb.PostAsync(request.BaseUrl + "/ubersvn/views/platform/shared/welcome.jsf", loginData);
 
                 //Load the Repo browser to get a view state
-                var repoBrowserResponse =
-                    wb.Get(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf");
+                var repoBrowserResponse = await wb.GetAsync(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf");
                 viewState = GetResponseViewState(repoBrowserResponse);
 
                 var repoListData = new NameValueCollection
@@ -64,7 +64,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 };
 
                 var repoListResponse =
-                    wb.Post(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf", repoListData);
+                    await wb.PostAsync(request.BaseUrl + "/ubersvn/views/platform/repository/viewRepositories.jsf", repoListData);
 
                 if (repoListResponse == null)
                 {

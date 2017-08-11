@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Xml.Serialization;
-using ReVersion.Models;
-using ReVersion.Models.Settings;
+﻿using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
@@ -13,7 +13,7 @@ namespace ReVersion.Services.SvnServer.Impl
     {
         public SvnServerType ServerType { get; } = SvnServerType.Submin;
 
-        public ListRepositoriesResponse ListRepositories(SvnServerModel request)
+        public async Task<ListRepositoriesResponse> ListRepositories(SvnServerModel request)
         {
             var result = new ListRepositoriesResponse {Status = true};
 
@@ -29,7 +29,7 @@ namespace ReVersion.Services.SvnServer.Impl
                 };
 
                 //Do the login
-                wb.Post(request.BaseUrl + "/submin/login", loginData);
+                await wb.PostAsync(request.BaseUrl + "/submin/login", loginData);
 
                 var repoListData = new NameValueCollection
                 {
@@ -37,7 +37,7 @@ namespace ReVersion.Services.SvnServer.Impl
                     ["listRepositories"] = ""
                 };
 
-                var repoListResponse = wb.Post(request.BaseUrl + "/submin/x", repoListData);
+                var repoListResponse = await wb.PostAsync(request.BaseUrl + "/submin/x", repoListData);
 
                 if (repoListResponse == null)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ReVersion.Utilities.Helpers
 {
@@ -15,7 +16,7 @@ namespace ReVersion.Utilities.Helpers
 
         public CookieContainer CookieContainer { get; set; }
 
-        public WebResponse Get(string address)
+        public Task<WebResponse> GetAsync(string address)
         {
             var request = GetWebRequest(new Uri(address));
 
@@ -24,15 +25,15 @@ namespace ReVersion.Utilities.Helpers
 
             request.Method = "GET";
 
-            return request.GetResponse();
+            return request.GetResponseAsync();
         }
 
-        public WebResponse Authenticate(string address, string username, string password)
+        public Task<WebResponse> AuthenticateAsync(string address, string username, string password)
         {
             try
             {
                 //Force the server to return a 401
-                Get(address);
+                GetAsync(address);
             }
             catch (Exception)
             {
@@ -54,10 +55,10 @@ namespace ReVersion.Utilities.Helpers
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
             request.Headers["Authorization"] = "Basic " + authInfo;
 
-            return request.GetResponse();
+            return request.GetResponseAsync();
         }
 
-        public WebResponse Post(string address, NameValueCollection data = null)
+        public Task<WebResponse> PostAsync(string address, NameValueCollection data = null)
         {
             var request = GetWebRequest(new Uri(address));
 
@@ -73,7 +74,7 @@ namespace ReVersion.Utilities.Helpers
             var postStream = request.GetRequestStream();
             postStream.Write(postBytes, 0, postBytes.Length);
 
-            return request.GetResponse();
+            return request.GetResponseAsync();
         }
 
         private string DataToString(NameValueCollection data)
@@ -86,7 +87,7 @@ namespace ReVersion.Utilities.Helpers
                 if (index > 0)
                     sb.Append("&");
 
-                sb.Append(string.Format("{0}={1}", key, data[key]));
+                sb.Append($"{key}={data[key]}");
 
                 index++;
             }

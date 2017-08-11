@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Xml.Serialization;
-using ReVersion.Models;
+﻿using HtmlAgilityPack;
 using ReVersion.Models.Settings;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
-using HtmlAgilityPack;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ReVersion.Services.SvnServer.Impl
 {
@@ -16,7 +14,7 @@ namespace ReVersion.Services.SvnServer.Impl
     {
         public SvnServerType ServerType { get; } = SvnServerType.WebSvn;
 
-        public ListRepositoriesResponse ListRepositories(SvnServerModel request)
+        public async Task<ListRepositoriesResponse> ListRepositories(SvnServerModel request)
         {
             var result = new ListRepositoriesResponse {Status = true};
 
@@ -27,7 +25,7 @@ namespace ReVersion.Services.SvnServer.Impl
             {
 
                 //Do the login
-                var homePageResponse = wb.Authenticate(request.BaseUrl + "/websvn/", request.Username, request.RawPassword);
+                var homePageResponse = await wb.AuthenticateAsync(request.BaseUrl + "/websvn/", request.Username, request.RawPassword);
 
 
                 var responseDoc = new HtmlDocument();

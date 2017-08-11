@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ReVersion.Services.ErrorLogging;
+﻿using ReVersion.Services.ErrorLogging;
 using ReVersion.Services.Settings;
 using ReVersion.Services.SvnClient;
 using ReVersion.Services.SvnClient.Requests;
 using ReVersion.Services.SvnServer.Response;
 using ReVersion.Utilities.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ReVersion.Services.SvnServer
 {
@@ -28,19 +27,15 @@ namespace ReVersion.Services.SvnServer
                 .Cast<ISvnServer>()
                 .ToList();
         }
+        
 
-        public async Task<ListRepositoriesResponse> ListRepositories(bool forceReload = false)
-        {
-            return await Task.Run(() => LoadRepositories(forceReload));
-        }
+        private readonly object _lock = new object();
 
-        private object _lock = new object();
-
-        private ListRepositoriesResponse LoadRepositories(bool forceReload)
+        public async Task<ListRepositoriesResponse> ListRepositories(bool forceReload)
         {
             var result = new ListRepositoriesResponse();
 
-            Parallel.ForEach(SettingsService.Current.Servers, svnServerSettings =>
+            var tasks = SettingsService.Current.Servers.ToList().Select(async svnServerSettings =>
             {
                 if (!forceReload && svnServerSettings.RepoUpdateDate > DateTime.Now.AddDays(-7))
                 {
@@ -58,10 +53,10 @@ namespace ReVersion.Services.SvnServer
                 }
 
                 var subversionServer = _subversionServers.FirstOrDefault(s => s.ServerType == svnServerSettings.Type);
-                
+
                 try
                 {
-                    var response = subversionServer.ListRepositories(svnServerSettings);
+                    var response = await subversionServer.ListRepositories(svnServerSettings);
 
                     if (!response.Status)
                     {
@@ -85,15 +80,10 @@ namespace ReVersion.Services.SvnServer
                     ErrorLog.Log($"Error updating {svnServerSettings.Type} ({svnServerSettings.BaseUrl})", ex);
 
                     result.Messages.Add(ex.Message);
-
-#if DEBUG
-                    throw ex;
-#endif
                 }
-                
-                
             });
-            
+
+            await Task.WhenAll(tasks);
 
             //Order the repo's
             result.Repositories = result.Repositories.OrderBy(x => x.Name).ToList();

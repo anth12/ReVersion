@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using MahApps.Metro.Controls;
+﻿using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using ReVersion.Models.Home;
 using ReVersion.Services.SvnServer;
 using ReVersion.Utilities.Extensions;
 using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.Settings;
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace ReVersion.ViewModels.Home
 {
@@ -164,7 +163,7 @@ namespace ReVersion.ViewModels.Home
             set { SetField(ref _settings, value); }
         }
 
-        private Func<RepositoryViewModel, bool> _filter;
+        private readonly Func<RepositoryViewModel, bool> _filter;
 
         private ObservableCollection<RepositoryViewModel> _repositories;
 
@@ -187,7 +186,6 @@ namespace ReVersion.ViewModels.Home
             Repositories.Clear();
             result.Repositories.ForEach(repo =>
             {
-                
                 var model = new RepositoryModel
                 {
                     CheckedOut = repo.CheckedOut,
@@ -229,7 +227,7 @@ namespace ReVersion.ViewModels.Home
 
         private bool cancelFiltering;
 
-        private async void Applyfilter()
+        private void Applyfilter()
         {
             cancelFiltering = false;
 
