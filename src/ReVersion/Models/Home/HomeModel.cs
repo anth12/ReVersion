@@ -9,6 +9,8 @@ namespace ReVersion.Models.Home
         {
             _search = "";
             _viewModel = viewModel;
+            _loading = true;
+            Window = new WindowModel();
         }
 
         private readonly HomeViewModel _viewModel;
@@ -19,33 +21,42 @@ namespace ReVersion.Models.Home
         private bool _loading;
         private string _search;
         private bool _settingActive;
+        private WindowModel _window;
 
         public string CountSummary => $"Showing {_viewModel.Repositories.Count(r=> r.Model.IsEnabled)} of {_viewModel.Repositories.Count()}";
         public string CheckoutSummary => $"Checkout {_viewModel.Repositories.Count(r=> r.Model.IsChecked)} " + (_viewModel.Repositories.Count(r => r.Model.IsChecked) > 1 ? "repositories" : "repository");
         public int SelectedRepositories => _viewModel.Repositories.Count(r=> r.Model.IsChecked);
 
-        public bool MissingData => !_loading && _viewModel.Repositories.Any();
+        public bool MissingData => !_loading && !_viewModel.Repositories.Any();
 
         public bool Loading
         {
-            get { return _loading; }
+            get => _loading;
             set { SetField(ref _loading, value); OnPropertyChanged(nameof(MissingData)); }
         }
 
         public string Search
         {
-            get { return _search; }
-            set { SetField(ref _search, value); }
+            get => _search;
+            set => SetField(ref _search, value);
         }
         
         public bool SettingsActive
         {
-            get { return _settingActive; }
-            set { SetField(ref _settingActive, value); }
+            get => _settingActive;
+            set => SetField(ref _settingActive, value);
         }
-
+        
         public bool IsBulkCheckoutButtonActive => _viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive && r.Model.IsChecked);
         public bool IsBulkCheckoutActive => _viewModel.Repositories.Any(r => r.Model.BulkCheckoutActive);
+
+
+        public WindowModel Window
+        {
+            get => _window;
+            set => SetField(ref _window, value);
+        }
+        
 
         #endregion
 
