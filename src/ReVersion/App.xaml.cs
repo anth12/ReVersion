@@ -4,7 +4,6 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using ReVersion.Services.Analytics;
 using ReVersion.Services.ErrorLogging;
-using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.Home;
 using ReVersion.Views;
 

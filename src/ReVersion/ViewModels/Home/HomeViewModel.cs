@@ -7,9 +7,11 @@ using ReVersion.Utilities.Helpers;
 using ReVersion.ViewModels.Settings;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -39,7 +41,7 @@ namespace ReVersion.ViewModels.Home
             HelpCommand = CommandFromFunction(x => Help());
 
             BulkCheckoutCommand = CommandFromFunction(x => BulkCheckout());
-
+            
             //Model binding
             Repositories.CollectionChanged += (sender, args) => { Model.FilterUpdated(); };
 
@@ -56,9 +58,6 @@ namespace ReVersion.ViewModels.Home
             _filter = (model) => Model.Search.IsBlank()
                              || model.Model.Name.ToCamelCase().ToLower().Contains(Model.Search.ToCamelCase().ToLower());
 
-            //Finally, load the data
-            LoadRepositories();
-            
         }
         
         #region Commands
@@ -74,8 +73,7 @@ namespace ReVersion.ViewModels.Home
         public ICommand HelpCommand { get; set; }
 
         public ICommand BulkCheckoutCommand { get; set; }
-
-
+        
         #region Menu events
 
         #region File
@@ -129,7 +127,7 @@ namespace ReVersion.ViewModels.Home
         {
             LoadRepositories(true);
         }
-
+        
         #endregion
 
         #region Help
@@ -174,52 +172,62 @@ namespace ReVersion.ViewModels.Home
         }
 
 
-        private async void LoadRepositories(bool forceReload = false)
+        internal async void LoadRepositories(bool forceReload = false)
         {
-            Model.Loading = true;
+            //Application.Current.Dispatcher.Invoke(() =>
+            //{
+                Model.Loading = true;
+            //});
 
             var subversionServerCollator = new SvnServerService();
 
             var result = await subversionServerCollator.ListRepositories(forceReload);
-
+            
 
             Repositories.Clear();
-            result.Repositories.ForEach(repo =>
+            
+            await Task.Delay(1000);
+
+            var index = 0;
+
+            foreach(var repo in result.Repositories)
             {
-                var model = new RepositoryModel
+                if(index++ % 10 == 0)
+                {
+                    await Task.Delay(5);
+                }
+
+                Repositories.Add(new RepositoryViewModel(new RepositoryModel
                 {
                     CheckedOut = repo.CheckedOut,
                     CheckoutEnabled = !repo.CheckedOut,
                     Name = repo.Name,
                     SvnServerId = repo.SvnServerId,
                     Url = repo.Url,
-                    IsEnabled = true
-                };
+                    IsEnabled = true,
+                    Window = Model.Window
+                }));
+            }
 
-                model.PropertyChanged += (sender, args) =>
-                {
-                    if (args.PropertyName == nameof(model.IsChecked))
-                    {
-                        Model.BulkUpdateUpdated();
-                    }
-                };
 
-                Repositories.Add(new RepositoryViewModel
-                {
-                    Model = model
-                });
-                
+            Repositories.ToList().ForEach(r =>
+            {
+                r.Model.PropertyChanged += BulkUpdateChecked;
             });
 
-            Model.Loading = false;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Model.Loading = false;
+            });
 
-            
+
+
             if (result.Messages.Any())
             {
                 NotificationHelper.ShowResult(result);
             }
         }
-        
+
         public void FilterUpdated()
         {
             cancelFiltering = true;
@@ -243,6 +251,14 @@ namespace ReVersion.ViewModels.Home
 
             Model.FilterUpdated();
         }
+        private void BulkUpdateChecked(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(RepositoryModel.IsChecked))
+            {
+                Model.BulkUpdateUpdated();
+            }
+        }
+
 
         #endregion
     }

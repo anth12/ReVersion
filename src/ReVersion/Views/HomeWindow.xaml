@@ -9,7 +9,10 @@
                       xmlns:homeVm="clr-namespace:ReVersion.ViewModels.Home"
                       mc:Ignorable="d"
                       Icon="/ReVersion;component/Resources/Icon_512.ico"
-                      Title="ReVersion" Height="600" Width="1180" Closed="HomeWindow_OnClosed"
+                      Title="ReVersion" Height="600" Width="1180" 
+                      Loaded="HomeWindow_OnLoaded"
+                      Closed="HomeWindow_OnClosed"
+                      SizeChanged="HomeWindow_OnSizeChanged"
                       ShowIconOnTitleBar="True" GlowBrush="#666">
     <Window.Resources>
         <DataTemplate DataType="{x:Type homeVm:RepositoryViewModel}">

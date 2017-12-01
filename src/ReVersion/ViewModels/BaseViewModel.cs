@@ -18,8 +18,8 @@ namespace ReVersion.ViewModels
         private TModel _model;
         public TModel Model
         {
-            get { return _model; }
-            set { SetField(ref _model, value); }
+            get => _model;
+            set => SetField(ref _model, value);
         }
 
         #region Property Helpers
