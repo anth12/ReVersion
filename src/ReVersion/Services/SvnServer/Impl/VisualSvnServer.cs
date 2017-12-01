@@ -20,7 +20,7 @@ namespace ReVersion.Services.SvnServer.Impl
             using (var wb = new WebClientSession())
             {
                 //Load the login page to grab a viewstate
-                var homePageResponse = await wb.AuthenticateAsync(request.BaseUrl + "/svn/", request.Username, request.RawPassword);
+                var homePageResponse = await wb.AuthenticateAsync(request.BaseUrl, request.Username, request.RawPassword);
 
                 var serializer = new XmlSerializer(typeof (Response));
                 var response = (Response) serializer.Deserialize(homePageResponse.GetResponseStream());
@@ -32,7 +32,7 @@ namespace ReVersion.Services.SvnServer.Impl
                     {
                         SvnServerId = request.Id,
                         Name = repoNode.Name,
-                        Url = $"{request.BaseUrl}/svn/{repoNode.Href}"
+                        Url = $"{request.BaseUrl}{repoNode.Href}"
                     });
                 }
             }
