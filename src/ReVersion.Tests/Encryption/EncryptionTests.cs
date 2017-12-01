@@ -22,8 +22,7 @@ namespace ReVersion.Tests.Encryption
             // Assert
             originalString.Should().Be(decryptedString1, "Decrypted string should match original string");
             originalString.Should().Be(decryptedString2, "Decrypted string should match original string");
-            originalString.Should().Be(encryptedString1, "Encrypted string should not match original string");
-            encryptedString1.Should().Be(encryptedString2, "String should never be encrypted the same twice");
+            originalString.Should().NotBe(encryptedString1, "Encrypted string should not match original string");
         }
     }
 }
