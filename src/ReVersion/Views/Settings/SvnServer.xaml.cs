@@ -23,7 +23,14 @@ namespace ReVersion.Views.Settings
         private void SvnServer_OnLoaded(object sender, RoutedEventArgs e)
         {
             SvnTypeDropdown.ItemsSource = Enum.GetValues(typeof (SvnServerType)).Cast<SvnServerType>();
-            Password_Textbox.Password = ((SvnServerViewModel)DataContext).Model.RawPassword;
+            try
+            {
+                Password_Textbox.Password = ((SvnServerViewModel) DataContext).Model.RawPassword;
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
 
         private void Password_Textbox_OnPasswordChanged(object sender, RoutedEventArgs e)

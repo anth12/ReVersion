@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -22,8 +23,10 @@ namespace ReVersion.ViewModels.Home
 {
     internal class RepositoryViewModel : BaseViewModel<RepositoryModel>
     {
-        public RepositoryViewModel()
+        public RepositoryViewModel(RepositoryModel model)
         {
+            Model = model;
+
             CheckoutCommand = CommandFromFunction(c=> Checkout());
             BrowseCommand = CommandFromFunction(c=> Browse());
 
@@ -31,10 +34,26 @@ namespace ReVersion.ViewModels.Home
             ViewInfoCommand = CommandFromFunction(c=> ViewInfo());
             RepoBrowserCommand = CommandFromFunction(c=> RepoBrowser());
             CheckoutBranchCommand = CommandFromFunction(c=> CheckoutBranch());
-
+            
+            ConfigureButtons();
         }
 
-        
+        private void ConfigureButtons()
+        {
+            ButtonOptions.Clear();
+            if (Model.CheckedOut)
+                ButtonOptions.Add(new KeyValuePair<string, ICommand>("Browse", BrowseCommand));
+            else
+                ButtonOptions.Add(new KeyValuePair<string, ICommand>("Checkout", CheckoutCommand));
+
+            ButtonOptions.Add(new KeyValuePair<string, ICommand>("View ReadMe", ReadMeCommand));
+            ButtonOptions.Add(new KeyValuePair<string, ICommand>("Checkout Branch", CheckoutBranchCommand));
+            ButtonOptions.Add(new KeyValuePair<string, ICommand>("View Info", ViewInfoCommand));
+        }
+
+        public ObservableCollection<KeyValuePair<string, ICommand>> ButtonOptions { get; set; } =
+            new ObservableCollection<KeyValuePair<string, ICommand>>();
+
         #region Commands
         public ICommand CheckoutCommand { get; set; }
         public ICommand BrowseCommand { get; set; }
@@ -195,6 +214,7 @@ Date: {info.LastChangeTime.ToString("dd/MMM/yyyy HH:mm")}
                 if (result)
                 {
                     Model.CheckedOut = true;
+                    ConfigureButtons();
                 }
             }
         }

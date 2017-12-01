@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converters="clr-namespace:ReVersion.Utilities.Converters"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              Visibility="{Binding Model.IsEnabled, Converter={StaticResource VisibilityConverter}}"
              Height="85"
              Width="380">
-
+    <!-- Width="{Binding Window.ColumnWidth}" -->
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Command="{Binding ReadMeCommand}" Header="View ReadMe" />
@@ -20,7 +20,7 @@
     </UserControl.ContextMenu>
 
     <Border BorderBrush="Gray" BorderThickness="1" Margin="2" 
-            >
+            Background="{Binding Model.BackgroundBrush}">
 
         <Grid Margin="3">
             <Grid.ColumnDefinitions>
@@ -47,17 +47,29 @@
 
             <Grid Grid.Column="2" Visibility="{Binding Model.BulkCheckoutActive, Converter={StaticResource ReverseVisibilityConverter}}">
 
-                <Button Width="76" Content="Checkout" 
+
+                <controls:SplitButton HorizontalContentAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="100"
+                                      Height="70"
+                                      SelectedIndex="0"
+                                      Click="SplitButton_OnClick"
+                                      ItemsSource="{Binding ButtonOptions}"
+                                      DisplayMemberPath="Key"
+                                      VerticalAlignment="Top">
+                </controls:SplitButton>
+
+                <!--<Button Width="76" Content="Checkout" 
                         IsEnabled="{Binding Model.CheckoutEnabled}"
                         Command="{Binding CheckoutCommand}" 
                         Style="{DynamicResource SquareButtonStyle}" 
-                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource ReverseVisibilityConverter}}"/>
+                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource ReverseVisibilityConverter}}"/>-->
 
-                <Button Width="76"  Content="Browse" 
+                <!--<Button Width="76"  Content="Browse" 
                         Command="{Binding BrowseCommand}"
                         Style="{DynamicResource SquareButtonStyle}" 
-                        Background="{Binding Model.BackgroundBrush}"
-                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"/>
+                        Visibility="{Binding Model.CheckedOut, Converter={StaticResource VisibilityConverter}, FallbackValue=Hidden}"/>-->
 
                 <TextBlock Width="76" 
                         VerticalAlignment="Bottom"

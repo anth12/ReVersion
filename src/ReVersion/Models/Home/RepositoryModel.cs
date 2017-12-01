@@ -18,65 +18,66 @@ namespace ReVersion.Models.Home
         private string _url;
         private long _progress;
         private long _repositorySize;
-
+        private WindowModel _window;
+        
         public bool CheckedOut
         {
-            get { return _checkedOut; }
+            get => _checkedOut;
             set { SetField(ref _checkedOut, value); OnPropertyChanged(nameof(BackgroundBrush)); }
         }
 
         public bool ShowProgress
         {
-            get { return _showProgress; }
-            set { SetField(ref _showProgress, value); }
+            get => _showProgress;
+            set => SetField(ref _showProgress, value);
         }
 
         public bool IsChecked
         {
-            get { return _isChecked; }
-            set { SetField(ref _isChecked, value); }
+            get => _isChecked;
+            set => SetField(ref _isChecked, value);
         }
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
-            set { SetField(ref _isEnabled, value); }
+            get => _isEnabled;
+            set => SetField(ref _isEnabled, value);
         }
 
         public bool CheckoutEnabled
         {
-            get { return _checkoutEnabled; }
-            set { SetField(ref _checkoutEnabled, value); }
+            get => _checkoutEnabled;
+            set => SetField(ref _checkoutEnabled, value);
         }
 
         public bool BulkCheckoutActive
         {
-            get { return _bulkCheckoutActive; }
-            set { SetField(ref _bulkCheckoutActive, value); }
+            get => _bulkCheckoutActive;
+            set => SetField(ref _bulkCheckoutActive, value);
         }
 
         public string Name
         {
-            get { return _name; }
-            set { SetField(ref _name, value); }
+            get => _name;
+            set => SetField(ref _name, value);
         }
 
         public Guid SvnServerId
         {
-            get { return _svnServerId; }
-            set { SetField(ref _svnServerId, value); }
+            get => _svnServerId;
+            set => SetField(ref _svnServerId, value);
         }
 
 
         public string Url
         {
-            get { return _url; }
-            set { SetField(ref _url, value); }
+            get => _url;
+            set => SetField(ref _url, value);
         }
 
         public long Progress
         {
-            get { return _progress; }
+            get => _progress;
             set
             {
                 SetField(ref _progress, value);
@@ -88,7 +89,7 @@ namespace ReVersion.Models.Home
 
         public long RepositorySize
         {
-            get { return _repositorySize; }
+            get => _repositorySize;
             set
             {
                 SetField(ref _repositorySize, value);
@@ -128,13 +129,19 @@ namespace ReVersion.Models.Home
 
         public double ProgressPercentage
         {
-            get { return RepositorySize > 0 ? (((double)Progress/(double)RepositorySize)*100) : 0; }
+            get { return RepositorySize > 0 ? (double)Progress/RepositorySize*100 : 0; }
             set { }
         }
 
         public SolidColorBrush BackgroundBrush => CheckedOut
             ? new SolidColorBrush(Color.FromRgb(101, 84, 117))
             : new SolidColorBrush(Colors.Transparent);
+        
+        public WindowModel Window
+        {
+            get => _window;
+            set => SetField(ref _window, value);
+        }
     }
 
     internal class RepositoryAction
